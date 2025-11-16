@@ -1,11 +1,29 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import { postsService } from "@api/wordpress/services/posts";
+const posts = await postsService.getRecent(10);
 ---
 
 <Layout>
-	<Welcome />
+  <div>
+    {
+      posts.map((post) => (
+        <article>
+          <h2>
+            <a href={`/blog/${post.slug}`}>{post.title.rendered}</a>
+          </h2>
+          <div set:html={post.excerpt.rendered} />
+          {post._embedded?.["wp:featuredmedia"] && (
+            <Image
+              src={post._embedded?.["wp:featuredmedia"][0].source_url}
+              alt={post._embedded?.["wp:featuredmedia"][0].alt_text}
+              width={800}
+              height={600}
+            />
+          )}
+        </article>
+      ))
+    }
+  </div>
 </Layout>
