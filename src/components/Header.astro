@@ -1,0 +1,46 @@
+---
+import { themeAssetsService } from "../content/api/wordpress/services/themeAssets";
+import { Image, Picture } from "astro:assets";
+import logo from "@images/logo_jbee_blanc.svg";
+import { downloadImage } from "@utils/downloadImages.ts";
+import "@styles/global.css";
+import headerImage from "@images/wpImages/headerImage.jpg";
+interface Props {
+  isHomePage?: boolean;
+}
+const { isHomePage = false } = Astro.props;
+const { custom_header } = await themeAssetsService.getThemeAssets();
+
+await downloadImage(custom_header, "headerImage.jpg");
+---
+
+<script>
+  import("jarallax")
+    .then(({ jarallax }) => {
+      const elements = document.querySelectorAll(".jarallax");
+      if (elements.length) {
+        jarallax(elements, {});
+      }
+    })
+    .catch((err) => console.error("Erreur lors du chargement de Jarallax :", err));
+</script>
+<header
+  role="banner"
+  data-jarallax
+  data-speed="0.5"
+  class="header jarallax w-full min-h-[500px] relative flex justify-center"
+>
+  <Image
+    class="jarallax-img"
+    src={headerImage}
+    alt=""
+    width={1600}
+    height={600}
+    format="webp"
+    loading="eager"
+    sizes="(max-width: 600px) 480px, (max-width: 1024px) 1024px, 1600px"
+  />
+  <div class="items-center flex justify-center grow">
+    <Image src={logo} alt="Logo" width={600} height={300} class="" />
+  </div>
+</header>

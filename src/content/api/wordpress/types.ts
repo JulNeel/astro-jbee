@@ -1,7 +1,9 @@
-export interface WPPost {
+export interface WpPost {
   id: number;
   date: string;
   modified: string;
+  link: string;
+
   slug: string;
   status: string;
   title: {
@@ -18,6 +20,8 @@ export interface WPPost {
   categories: number[];
   tags: number[];
   _embedded?: {
+    author?: Array<{ name: string }>;
+
     'wp:featuredmedia'?: Array<{
       source_url: string;
       alt_text: string;
@@ -30,7 +34,26 @@ export interface WPPost {
   };
 }
 
-export interface WPCategory {
+
+export interface BlogPost extends Record<string, unknown> {
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  publishedDate: Date;
+  modifiedDate: Date;
+  author: string;
+  featuredImage: featuredImage | null;
+  categories: string[];
+  tags: string[];
+  wpId: number;
+  link: string;
+}
+export interface featuredImage {
+  url: string;
+  altText: string;
+}
+export interface WpCategory {
   id: number;
   name: string;
   slug: string;
@@ -38,7 +61,7 @@ export interface WPCategory {
   count: number;
 }
 
-export interface WPMedia {
+export interface WpMedia {
   id: number;
   source_url: string;
   alt_text: string;
@@ -52,3 +75,11 @@ export interface WPMedia {
     }>;
   };
 }
+
+
+export interface WpSiteData {
+  custom_logo: string;
+  custom_header: string;
+  favicon: string;
+}
+

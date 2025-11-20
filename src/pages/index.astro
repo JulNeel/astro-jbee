@@ -1,26 +1,25 @@
 ---
+import Header from "@components/Header.astro";
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { themeAssetsService } from "../content/api/wordpress/services/themeAssets";
 import Layout from "../layouts/Layout.astro";
-import { postsService } from "@api/wordpress/services/posts";
-const posts = await postsService.getRecent(10);
+const allPosts = await getCollection("wpPosts");
+const posts = allPosts;
 ---
 
 <Layout>
+  <Header />
   <div>
     {
       posts.map((post) => (
         <article>
           <h2>
-            <a href={`/blog/${post.slug}`}>{post.title.rendered}</a>
+            <a href={`/blog/${post.data.slug}`}>{post.data.title}</a>
           </h2>
-          <div set:html={post.excerpt.rendered} />
-          {post._embedded?.["wp:featuredmedia"] && (
-            <Image
-              src={post._embedded?.["wp:featuredmedia"][0].source_url}
-              alt={post._embedded?.["wp:featuredmedia"][0].alt_text}
-              width={800}
-              height={600}
-            />
+          <div set:html={post.data.excerpt} />
+          {post.data.featuredImage && (
+            <Image src={post.data.featuredImage.url} alt={post.data.featuredImage.altText} width={800} height={600} />
           )}
         </article>
       ))

@@ -1,4 +1,4 @@
-const WP_API_URL = import.meta.env.PUBLIC_WP_URL + '/wp-json/wp/v2';
+const WP_API_URL = import.meta.env.PUBLIC_WP_URL + '/wp-json';
 
 export const wpClient = {
   async request<T>(endpoint: string, params?: Record<string, any>): Promise<T> {

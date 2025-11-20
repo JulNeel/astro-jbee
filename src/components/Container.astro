@@ -1,0 +1,27 @@
+---
+interface Props {
+  variant?: "padded" | "full" | "constrained";
+  as?: keyof HTMLElementTagNameMap;
+  class?: string;
+  maxWidthClass?: string;
+}
+
+const { variant = "padded", as = "div", class: extraClass = "", maxWidthClass = "" } = Astro.props as Props;
+
+const Tag = as as keyof HTMLElementTagNameMap;
+
+const base = "mx-auto w-full";
+
+const variantClasses = {
+  padded: "px-4 sm:px-6 lg:px-8",
+  full: "",
+  constrained: "px-4 sm:px-6 lg:px-8",
+};
+
+const widthClass = maxWidthClass || (variant === "constrained" ? "max-w-7xl" : "");
+const variantClass = variantClasses[variant] || variantClasses.padded;
+---
+
+<Tag class={`${base} ${variantClass} ${widthClass} ${extraClass}`.trim()}>
+  <slot />
+</Tag>
