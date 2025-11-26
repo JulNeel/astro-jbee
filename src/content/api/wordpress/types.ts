@@ -78,8 +78,31 @@ export interface WpMedia {
 
 
 export interface WpSiteData {
-  custom_logo: string;
+  custom_logo: { url: string, width: number, height: number, alt: string };
   custom_header: string;
   favicon: string;
 }
 
+export interface WpMenu {
+  id: string;
+  name: string;
+  slug: string;
+  count: number;
+  items: WpMenuItem[];
+}
+export interface WpMenuItem {
+  id: number;
+  title: string;
+  url: string;
+  target: string;
+  classes: string[];
+  object_id: string;
+  object: string;
+  type: string;
+}
+
+export interface MenuItem {
+  label: string;
+  path: string;
+  target?: "_self" | "_blank" | "_parent" | "_top";
+};
