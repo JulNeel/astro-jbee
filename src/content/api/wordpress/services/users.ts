@@ -17,16 +17,15 @@ export interface WpUserSocialApi {
   facebook_handle: string | null;
 }
 
-
 export const userService = {
-
   async getUsersList() {
     const users = await wpClient.request<WpUserSocialApi[]>(`/wp/v2/users/`);
     return users;
   },
   async getUser(slug: string) {
-    const user = await wpClient.request<WpUserSocialApi[]>(`/wp/v2/users?slug=${slug}`);
-    console.log("USEEEEEEER", user[0].linkedin);
+    const user = await wpClient.request<WpUserSocialApi[]>(
+      `/wp/v2/users?slug=${slug}`,
+    );
     return user[0];
   },
 };

@@ -1,26 +1,14 @@
 ---
-import Container from "@components/Container.astro";
 import ResponsiveMenu from "@components/ResponsiveMenu.astro";
-import { menuItemsService } from "@content/api/wordpress/services/menuItems";
 import { themeAssetsService } from "@content/api/wordpress/services/themeAssets";
-import { userService } from "@content/api/wordpress/services/users";
-import logo from "@images/logo_jbee_blanc.svg";
-import headerImage from "@images/wpImages/header_image.jpg";
 import "@styles/global.css";
 import { downloadImage } from "@utils/downloadImages.ts";
-import { Image } from "astro:assets";
 
 interface Props {
   isHomePage?: boolean;
 }
-const { isHomePage = false } = Astro.props;
-const menuItems = await menuItemsService.getMenuItems("header-menu");
+
 const { custom_header } = await themeAssetsService.getThemeAssets();
-const { linkedin } = await userService.getUser("julien");
-const linkedinMenuItem = {
-  path: linkedin ?? "",
-  label: "Linkedin",
-};
 
 await downloadImage(custom_header, "header_image.jpg");
 ---
@@ -35,21 +23,6 @@ await downloadImage(custom_header, "header_image.jpg");
     })
     .catch((err) => console.error("Erreur lors du chargement de Jarallax :", err));
 </script>
-<header role="banner" data-jarallax data-speed="0.5" class="header jarallax w-full">
-  <Container class="relative flex min-h-[500px] justify-center">
-    <Image
-      class="jarallax-img"
-      src={headerImage}
-      alt=""
-      width={1600}
-      height={600}
-      format="webp"
-      loading="eager"
-      sizes="(max-width: 600px) 480px, (max-width: 1024px) 1024px, 1600px"
-    />
-    <div class="flex grow items-center justify-center">
-      <Image src={logo} alt="Logo" width={600} height={300} class="" />
-    </div>
-  </Container>
-  <ResponsiveMenu menuItems={[...menuItems, linkedinMenuItem]} />
+<header role="banner" class="header h-[130px] w-full">
+  <ResponsiveMenu />
 </header>

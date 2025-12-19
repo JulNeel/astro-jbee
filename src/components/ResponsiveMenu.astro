@@ -1,19 +1,24 @@
 ---
 import DesktopMenu from "@components/DesktopMenu";
 import MobileMenu from "@components/MobileMenu";
-import clsx from "clsx";
-import type { MenuItem } from "../content/api/wordpress/types";
+import { menuItemsService } from "@content/api/wordpress/services/menuItems";
+import { userService } from "@content/api/wordpress/services/users";
 
 interface Props {
-  menuItems: MenuItem[];
+  isHomePage?: boolean;
 }
-const { menuItems } = Astro.props;
-const navClass = clsx();
+const { isHomePage = false } = Astro.props;
+const menuItems = await menuItemsService.getMenuItems("header-menu");
+const { linkedin } = await userService.getUser("julien");
+const linkedinMenuItem = {
+  path: linkedin ?? "",
+  label: "Linkedin",
+};
 ---
 
-<div class="hidden h-16 items-end justify-end md:flex">
-  <DesktopMenu menuItems={menuItems} client:media="(min-width: 768px)" />
+<div class="font-heading hidden items-end justify-end md:flex">
+  <DesktopMenu menuItems={[...menuItems, linkedinMenuItem]} isHomePage={isHomePage} client:media="(min-width: 768px)" />
 </div>
-<div class="md:hidden">
-  <MobileMenu menuItems={menuItems} client:media="(max-width: 768px)" />
+<div class="font-heading md:hidden">
+  <MobileMenu menuItems={[...menuItems, linkedinMenuItem]} client:media="(max-width: 768px)" />
 </div>

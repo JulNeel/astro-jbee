@@ -1,0 +1,49 @@
+---
+import Container from "@components/Container.astro";
+import ResponsiveMenu from "@components/ResponsiveMenu.astro";
+import { themeAssetsService } from "@content/api/wordpress/services/themeAssets";
+import logo from "@images/logo_jbee_blanc.svg";
+import headerImage from "@images/wpImages/header_image.jpg";
+import "@styles/global.css";
+import { downloadImage } from "@utils/downloadImages.ts";
+import { Image } from "astro:assets";
+
+const { custom_header } = await themeAssetsService.getThemeAssets();
+
+await downloadImage(custom_header, "header_image.jpg");
+---
+
+<script>
+  import("jarallax")
+    .then(({ jarallax }) => {
+      const elements = document.querySelectorAll(".jarallax");
+      if (elements.length) {
+        jarallax(elements, {});
+      }
+    })
+    .catch((err) => console.error("Erreur lors du chargement de Jarallax :", err));
+</script>
+<header
+  role="banner"
+  data-jarallax
+  data-speed="0.5"
+  class="header jarallax flex w-full flex-col sm:min-h-[300px] md:min-h-[800px]">
+  {}<Container class="relative my-auto flex min-h-[200px] justify-center py-8">
+    <Image
+      class="jarallax-img"
+      src={headerImage}
+      alt=""
+      width={1600}
+      height={600}
+      format="webp"
+      loading="eager"
+      sizes="(max-width: 600px) 480px, (max-width: 1024px) 1024px, 1600px"
+    />
+    <div class="flex items-center justify-center">
+      <Image src={logo} alt="Logo" width={600} height={300} />
+    </div>
+  </Container>
+  <div class="mt-auto">
+    <ResponsiveMenu isHomePage />
+  </div>
+</header>

@@ -1,21 +1,17 @@
-import type { Loader } from 'astro/loaders';
-import { postsService } from '../services/wpPosts';
+import type { Loader } from "astro/loaders";
+import { postsService } from "../services/wpPosts";
+import type { BlogPost } from "../types";
 
 export function createWordPressLoader(): Loader {
-
   return {
-    name: 'wordpress-loader',
+    name: "wordpress-loader",
     async load({ store, logger }) {
-      logger.info('Wordpress posts are loading...');
-
+      logger.info("Wordpress posts are loading...");
       try {
         const posts = await postsService.getAll();
-
         store.clear();
-
         for (const post of posts) {
-          const transformedPost = postsService.transformPost(post);
-
+          const transformedPost: BlogPost = postsService.transformPost(post);
           store.set({
             id: post.slug,
             data: transformedPost,

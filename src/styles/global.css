@@ -4,8 +4,18 @@
 @import "@fontsource/oswald/400.css";
 @import "@fontsource/oswald/600.css";
 @import "@fontsource/oswald/700.css";
+
+@import "@fontsource-variable/roboto";
+
 @theme {
-  --font-sans: "Oswald", "sans-serif";
+  --font-primary: "Roboto Variable", sans-serif;
+  --font-secondary: "Oswald", sans-serif;
+
+  --font-heading: var(--font-secondary);
+  --font-body: var(--font-primary);
+  --font-button: var(--font-secondary);
+  --font-nav: var(--font-secondary);
+
   --color-primary-light: #7fa7bc;
   --color-primary: #4d7c94;
   --color-primary-dark: #365768;
@@ -47,6 +57,12 @@
 html {
   scroll-behavior: smooth;
 }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-primary);
+  background-color: var(--color-offwhite);
+}
 .h1,
 .h2,
 .h3,
@@ -54,6 +70,7 @@ html {
 .h5,
 .h6 {
   font-weight: 700;
+  font-family: var(--font-heading);
 }
 .h2 {
   font-size: var(--text-3xl);
