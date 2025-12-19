@@ -1,0 +1,9 @@
+---
+import { getCollection } from "astro:content";
+import PostsListItem from "./PostsListItem.astro";
+
+const allPosts = await getCollection("wpPosts");
+const posts = allPosts;
+---
+
+{posts.map((post) => <PostsListItem post={post.data} />)}

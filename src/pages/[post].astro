@@ -1,0 +1,46 @@
+---
+import Container from "@components/Container.astro";
+import Header from "@components/Header.astro";
+import ResponsiveMenu from "@components/ResponsiveMenu.astro";
+import Layout from "@layouts/Layout.astro";
+import Image from "astro/components/Image.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection("wpPosts");
+  const posts = allPosts;
+
+  return posts.map((post) => {
+    return {
+      params: {
+        post: post.data.slug,
+      },
+      props: {
+        post,
+      },
+    };
+  });
+}
+
+const { post } = Astro.props;
+---
+
+<Layout>
+  <Header />
+  <main>
+    <Container>
+      <h2 class="h2">{post?.data?.title}</h2>
+      {
+        post?.data?.featuredImage && (
+          <Image
+            src={post?.data?.featuredImage?.url}
+            alt={post?.data?.featuredImage?.altText}
+            width={800}
+            height={600}
+          />
+        )
+      }
+      <div>{post?.data?.content}</div>
+    </Container>
+  </main>
+</Layout>
