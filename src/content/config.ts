@@ -1,30 +1,29 @@
+import { defineCollection, z } from "astro:content";
+import { createStrapiLoader } from "./api/strapi/loaders/strapi.loader";
 
-import { defineCollection, z } from 'astro:content';
-import { createWordPressLoader } from './api/wordpress/loaders/wordpress.loader';
+const strapiLoader = createStrapiLoader();
 
-const wordpressLoader = createWordPressLoader();
-
-const wpPosts = defineCollection({
-  loader: wordpressLoader,
+const posts = defineCollection({
+  loader: strapiLoader,
   schema: z.object({
     title: z.string(),
     slug: z.string(),
     excerpt: z.string(),
-    content: z.string(),
+    content: z.array(z.any()),
     publishedDate: z.date(),
     modifiedDate: z.date(),
     author: z.string(),
-    featuredImage: z.object({
-      url: z.string(),
-      altText: z.string(),
-    }).nullable(),
-    categories: z.array(z.string()),
+    coverImage: z
+      .object({
+        url: z.string(),
+        altText: z.string(),
+      })
+      .nullable(),
     tags: z.array(z.string()),
-    wpId: z.number(),
-    link: z.string().url(),
+    categories: z.array(z.string()),
   }),
 });
 
 export const collections = {
-  wpPosts,
+  posts,
 };
