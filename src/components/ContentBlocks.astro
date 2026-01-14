@@ -1,0 +1,100 @@
+---
+import type {
+  BlockNode,
+  InlineNode,
+  TextChild,
+  LinkChild,
+} from "@content/api/strapi/types";
+
+interface Props {
+  blocks: BlockNode[];
+}
+
+const { blocks } = Astro.props;
+const STRAPI_URL = import.meta.env.PUBLIC_STRAPI_URL;
+
+function getImageUrl(url: string): string {
+  return url.startsWith("http") ? url : `${STRAPI_URL}${url}`;
+}
+
+function renderInlineNode(node: InlineNode): string {
+  if (node.type === "text") {
+    let text = node.text;
+    if (node.bold) text = `<strong>${text}</strong>`;
+    if (node.italic) text = `<em>${text}</em>`;
+    if (node.underline) text = `<u>${text}</u>`;
+    if (node.strikethrough) text = `<s>${text}</s>`;
+    if (node.code) text = `<code>${text}</code>`;
+    return text;
+  }
+  if (node.type === "link") {
+    const linkContent = node.children.map(renderInlineNode).join("");
+    return `<a href="${node.url}" class="text-primary underline">${linkContent}</a>`;
+  }
+  return "";
+}
+
+function renderChildren(children: InlineNode[]): string {
+  return children.map(renderInlineNode).join("");
+}
+---
+
+<div class="prose prose-lg max-w-none">
+  {
+    blocks.map((block) => {
+      if (block.type === "paragraph") {
+        const html = renderChildren(block.children);
+        return <p set:html={html} />;
+      }
+
+      if (block.type === "heading") {
+        const html = renderChildren(block.children);
+        const Tag = `h${block.level}` as keyof HTMLElementTagNameMap;
+        return <Tag set:html={html} />;
+      }
+
+      if (block.type === "list") {
+        const Tag = block.format === "ordered" ? "ol" : "ul";
+        return (
+          <Tag>
+            {block.children.map((item) => (
+              <li set:html={renderChildren(item.children)} />
+            ))}
+          </Tag>
+        );
+      }
+
+      if (block.type === "image") {
+        return (
+          <figure class="my-8">
+            <img
+              src={getImageUrl(block.image.url)}
+              alt={block.image.alternativeText || ""}
+              class="w-full rounded-lg"
+            />
+          </figure>
+        );
+      }
+
+      if (block.type === "code") {
+        const code = block.children.map((c) => c.text).join("\n");
+        return (
+          <pre class="overflow-x-auto rounded-lg bg-gray-900 p-4 text-white">
+            <code>{code}</code>
+          </pre>
+        );
+      }
+
+      if (block.type === "quote") {
+        const html = renderChildren(block.children);
+        return (
+          <blockquote class="border-l-4 border-gray-300 pl-4 italic">
+            <p set:html={html} />
+          </blockquote>
+        );
+      }
+
+      return null;
+    })
+  }
+</div>
