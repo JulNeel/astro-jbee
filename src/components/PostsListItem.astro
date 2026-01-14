@@ -8,20 +8,22 @@ interface Props {
 const { post } = Astro.props;
 ---
 
-<article class="flex flex-col">
-  {
-    post.coverImage && (
-      <Image
-        src={post.coverImage.smallUrl}
-        alt={post.coverImage.altText}
-        width={500}
-        height={500}
-        class="w-full object-cover"
-      />
-    )
-  }
-  <h2 class="h4">
-    <a href={`/${post.slug}`}>{post.title}</a>
-  </h2>
-  <p>{post.excerpt}</p>
+<article class="group flex flex-col">
+  <a href={`/${post.slug}`} class="flex flex-col">
+    {
+      post.coverImage && (
+        <div class="aspect-4/3 overflow-hidden">
+          <Image
+            src={post.coverImage.smallUrl}
+            alt={post.coverImage.altText}
+            width={500}
+            height={500}
+            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-120"
+          />
+        </div>
+      )
+    }
+    <h2 class="h4">{post.title}</h2>
+    <p>{post.excerpt}</p>
+  </a>
 </article>
