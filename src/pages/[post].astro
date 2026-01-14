@@ -1,16 +1,15 @@
 ---
 import Container from "@components/Container.astro";
+import ContentBlocks from "@components/ContentBlocks.astro";
 import Header from "@components/Header.astro";
-import ResponsiveMenu from "@components/ResponsiveMenu.astro";
 import Layout from "@layouts/Layout.astro";
-import Image from "astro/components/Image.astro";
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection("wpPosts");
-  const posts = allPosts;
+  const allPosts = await getCollection("posts");
 
-  return posts.map((post) => {
+  return allPosts.map((post) => {
     return {
       params: {
         post: post.data.slug,
@@ -28,19 +27,19 @@ const { post } = Astro.props;
 <Layout>
   <Header />
   <main>
-    <Container>
+    <Container class="flex flex-col items-center">
       <h2 class="h2">{post?.data?.title}</h2>
       {
-        post?.data?.featuredImage && (
+        post?.data?.coverImage && (
           <Image
-            src={post?.data?.featuredImage?.url}
-            alt={post?.data?.featuredImage?.altText}
+            src={post.data.coverImage.url}
+            alt={post.data.coverImage.altText}
             width={800}
             height={600}
           />
         )
       }
-      <div>{post?.data?.content}</div>
+      <ContentBlocks blocks={post?.data?.content || []} />
     </Container>
   </main>
 </Layout>
