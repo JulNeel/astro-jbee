@@ -6,6 +6,9 @@ const allPosts = await getCollection("posts");
 const posts = allPosts;
 ---
 
-<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-  {posts.map((post) => <PostsListItem post={post.data} />)}
-</div>
+<section aria-labelledby="posts-title">
+  <h2 id="posts-title" class="sr-only">Articles récents</h2>
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {posts.map((post) => <PostsListItem post={post.data} />)}
+  </div>
+</section>
