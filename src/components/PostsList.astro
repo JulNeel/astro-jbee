@@ -6,4 +6,6 @@ const allPosts = await getCollection("posts");
 const posts = allPosts;
 ---
 
-{posts.map((post) => <PostsListItem post={post.data} />)}
+<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+  {posts.map((post) => <PostsListItem post={post.data} />)}
+</div>

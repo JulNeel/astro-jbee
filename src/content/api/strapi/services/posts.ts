@@ -1,7 +1,6 @@
 import { strapiClient } from "../client";
 import type { StrapiResponse, StrapiPost, BlogPost } from "../types";
-
-const STRAPI_URL = import.meta.env.PUBLIC_STRAPI_URL;
+import { buildImageUrl } from "@utils/strapi";
 
 export const postsService = {
   async getAll(params?: {
@@ -62,9 +61,10 @@ export const postsService = {
       author: post.author?.username || "Auteur inconnu",
       coverImage: post.coverImage
         ? {
-            url: post.coverImage.url.startsWith("http")
-              ? post.coverImage.url
-              : `${STRAPI_URL}${post.coverImage.url}`,
+            url: buildImageUrl(post.coverImage.url)!,
+            smallUrl:
+              buildImageUrl(post.coverImage.formats?.small?.url) ??
+              buildImageUrl(post.coverImage.url)!,
             altText: post.coverImage.alternativeText || "",
           }
         : null,

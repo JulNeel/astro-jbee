@@ -144,6 +144,7 @@ export interface BlogPost {
   author: string;
   coverImage: {
     url: string;
+    smallUrl: string;
     altText: string;
   } | null;
   tags: string[];

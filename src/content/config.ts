@@ -16,6 +16,7 @@ const posts = defineCollection({
     coverImage: z
       .object({
         url: z.string(),
+        smallUrl: z.string(),
         altText: z.string(),
       })
       .nullable(),

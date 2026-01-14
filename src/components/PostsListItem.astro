@@ -8,14 +8,15 @@ interface Props {
 const { post } = Astro.props;
 ---
 
-<article>
+<article class="flex flex-col">
   {
     post.coverImage && (
       <Image
-        src={post.coverImage.url}
+        src={post.coverImage.smallUrl}
         alt={post.coverImage.altText}
-        width={800}
-        height={600}
+        width={500}
+        height={500}
+        class="w-full object-cover"
       />
     )
   }
