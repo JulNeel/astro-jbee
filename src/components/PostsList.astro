@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import PostsListItem from "./PostsListItem.astro";
 
-const allPosts = await getCollection("wpPosts");
+const allPosts = await getCollection("posts");
 const posts = allPosts;
 ---
 

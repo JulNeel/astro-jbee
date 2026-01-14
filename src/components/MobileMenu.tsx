@@ -39,46 +39,64 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
     <>
       {/* Bouton hamburger - visible uniquement en mobile */}
       <button
-        className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-white w-20 h-20 shadow-md shadow-primary transition-transform focus:outline-none focus:ring-2 focus:ring-primary-light focus:ring-offset-2"
+        className="shadow-primary focus:ring-primary-light fixed bottom-4 left-1/2 z-50 h-20 w-20 -translate-x-1/2 rounded-full bg-white shadow-md transition-transform focus:ring-2 focus:ring-offset-2 focus:outline-none"
         onClick={toggleMenu}
         aria-expanded={isMenuOpened}
         aria-label={isMenuOpened ? "Fermer le menu" : "Ouvrir le menu"}
         aria-controls="main-menu"
         type="button"
       >
-        <span className={`hamburger relative inline-block h-10 w-10 ${isMenuOpened ? "open" : ""}`} aria-hidden="true">
-          <span className="connector absolute left-1/2 top-1/2 block h-1 w-10 bg-primary-dark" />
-          <span className="connector absolute left-1/2 top-1/2 block h-1 w-10 bg-primary-dark" />
-          <span className="connector absolute left-1/2 top-1/2 block h-1 w-10 bg-primary-dark" />
+        <span
+          className={`hamburger relative inline-block h-10 w-10 ${isMenuOpened ? "open" : ""}`}
+          aria-hidden="true"
+        >
+          <span className="connector bg-primary-dark absolute top-1/2 left-1/2 block h-1 w-10" />
+          <span className="connector bg-primary-dark absolute top-1/2 left-1/2 block h-1 w-10" />
+          <span className="connector bg-primary-dark absolute top-1/2 left-1/2 block h-1 w-10" />
         </span>
       </button>
 
       {/* Overlay mobile avec logo et menu */}
       <div
-        className={`fixed inset-0 z-40 flex flex-col items-center justify-between bg-primary-dark px-8 py-12 backdrop-blur transition-all duration-300 ${
-          isMenuOpened ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        className={`bg-primary-dark fixed inset-0 z-40 flex flex-col items-center justify-between px-8 py-12 backdrop-blur transition-all duration-300 ${
+          isMenuOpened
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
         }`}
         aria-hidden={!isMenuOpened}
       >
-        <img src={logo.src} alt="Logo JBEE" width={250} height={80} className="mt-auto object-contain" />
+        <img
+          src={logo.src}
+          alt="Logo JBEE"
+          width={250}
+          height={80}
+          className="mt-auto object-contain"
+        />
 
-        <nav id="main-menu" className="mb-auto mt-auto">
+        <nav id="main-menu" className="mt-auto mb-auto">
           <h2 className="sr-only">Menu principal</h2>
           <ul className="flex flex-col items-center justify-center gap-8 text-white">
             {menuItems.map((menuItem) => {
-              const isExternal = menuItem.target === "_blank" || menuItem.path.startsWith("http");
+              const isExternal =
+                menuItem.target === "_blank" ||
+                menuItem.path.startsWith("http");
 
               return (
                 <li key={menuItem.path}>
                   <a
-                    className="text-4xl font-medium transition-colors hover:text-gray-200 focus:outline-none focus:underline"
+                    className="text-4xl font-medium transition-colors hover:text-gray-200 focus:underline focus:outline-none"
                     href={menuItem.path}
                     target={menuItem.target ?? "_self"}
                     rel={isExternal ? "noopener noreferrer" : undefined}
                     onClick={handleLinkClick}
                   >
                     {menuItem.label}
-                    {isExternal && <span className="sr-only"> (ouvre dans un nouvel onglet)</span>}
+                    {isExternal && (
+                      <span className="sr-only">
+                        {" "}
+                        (ouvre dans un nouvel onglet)
+                      </span>
+                    )}
                   </a>
                 </li>
               );

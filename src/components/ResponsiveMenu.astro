@@ -1,24 +1,30 @@
 ---
 import DesktopMenu from "@components/DesktopMenu";
 import MobileMenu from "@components/MobileMenu";
-import { menuItemsService } from "@content/api/wordpress/services/menuItems";
-import { userService } from "@content/api/wordpress/services/users";
+import logo from "@images/jbee_logo_dev.png";
 
 interface Props {
   isHomePage?: boolean;
 }
 const { isHomePage = false } = Astro.props;
-const menuItems = await menuItemsService.getMenuItems("header-menu");
-const { linkedin } = await userService.getUser("julien");
-const linkedinMenuItem = {
-  path: linkedin ?? "",
-  label: "Linkedin",
-};
+
+// Menu statique
+const menuItems = [
+  { label: "Accueil", path: "/" },
+  { label: "Blog", path: "/blog" },
+  { label: "Linkedin", path: "https://www.linkedin.com/in/julien-bruneel/", target: "_blank" as const },
+];
 ---
 
 <div class="font-heading hidden items-end justify-end md:flex">
-  <DesktopMenu menuItems={[...menuItems, linkedinMenuItem]} isHomePage={isHomePage} client:media="(min-width: 768px)" />
+  <DesktopMenu
+    menuItems={menuItems}
+    isHomePage={isHomePage}
+    logoUrl={logo.src}
+    logoAlt="JBee Logo"
+    client:media="(min-width: 768px)"
+  />
 </div>
 <div class="font-heading md:hidden">
-  <MobileMenu menuItems={[...menuItems, linkedinMenuItem]} client:media="(max-width: 768px)" />
+  <MobileMenu menuItems={menuItems} client:media="(max-width: 768px)" />
 </div>

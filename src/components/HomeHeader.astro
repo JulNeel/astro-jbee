@@ -1,16 +1,10 @@
 ---
 import Container from "@components/Container.astro";
 import ResponsiveMenu from "@components/ResponsiveMenu.astro";
-import { themeAssetsService } from "@content/api/wordpress/services/themeAssets";
 import logo from "@images/logo_jbee_blanc.svg";
-import headerImage from "@images/wpImages/header_image.jpg";
+import headerImage from "@images/header_image.jpg";
 import "@styles/global.css";
-import { downloadImage } from "@utils/downloadImages.ts";
 import { Image } from "astro:assets";
-
-const { custom_header } = await themeAssetsService.getThemeAssets();
-
-await downloadImage(custom_header, "header_image.jpg");
 ---
 
 <script>
@@ -28,7 +22,7 @@ await downloadImage(custom_header, "header_image.jpg");
   data-jarallax
   data-speed="0.5"
   class="header jarallax flex w-full flex-col sm:min-h-[300px] md:min-h-[800px]">
-  {}<Container class="relative my-auto flex min-h-[200px] justify-center py-8">
+  <Container class="relative my-auto flex min-h-[200px] justify-center py-8">
     <Image
       class="jarallax-img"
       src={headerImage}

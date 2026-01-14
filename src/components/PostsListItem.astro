@@ -1,5 +1,5 @@
 ---
-import type { BlogPost } from "@content/api/wordpress/types";
+import type { BlogPost } from "@content/api/strapi/types";
 import { Image } from "astro:assets";
 
 interface Props {
@@ -10,14 +10,17 @@ const { post } = Astro.props;
 
 <article>
   {
-    post.featuredImage && (
-      <Image src={post.featuredImage.url} alt={post.featuredImage.altText} width={800} height={600} />
+    post.coverImage && (
+      <Image
+        src={post.coverImage.url}
+        alt={post.coverImage.altText}
+        width={800}
+        height={600}
+      />
     )
   }
   <h2 class="h4">
     <a href={`/${post.slug}`}>{post.title}</a>
   </h2>
-  <div set:html={post.excerpt} />
+  <p>{post.excerpt}</p>
 </article>
-
-<p>{post.excerpt}</p>

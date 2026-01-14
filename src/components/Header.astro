@@ -1,16 +1,10 @@
 ---
 import ResponsiveMenu from "@components/ResponsiveMenu.astro";
-import { themeAssetsService } from "@content/api/wordpress/services/themeAssets";
 import "@styles/global.css";
-import { downloadImage } from "@utils/downloadImages.ts";
 
 interface Props {
   isHomePage?: boolean;
 }
-
-const { custom_header } = await themeAssetsService.getThemeAssets();
-
-await downloadImage(custom_header, "header_image.jpg");
 ---
 
 <script>
@@ -21,7 +15,9 @@ await downloadImage(custom_header, "header_image.jpg");
         jarallax(elements, {});
       }
     })
-    .catch((err) => console.error("Erreur lors du chargement de Jarallax :", err));
+    .catch((err) =>
+      console.error("Erreur lors du chargement de Jarallax :", err)
+    );
 </script>
 <header role="banner" class="header h-[130px] w-full">
   <ResponsiveMenu />

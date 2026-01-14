@@ -1,4 +1,3 @@
-import { themeAssetsService } from "@content/api/wordpress/services/themeAssets";
 import { useHasScrolledPast } from "@hooks/useHasScrolledPast";
 import clsx from "clsx";
 import { useRef } from "react";
@@ -12,12 +11,15 @@ type MenuItem = {
 export type DesktopMenuProps = {
   menuItems?: MenuItem[];
   isHomePage?: boolean;
+  logoUrl?: string;
+  logoAlt?: string;
 };
-const { custom_logo } = await themeAssetsService.getThemeAssets();
 
 const DesktopMenu = ({
   menuItems = [],
   isHomePage = false,
+  logoUrl = "/logo.svg",
+  logoAlt = "Logo",
 }: DesktopMenuProps) => {
   const menuRef = useRef<HTMLElement>(null);
   const hasMenuScrolledPast = useHasScrolledPast(menuRef, 100);
@@ -44,7 +46,7 @@ const DesktopMenu = ({
           },
         )}
       >
-        <img src={custom_logo.url} alt={custom_logo.alt} />
+        <img src={logoUrl} alt={logoAlt} />
       </a>
       <ul className="my-2 ml-auto flex items-end gap-3">
         {menuItems.map((item) => (
