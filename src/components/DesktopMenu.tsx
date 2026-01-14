@@ -38,7 +38,7 @@ const DesktopMenu = ({
       <a
         href="/"
         className={clsx(
-          "flex w-auto py-2 transition-[max-height] delay-200 duration-500 ease-in-out hover:scale-105",
+          "flex w-auto py-2 transition-all delay-200 duration-500 ease-in-out",
           {
             ["hidden"]: !hasMenuScrolledPast && isHomePage,
             ["max-h-[130px]"]: !hasMenuScrolledPast,
