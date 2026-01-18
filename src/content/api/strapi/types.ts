@@ -123,7 +123,7 @@ export interface StrapiPost {
   excerpt: string | null;
   coverImage: StrapiMedia | null;
   author: StrapiUser | null;
-  content: BlockNode[] | null;
+  content: string | null;
   tags: StrapiTag[] | null;
   categories: StrapiCategory[] | null;
   wpCreatedAt: string | null;
@@ -138,7 +138,7 @@ export interface BlogPost {
   title: string;
   slug: string;
   excerpt: string;
-  content: BlockNode[];
+  content: string;
   publishedDate: Date;
   modifiedDate: Date;
   author: string;

@@ -55,7 +55,7 @@ export const postsService = {
       title: post.title,
       slug: post.slug,
       excerpt: post.excerpt || "",
-      content: post.content || [],
+      content: post.content || "",
       publishedDate: new Date(post.wpCreatedAt || post.createdAt),
       modifiedDate: new Date(post.wpUpdatedAt || post.updatedAt),
       author: post.author?.username || "Auteur inconnu",
