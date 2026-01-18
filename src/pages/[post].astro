@@ -1,6 +1,6 @@
 ---
+import CKEditorContent from "@components/CKEditorContent.astro";
 import Container from "@components/Container.astro";
-import ContentBlocks from "@components/ContentBlocks.astro";
 import Header from "@components/Header.astro";
 import Layout from "@layouts/Layout.astro";
 import { Image } from "astro:assets";
@@ -27,19 +27,14 @@ const { post } = Astro.props;
 <Layout>
   <Header />
   <main>
-    <Container class="flex flex-col items-center">
+    <Container class="flex flex-col items-center" variant="constrained">
       <h2 class="h2">{post?.data?.title}</h2>
       {
         post?.data?.coverImage && (
-          <Image
-            src={post.data.coverImage.url}
-            alt={post.data.coverImage.altText}
-            width={800}
-            height={600}
-          />
+          <Image src={post.data.coverImage.url} alt={post.data.coverImage.altText} width={800} height={600} />
         )
       }
-      <ContentBlocks blocks={post?.data?.content || []} />
+      <CKEditorContent content={post?.data?.content || ""} />
     </Container>
   </main>
 </Layout>
