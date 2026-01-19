@@ -27,7 +27,7 @@ const { post } = Astro.props;
 <Layout>
   <Header />
   <main>
-    <Container class="flex flex-col items-center" variant="constrained">
+    <Container class="flex flex-col items-center" variant="narrow">
       <h2 class="h2">{post?.data?.title}</h2>
       {
         post?.data?.coverImage && (
