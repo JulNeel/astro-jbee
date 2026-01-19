@@ -1,27 +1,34 @@
 ---
+import { twMerge } from "tailwind-merge";
+
+type Variant = "padded" | "full" | "constrained" | "narrow";
+
 interface Props {
-  variant?: "padded" | "full" | "constrained";
+  variant?: Variant;
   as?: keyof HTMLElementTagNameMap;
   class?: string;
-  maxWidthClass?: string;
+  id?: string;
 }
 
-const { variant = "padded", as = "div", class: extraClass = "", maxWidthClass = "" } = Astro.props as Props;
+const {
+  variant = "padded",
+  as = "div",
+  class: className,
+  id
+} = Astro.props as Props;
 
-const Tag = as as keyof HTMLElementTagNameMap;
+const Tag = as;
 
-const base = "mx-auto w-full";
-
-const variantClasses = {
-  padded: "px-4 sm:px-6 lg:px-8",
-  full: "",
-  constrained: "px-4 sm:px-6 lg:px-8",
+const variants: Record<Variant, string> = {
+  full: "w-full",
+  padded: "w-full px-4 sm:px-6 lg:px-8",
+  constrained: "max-w-7xl px-4 sm:px-6 lg:px-8",
+  narrow: "max-w-4xl px-4 sm:px-6 lg:px-8",
 };
 
-const widthClass = maxWidthClass || (variant === "constrained" ? "max-w-7xl" : "");
-const variantClass = variantClasses[variant] || variantClasses.padded;
+const classes = twMerge("mx-auto", variants[variant], className);
 ---
 
-<Tag class={`${base} ${variantClass} ${widthClass} ${extraClass}`.trim()}>
+<Tag id={id} class={classes}>
   <slot />
 </Tag>
