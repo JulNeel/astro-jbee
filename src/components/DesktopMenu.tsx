@@ -1,6 +1,7 @@
 import { useHasScrolledPast } from "@hooks/useHasScrolledPast";
 import clsx from "clsx";
 import { useRef } from "react";
+import { twMerge } from "tailwind-merge";
 
 type MenuItem = {
   label: string;
@@ -27,7 +28,7 @@ const DesktopMenu = ({
   return (
     <nav
       ref={menuRef}
-      className={clsx("w-full px-4 sm:px-6 lg:px-8", {
+      className={clsx("z-50 w-full px-4 sm:px-6 lg:px-8", {
         ["flex bg-white shadow transition-colors duration-500"]: !(
           isHomePage && !hasMenuScrolledPast
         ),
@@ -54,12 +55,14 @@ const DesktopMenu = ({
             <a
               href={item.path}
               target={item.target ?? "_self"}
-              className={clsx(
-                "text-primary hover:bg-primary block px-4 py-2 text-3xl font-medium transition-colors duration-500 ease-in-out hover:text-white",
-                {
-                  ["hover:text-primary text-white hover:bg-white"]:
-                    !hasMenuScrolledPast && isHomePage,
-                },
+              className={twMerge(
+                clsx(
+                  "text-primary hover:bg-primary block px-4 py-2 text-3xl font-medium transition-colors duration-500 ease-in-out hover:text-white",
+                  {
+                    ["hover:text-primary-dark hover:bg-offwhite text-purewhite"]:
+                      !hasMenuScrolledPast && isHomePage,
+                  },
+                ),
               )}
             >
               {item.label}
