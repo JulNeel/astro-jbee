@@ -4,8 +4,17 @@ import Container from "./Container.astro";
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="bg-primary py-6 text-purewhite">
+<footer class="bg-primary text-purewhite min-h-40 py-12">
   <Container variant="constrained" class="text-center text-sm">
-    <p>© {currentYear} Jbee. Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="underline hover:text-secondary">Astro</a> and <a href="https://strapi.io" target="_blank" rel="noopener noreferrer" class="underline hover:text-secondary">Strapi</a></p>
+    <p>
+      © {currentYear} Jbee. Built with <a
+        href="https://astro.build"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-secondary underline">Astro</a
+      > and <a href="https://strapi.io" target="_blank" rel="noopener noreferrer" class="hover:text-secondary underline"
+        >Strapi</a
+      >
+    </p>
   </Container>
 </footer>
