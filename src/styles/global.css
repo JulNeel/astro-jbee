@@ -53,6 +53,16 @@
 
   --color-offblack: #1a1a1a;
   --color-pureblack: #000000;
+
+  /* Code blocks (GitHub dark theme) */
+  --color-code-bg: #24292e;
+  --color-code-header-bg: #1f2428;
+  --color-code-border: #444d56;
+  --color-code-text: #e1e4e8;
+  --color-code-text-muted: #959da5;
+  --color-code-btn-bg: #2d333b;
+  --color-code-btn-hover: #373e47;
+  --color-code-success: #3fb950;
 }
 html {
   scroll-behavior: smooth;
@@ -103,5 +113,196 @@ body {
   }
   .h5 {
     font-size: var(--text-xl);
+  }
+}
+
+@layer utilities {
+  .prose blockquote {
+    border-color: var(--color-primary-dark);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+}
+
+@layer components {
+  /* Code block container */
+  .ckeditor-content .code-block {
+    margin-top: var(--spacing-6);
+    margin-bottom: var(--spacing-6);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: var(--color-code-bg);
+  }
+
+  /* Code block header */
+  .ckeditor-content .code-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-2) var(--spacing-4);
+    background-color: var(--color-code-header-bg);
+    border-bottom: 1px solid var(--color-code-border);
+    font-size: var(--text-xs);
+    color: var(--color-code-text-muted);
+  }
+
+  .ckeditor-content .code-block-filename {
+    font-family: var(--font-mono);
+    color: var(--color-code-text);
+  }
+
+  .ckeditor-content .code-block-lang {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Code block content wrapper */
+  .ckeditor-content .code-block-content {
+    position: relative;
+  }
+
+  /* Copy button */
+  .ckeditor-content .code-block-copy {
+    position: absolute;
+    top: var(--spacing-2);
+    right: var(--spacing-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--spacing-8);
+    height: var(--spacing-8);
+    padding: 0;
+    background-color: var(--color-code-btn-bg);
+    border: 1px solid var(--color-code-border);
+    border-radius: var(--radius-md);
+    color: var(--color-code-text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    z-index: 10;
+  }
+
+  .ckeditor-content .code-block-copy:hover {
+    background-color: var(--color-code-btn-hover);
+    color: var(--color-code-text);
+  }
+
+  .ckeditor-content .code-block-copy:active {
+    transform: scale(0.95);
+  }
+
+  .ckeditor-content .code-block-copy .icon-check {
+    color: var(--color-code-success);
+  }
+
+  .ckeditor-content .code-block-copy .hidden {
+    display: none;
+  }
+
+  /* Shiki pre element */
+  .ckeditor-content .code-block pre {
+    margin: 0;
+    padding: var(--spacing-4);
+    overflow-x: auto;
+    border-radius: 0;
+  }
+
+  .ckeditor-content .code-block pre code {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* Fallback for non-wrapped pre elements */
+  .ckeditor-content pre:not(.code-block pre) {
+    margin-top: var(--spacing-6);
+    margin-bottom: var(--spacing-6);
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-4);
+  }
+
+  .ckeditor-content pre:not(.code-block pre) code {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* Callouts */
+  .ckeditor-content [class^="callout-"] {
+    padding: var(--spacing-4) var(--spacing-5);
+    margin: var(--spacing-6) 0;
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    border-left: 4px solid;
+  }
+
+  .ckeditor-content .callout-info {
+    background-color: var(--color-info-light);
+    border-color: var(--color-info);
+    color: var(--color-info-contrast);
+  }
+
+  .ckeditor-content .callout-warning {
+    background-color: var(--color-warning-light);
+    border-color: var(--color-warning);
+    color: var(--color-warning-contrast);
+  }
+
+  .ckeditor-content .callout-danger {
+    background-color: var(--color-danger-light);
+    border-color: var(--color-danger);
+    color: var(--color-danger-contrast);
+  }
+
+  .ckeditor-content .callout-success {
+    background-color: var(--color-success-light);
+    border-color: var(--color-success);
+    color: var(--color-success-contrast);
+  }
+
+  .ckeditor-content .callout-primary {
+    background-color: var(--color-primary-light);
+    border-color: var(--color-primary);
+    color: var(--color-primary-dark);
+  }
+
+  .ckeditor-content .callout-secondary {
+    background-color: var(--color-secondary-light);
+    border-color: var(--color-secondary);
+    color: var(--color-secondary-dark);
+  }
+
+  /* Figure images - centered by default */
+  .ckeditor-content figure.image {
+    margin: var(--spacing-6) auto;
+    text-align: center;
+    display: table;
+  }
+
+  .ckeditor-content figure.image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Figure aligned right */
+  .ckeditor-content figure.image-style-block-align-right {
+    float: right;
+    margin: var(--spacing-2) 0 var(--spacing-4) var(--spacing-6);
+  }
+
+  /* Figure aligned left */
+  .ckeditor-content figure.image-style-block-align-left {
+    float: left;
+    margin: var(--spacing-2) var(--spacing-6) var(--spacing-4) 0;
+  }
+
+  /* Figure rounded image */
+  .ckeditor-content figure.image-rounded img {
+    border-radius: 50%;
+  }
+
+  /* Standalone images */
+  .ckeditor-content img {
+    max-width: 100%;
+    height: auto;
   }
 }
