@@ -165,3 +165,30 @@ export interface StrapiRessource {
   publishedAt: string;
 }
 
+// Raw Strapi page structure
+export interface StrapiPage {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  content: string | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string | null;
+}
+
+// Raw Strapi about singleType structure
+export interface StrapiAbout {
+  id: number;
+  documentId: string;
+  picture: StrapiMedia | null;
+  name: string | null;
+  firstName: string | null;
+  description: string | null;
+  linkedinProfileUrl: string | null;
+  githubProfileUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string | null;
+}
+

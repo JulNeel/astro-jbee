@@ -1,0 +1,32 @@
+---
+import CKEditorContent from "@components/CKEditorContent.astro";
+import Container from "@components/Container.astro";
+import Layout from "@layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const allPages = await getCollection("pages");
+
+  return allPages.map((page) => {
+    return {
+      params: {
+        slug: page.data.slug,
+      },
+      props: {
+        page,
+      },
+    };
+  });
+}
+
+const { page } = Astro.props;
+---
+
+<Layout>
+  <main>
+    <Container class="flex flex-col gap-4 py-8" variant="narrow">
+      <h1 class="h2">{page?.data?.title}</h1>
+      <CKEditorContent content={page?.data?.content || ""} />
+    </Container>
+  </main>
+</Layout>
