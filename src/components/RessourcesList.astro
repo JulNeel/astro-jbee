@@ -1,0 +1,14 @@
+---
+import { getCollection } from "astro:content";
+import RessourcesListItem from "./RessourcesListItem.astro";
+
+const allRessources = await getCollection("ressources");
+const ressources = allRessources;
+---
+
+<section aria-labelledby="ressources-title">
+  <h2 id="ressources-title" class="sr-only">Ressources</h2>
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {ressources.map((ressource) => <RessourcesListItem ressource={ressource.data} />)}
+  </div>
+</section>
