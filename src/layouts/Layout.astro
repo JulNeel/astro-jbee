@@ -1,5 +1,13 @@
 ---
 import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import HomeHeader from "@components/HomeHeader.astro";
+
+interface Props {
+  isHomePage?: boolean;
+}
+
+const { isHomePage = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -12,6 +20,7 @@ import Footer from "@components/Footer.astro";
     <title>Astro Basics</title>
   </head>
   <body class="flex min-h-screen flex-col">
+    {isHomePage ? <HomeHeader /> : <Header />}
     <div class="flex-1">
       <slot />
     </div>
