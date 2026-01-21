@@ -1,9 +1,9 @@
 ---
-import type { BlogPost } from "@content/api/strapi/types";
+import type { Post } from "@content/schemas/posts.schema";
 import { Image } from "astro:assets";
 
 interface Props {
-  post: BlogPost;
+  post: Post;
 }
 const { post } = Astro.props;
 ---

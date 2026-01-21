@@ -1,6 +1,5 @@
 import { strapiClient } from "../client";
-import type { StrapiResponse, StrapiPost, BlogPost } from "../types";
-import { buildImageUrl } from "@utils/strapi";
+import type { StrapiResponse, StrapiPost } from "../types";
 
 export const postsService = {
   async getAll(params?: {
@@ -48,28 +47,5 @@ export const postsService = {
     } catch {
       return null;
     }
-  },
-
-  transformPost(post: StrapiPost): BlogPost {
-    return {
-      title: post.title,
-      slug: post.slug,
-      excerpt: post.excerpt || "",
-      content: post.content || "",
-      publishedDate: new Date(post.wpCreatedAt || post.createdAt),
-      modifiedDate: new Date(post.wpUpdatedAt || post.updatedAt),
-      author: post.author?.username || "Auteur inconnu",
-      coverImage: post.coverImage
-        ? {
-            url: buildImageUrl(post.coverImage.url)!,
-            smallUrl:
-              buildImageUrl(post.coverImage.formats?.small?.url) ??
-              buildImageUrl(post.coverImage.url)!,
-            altText: post.coverImage.alternativeText || "",
-          }
-        : null,
-      tags: post.tags?.map((tag) => tag.name) || [],
-      categories: post.categories?.map((cat) => cat.name) || [],
-    };
   },
 };

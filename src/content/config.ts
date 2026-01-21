@@ -1,30 +1,17 @@
-import { defineCollection, z } from "astro:content";
-import { createStrapiLoader } from "./api/strapi/loaders/strapi.loader";
-
-const strapiLoader = createStrapiLoader();
+import { defineCollection } from "astro:content";
+import { createPostsLoader } from "./api/strapi/loaders/posts.loader";
+import { createRessourcesLoader } from "./api/strapi/loaders/ressources.loader";
+import { postOutputSchema } from "./schemas/posts.schema";
+import { ressourceOutputSchema } from "./schemas/ressources.schema";
 
 const posts = defineCollection({
-  loader: strapiLoader,
-  schema: z.object({
-    title: z.string(),
-    slug: z.string(),
-    excerpt: z.string(),
-    content: z.string(),
-    publishedDate: z.date(),
-    modifiedDate: z.date(),
-    author: z.string(),
-    coverImage: z
-      .object({
-        url: z.string(),
-        smallUrl: z.string(),
-        altText: z.string(),
-      })
-      .nullable(),
-    tags: z.array(z.string()),
-    categories: z.array(z.string()),
-  }),
+  loader: createPostsLoader(),
+  schema: postOutputSchema,
 });
 
-export const collections = {
-  posts,
-};
+const ressources = defineCollection({
+  loader: createRessourcesLoader(),
+  schema: ressourceOutputSchema,
+});
+
+export const collections = { posts, ressources };

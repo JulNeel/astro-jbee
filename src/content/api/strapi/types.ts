@@ -133,27 +133,35 @@ export interface StrapiPost {
   publishedAt: string;
 }
 
-// Transformed post for the app
-export interface BlogPost {
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  publishedDate: Date;
-  modifiedDate: Date;
-  author: string;
-  coverImage: {
-    url: string;
-    smallUrl: string;
-    altText: string;
-  } | null;
-  tags: string[];
-  categories: string[];
-}
-
 // Menu item type (for static menu)
 export interface MenuItem {
   id: number;
   title: string;
   url: string;
 }
+
+// Strapi ressource category
+export interface StrapiRessourceCategory {
+  id: number;
+  documentId: string;
+  name: string;
+  slug: string;
+}
+
+// Raw Strapi ressource structure
+export interface StrapiRessource {
+  id: number;
+  documentId: string;
+  Title: string;
+  Slug: string;
+  Thumbnail: StrapiMedia | null;
+  Description: string | null;
+  Link: string | null;
+  Language: "Français" | "Anglais" | null;
+  tags: StrapiTag[] | null;
+  ressource_category: StrapiRessourceCategory | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
