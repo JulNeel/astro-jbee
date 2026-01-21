@@ -57,7 +57,7 @@ const DesktopMenu = ({
               target={item.target ?? "_self"}
               className={twMerge(
                 clsx(
-                  "text-primary hover:bg-primary block px-4 py-2 text-3xl font-medium transition-colors duration-500 ease-in-out hover:text-white",
+                  "text-primary hover:bg-primary block px-4 py-2 text-3xl font-medium whitespace-nowrap transition-colors duration-500 ease-in-out hover:text-white",
                   {
                     ["hover:text-primary-dark hover:bg-offwhite text-purewhite"]:
                       !hasMenuScrolledPast && isHomePage,
