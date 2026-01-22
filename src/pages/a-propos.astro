@@ -15,8 +15,8 @@ const about = aboutSchema.parse(rawAbout);
 
 <Layout
   title="À propos | JBee"
-  description={about.description || "Découvrez qui se cache derrière JBee, un blog dédié au développement web."}
->
+  description={about.description ||
+    "Découvrez qui se cache derrière Julien bruneel, un blog dédié au développement web."}>
   <main>
     <Container variant="narrow" class="mt-12 mb-32">
       <div class="flex flex-col items-center gap-8 md:flex-row md:items-start">
@@ -59,7 +59,7 @@ const about = aboutSchema.parse(rawAbout);
                   href={about.githubProfileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 rounded-lg bg-[#333] px-4 py-2 text-white transition-colors hover:bg-[#24292e]">
+                  class="hover:bg-codee-bg inline-flex items-center gap-2 rounded-lg bg-[#333] px-4 py-2 text-white transition-colors">
                   <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path
                       fill-rule="evenodd"

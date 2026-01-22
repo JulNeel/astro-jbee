@@ -8,7 +8,6 @@ interface Props {
 }
 const { isHomePage = false } = Astro.props;
 
-// Menu statique
 const menuItems = [
   { label: "Blog", path: "/" },
   { label: "Ressources", path: "/ressources" },
@@ -17,7 +16,7 @@ const menuItems = [
 ];
 ---
 
-<div class="font-heading hidden items-end justify-end md:flex">
+<div class="hidden w-full md:block">
   <DesktopMenu
     menuItems={menuItems}
     isHomePage={isHomePage}
@@ -26,6 +25,6 @@ const menuItems = [
     client:media="(min-width: 768px)"
   />
 </div>
-<div class="font-heading md:hidden">
+<div class="md:hidden">
   <MobileMenu menuItems={menuItems} client:media="(max-width: 768px)" />
 </div>

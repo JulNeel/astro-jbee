@@ -73,7 +73,7 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
           className="mt-auto object-contain"
         />
 
-        <nav id="main-menu" className="mt-auto mb-auto">
+        <nav id="main-menu" className="font-heading mt-auto mb-auto">
           <h2 className="sr-only">Menu principal</h2>
           <ul className="text-offwhite flex flex-col items-center justify-center gap-8">
             {menuItems.map((menuItem) => {
