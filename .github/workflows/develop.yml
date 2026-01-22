@@ -30,6 +30,8 @@ jobs:
 
       - name: 🔨 Build Project
         run: pnpm build
+        env:
+          PUBLIC_STRAPI_URL: ${{ secrets.PUBLIC_STRAPI_URL }}
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
