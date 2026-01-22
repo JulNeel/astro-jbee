@@ -2,12 +2,25 @@
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import HomeHeader from "@components/HomeHeader.astro";
+import SEO from "@components/SEO.astro";
 
 interface Props {
   isHomePage?: boolean;
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+  noindex?: boolean;
 }
 
-const { isHomePage = false } = Astro.props;
+const {
+  isHomePage = false,
+  title = "Julien Bruneel - Développeur Web",
+  description = "Blog dédié au développement web, partage d'expériences et de ressources pour les développeurs front.",
+  image,
+  type = "website",
+  noindex = false,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -15,9 +28,21 @@ const { isHomePage = false } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    // Apple Touch Icons
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
+    // Android & PWA
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    // Microsoft Tiles
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <SEO title={title} description={description} image={image} type={type} noindex={noindex} />
   </head>
   <body class="flex min-h-screen flex-col">
     {isHomePage ? <HomeHeader /> : <Header />}

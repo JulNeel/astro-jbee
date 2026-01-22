@@ -29,9 +29,8 @@ const DesktopMenu = ({
     <nav
       ref={menuRef}
       className={clsx("z-50 w-full px-4 sm:px-6 lg:px-8", {
-        ["flex bg-white shadow transition-colors duration-500"]: !(
-          isHomePage && !hasMenuScrolledPast
-        ),
+        ["bg-offwhite shadow-primary-dark flex shadow-md transition-all duration-1000"]:
+          !(isHomePage && !hasMenuScrolledPast),
         ["flex"]: !hasMenuScrolledPast,
         ["fixed top-0"]: hasMenuScrolledPast,
       })}
@@ -57,7 +56,7 @@ const DesktopMenu = ({
               target={item.target ?? "_self"}
               className={twMerge(
                 clsx(
-                  "text-primary hover:bg-primary block px-4 py-2 text-3xl font-medium whitespace-nowrap transition-colors duration-500 ease-in-out hover:text-white",
+                  "text-primary hover:bg-primary hover:text-offwhite block px-4 py-2 text-3xl font-medium whitespace-nowrap transition-colors duration-500 ease-in-out",
                   {
                     ["hover:text-primary-dark hover:bg-offwhite text-purewhite"]:
                       !hasMenuScrolledPast && isHomePage,

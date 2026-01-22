@@ -2,9 +2,14 @@
 import Container from "@components/Container.astro";
 import PostsList from "@components/PostsList.astro";
 import Layout from "@layouts/Layout.astro";
+//test githhub action
 ---
 
-<Layout isHomePage>
+<Layout
+  isHomePage
+  title="JBee - Blog développement web"
+  description="Découvrez des articles, tutoriels et ressources sur le développement web. Partageons ensemble notre passion pour le code."
+>
   <main>
     <Container variant="constrained" class="mt-12 mb-32">
       <PostsList />
