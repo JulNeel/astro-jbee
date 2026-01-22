@@ -29,7 +29,7 @@ const DesktopMenu = ({
     <nav
       ref={menuRef}
       className={clsx("z-50 w-full px-4 sm:px-6 lg:px-8", {
-        ["bg-offwhite shadow-primary-dark flex shadow-md transition-all duration-1000"]:
+        ["bg-offwhite shadow-primary-dark font-heading flex shadow-md transition-all duration-1000"]:
           !(isHomePage && !hasMenuScrolledPast),
         ["flex"]: !hasMenuScrolledPast,
         ["fixed top-0"]: hasMenuScrolledPast,
