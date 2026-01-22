@@ -21,8 +21,8 @@ import { Image } from "astro:assets";
   role="banner"
   data-jarallax
   data-speed="0.5"
-  class="header jarallax z-50 flex w-full flex-col sm:min-h-[300px] md:min-h-[600px]">
-  <Container class="relative my-auto flex min-h-[200px] justify-center py-8">
+  class="header jarallax z-50 flex w-full flex-col sm:min-h-[300px] md:min-h-[400px]">
+  <Container class="relative my-auto flex flex-1 justify-center">
     <Image
       class="jarallax-img"
       src={headerImage}
@@ -35,7 +35,13 @@ import { Image } from "astro:assets";
     />
     <div class="flex items-center justify-center">
       <h1 class="sr-only">JBee - Blog développement web</h1>
-      <Image src={logo} alt="JBee - Retour à l'accueil" width={600} height={300} />
+      <Image
+        src={logo}
+        class="w-full max-w-sm p-8"
+        alt="Julien Bruneel développeur web - Retour à l'accueil"
+        width={600}
+        height={300}
+      />
     </div>
   </Container>
   <div class="mt-auto">
