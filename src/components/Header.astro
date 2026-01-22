@@ -1,24 +1,19 @@
 ---
 import ResponsiveMenu from "@components/ResponsiveMenu.astro";
 import "@styles/global.css";
-
-interface Props {
-  isHomePage?: boolean;
-}
+import logo from "@images/jbee_logo_dev.png";
 ---
 
-<script>
-  import("jarallax")
-    .then(({ jarallax }) => {
-      const elements = document.querySelectorAll(".jarallax");
-      if (elements.length) {
-        jarallax(elements, {});
-      }
-    })
-    .catch((err) =>
-      console.error("Erreur lors du chargement de Jarallax :", err)
-    );
-</script>
-<header role="banner" class="header h-[130px] w-full">
+<header role="banner" class="header flex h-[130px] w-full">
+  <h1 class="sr-only">JBee - Blog développement web</h1>
+  <a href="/" class="bg-offwhite shadow-primary-dark w-full shadow-md md:hidden">
+    <img
+      src={logo.src}
+      class="mx-auto block h-full w-auto p-4 md:hidden"
+      alt="Julien Bruneel développeur web - Retour à l'accueil"
+      width="600"
+      height="300"
+    />
+  </a>
   <ResponsiveMenu />
 </header>
