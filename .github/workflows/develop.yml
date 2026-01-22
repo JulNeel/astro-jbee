@@ -14,16 +14,22 @@ jobs:
         with:
           ref: "develop"
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: "pnpm"
 
       - name: 📥 Install dependencies
-        run: npm install -f
+        run: pnpm install
 
       - name: 🔨 Build Project
-        run: npm run build
+        run: pnpm build
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
