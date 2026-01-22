@@ -1,0 +1,35 @@
+name: Develop Deploy
+on:
+  push:
+    branches:
+      - "develop"
+  workflow_dispatch:
+jobs:
+  web-deploy-on-develop:
+    name: Deploy on develop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v4
+        with:
+          ref: "develop"
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 📥 Install dependencies
+        run: npm install -f
+
+      - name: 🔨 Build Project
+        run: npm run build
+
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./public/
+          server-dir: ./develop/
