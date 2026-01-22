@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://julienbruneel.fr/sitemap-index.xml

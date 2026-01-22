@@ -13,7 +13,10 @@ if (!rawAbout) {
 const about = aboutSchema.parse(rawAbout);
 ---
 
-<Layout>
+<Layout
+  title="À propos | JBee"
+  description={about.description || "Découvrez qui se cache derrière JBee, un blog dédié au développement web."}
+>
   <main>
     <Container variant="narrow" class="mt-12 mb-32">
       <div class="flex flex-col items-center gap-8 md:flex-row md:items-start">

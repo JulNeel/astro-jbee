@@ -23,7 +23,12 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 ---
 
-<Layout>
+<Layout
+  title={`${post.data.title} | JBee`}
+  description={post.data.excerpt || "Article sur le développement web"}
+  image={post.data.coverImage?.url}
+  type="article"
+>
   <main>
     <Container class="flex flex-col items-center gap-4 py-8" variant="narrow">
       <h1 class="h2">{post?.data?.title}</h1>
