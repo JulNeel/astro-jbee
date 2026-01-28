@@ -74,9 +74,14 @@ html {
 body {
   font-family: var(--font-sans);
   font-size: var(--text-base);
-  color: var(--color-primary);
   background-color: var(--color-offwhite);
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 .h1,
 .h2,
 .h3,
@@ -86,46 +91,70 @@ body {
   font-weight: 700;
   font-family: var(--font-heading);
 }
+h1,
 .h1 {
   font-size: var(--text-4xl);
+  color: var(--color-primary);
 }
+h2,
 .h2 {
   font-size: var(--text-3xl);
 }
+h3,
 .h3 {
   font-size: var(--text-2xl);
 }
+h4,
 .h4 {
   font-size: var(--text-xl);
 }
+h5,
 .h5 {
   font-size: var(--text-l);
 }
 
 @media (min-width: theme(--breakpoint-md)) {
+  h1,
   .h1 {
-    font-size: var(--text-6xl);
-  }
-  .h2 {
     font-size: var(--text-5xl);
   }
-  .h3 {
+  h2,
+  .h2 {
     font-size: var(--text-4xl);
   }
+  h3,
+  .h3 {
+    font-size: var(--text-3xl);
+  }
+  h4,
   .h4 {
     font-size: var(--text-2xl);
   }
+  h5,
   .h5 {
     font-size: var(--text-xl);
   }
 }
-
-@layer utilities {
-  .prose blockquote {
-    border-color: var(--color-primary-dark);
+@media (min-width: theme(--breakpoint-lg)) {
+  h1,
+  .h1 {
+    font-size: var(--text-6xl);
+  }
+  h2,
+  .h2 {
+    font-size: var(--text-5xl);
+  }
+  h3,
+  .h3 {
+    font-size: var(--text-4xl);
+  }
+  h4,
+  .h4 {
+    font-size: var(--text-3xl);
+  }
+  h5,
+  .h5 {
     font-size: var(--text-xl);
-    font-weight: 700;
-    color: var(--color-primary);
   }
 }
 
