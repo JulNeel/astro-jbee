@@ -27,11 +27,10 @@ const { post } = Astro.props;
   title={`${post.data.title} | JBee`}
   description={post.data.excerpt || "Article sur le développement web"}
   image={post.data.coverImage?.url}
-  type="article"
->
+  type="article">
   <main>
     <Container class="flex flex-col items-center gap-4 py-8" variant="narrow">
-      <h1 class="h2">{post?.data?.title}</h1>
+      <h1>{post?.data?.title}</h1>
       {
         post?.data?.coverImage && (
           <Image
