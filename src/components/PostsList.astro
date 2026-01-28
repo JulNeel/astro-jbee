@@ -3,7 +3,9 @@ import { getCollection } from "astro:content";
 import PostsListItem from "./PostsListItem.astro";
 
 const allPosts = await getCollection("posts");
-const posts = allPosts;
+const posts = allPosts.sort(
+  (a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime()
+);
 ---
 
 <section aria-labelledby="posts-title">
