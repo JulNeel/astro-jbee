@@ -1,6 +1,7 @@
 ---
 import CKEditorContent from "@components/CKEditorContent.astro";
 import Container from "@components/Container.astro";
+import Giscus from "@components/Giscus";
 import Layout from "@layouts/Layout.astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
@@ -43,6 +44,7 @@ const { post } = Astro.props;
         )
       }
       <CKEditorContent content={post?.data?.content || ""} />
+      <Giscus client:load />
     </Container>
   </main>
 </Layout>
