@@ -20,34 +20,37 @@
   --color-primary-light: #7fa7bc;
   --color-primary: #4d7c94;
   --color-primary-dark: #365768;
+  --color-primary-contrast: #1a3340;
 
   --color-secondary-light: #ffda66;
   --color-secondary: #ffc100;
   --color-secondary-dark: #b28700;
+  --color-secondary-contrast: #3d2800;
 
   --color-warning-light: #ffb46e;
   --color-warning: #ff8c42;
   --color-warning-dark: #b25d2d;
-  --color-warning-contrast: #663300;
+  --color-warning-contrast: #4d2000;
 
   --color-danger-light: #e57373;
   --color-danger: #d64545;
   --color-danger-dark: #8b2e2e;
-  --color-danger-contrast: #660000;
+  --color-danger-contrast: #4d0000;
 
   --color-success-light: #81c784;
   --color-success: #4caf50;
   --color-success-dark: #357a38;
-  --color-success-contrast: #0d3310;
+  --color-success-contrast: #0a2610;
 
   --color-info-light: #64b5f6;
   --color-info: #2196f3;
   --color-info-dark: #0b79d0;
-  --color-info-contrast: #002b5c;
+  --color-info-contrast: #002952;
 
   --color-neutral-light: #e0e0e0;
   --color-neutral: #9e9e9e;
   --color-neutral-dark: #616161;
+  --color-neutral-contrast: #2a2a2a;
 
   --color-offwhite: #f4f4f4;
   --color-purewhite: #ffffff;
@@ -71,9 +74,14 @@ html {
 body {
   font-family: var(--font-sans);
   font-size: var(--text-base);
-  color: var(--color-primary);
   background-color: var(--color-offwhite);
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 .h1,
 .h2,
 .h3,
@@ -83,46 +91,70 @@ body {
   font-weight: 700;
   font-family: var(--font-heading);
 }
+h1,
 .h1 {
   font-size: var(--text-4xl);
+  color: var(--color-primary);
 }
+h2,
 .h2 {
   font-size: var(--text-3xl);
 }
+h3,
 .h3 {
   font-size: var(--text-2xl);
 }
+h4,
 .h4 {
   font-size: var(--text-xl);
 }
+h5,
 .h5 {
   font-size: var(--text-l);
 }
 
 @media (min-width: theme(--breakpoint-md)) {
+  h1,
   .h1 {
-    font-size: var(--text-6xl);
-  }
-  .h2 {
     font-size: var(--text-5xl);
   }
-  .h3 {
+  h2,
+  .h2 {
     font-size: var(--text-4xl);
   }
+  h3,
+  .h3 {
+    font-size: var(--text-3xl);
+  }
+  h4,
   .h4 {
     font-size: var(--text-2xl);
   }
+  h5,
   .h5 {
     font-size: var(--text-xl);
   }
 }
-
-@layer utilities {
-  .prose blockquote {
-    border-color: var(--color-primary-dark);
+@media (min-width: theme(--breakpoint-lg)) {
+  h1,
+  .h1 {
+    font-size: var(--text-6xl);
+  }
+  h2,
+  .h2 {
+    font-size: var(--text-5xl);
+  }
+  h3,
+  .h3 {
+    font-size: var(--text-4xl);
+  }
+  h4,
+  .h4 {
+    font-size: var(--text-3xl);
+  }
+  h5,
+  .h5 {
     font-size: var(--text-xl);
-    font-weight: 700;
-    color: var(--color-primary);
   }
 }
 
@@ -261,13 +293,13 @@ body {
 .ckeditor-content .callout-primary {
   background-color: var(--color-primary-light);
   border-color: var(--color-primary);
-  color: var(--color-primary-dark);
+  color: var(--color-primary-contrast);
 }
 
 .ckeditor-content .callout-secondary {
   background-color: var(--color-secondary-light);
   border-color: var(--color-secondary);
-  color: var(--color-secondary-dark);
+  color: var(--color-secondary-contrast);
 }
 
 /* Figure images - centered by default */
