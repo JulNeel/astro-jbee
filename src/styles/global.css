@@ -293,13 +293,13 @@ h5,
 .ckeditor-content .callout-primary {
   background-color: var(--color-primary-light);
   border-color: var(--color-primary);
-  color: var(--color-primary-dark);
+  color: var(--color-primary-contrast);
 }
 
 .ckeditor-content .callout-secondary {
   background-color: var(--color-secondary-light);
   border-color: var(--color-secondary);
-  color: var(--color-secondary-dark);
+  color: var(--color-secondary-contrast);
 }
 
 /* Figure images - centered by default */
