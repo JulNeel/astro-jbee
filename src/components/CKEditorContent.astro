@@ -9,8 +9,7 @@ const { content } = Astro.props;
 const processedHtml = await processHtmlContent(content);
 ---
 
-<div
-  class="prose prose-lg prose-headings:font-heading prose-headings:text-offblack font-body ckeditor-content prose-blockquote:border-primary-dark prose-blockquote:text-primary prose-blockquote:font-normal prose-blockquote:text-xl prose-thead:text-2xl prose-thead:my-0 prose-th:text-center max-w-full">
+<div class="prose-ckeditor ckeditor-content">
   <Fragment set:html={processedHtml} />
 </div>
 

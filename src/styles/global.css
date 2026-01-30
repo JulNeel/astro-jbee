@@ -69,12 +69,10 @@
   --color-code-success: #3fb950;
 }
 html {
-  scroll-behavior: smooth;
+  @apply scroll-smooth;
 }
 body {
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
-  background-color: var(--color-offwhite);
+  @apply bg-offwhite font-sans text-base;
 }
 h1,
 h2,
@@ -88,25 +86,23 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-weight: 700;
-  font-family: var(--font-heading);
+  @apply font-heading leading-tight font-bold;
 }
 h1,
 .h1 {
-  font-size: var(--text-4xl);
-  color: var(--color-primary);
+  @apply text-primary text-4xl;
 }
 h2,
 .h2 {
-  font-size: var(--text-3xl);
+  @apply text-3xl;
 }
 h3,
 .h3 {
-  font-size: var(--text-2xl);
+  @apply text-2xl;
 }
 h4,
 .h4 {
-  font-size: var(--text-xl);
+  @apply text-xl;
 }
 h5,
 .h5 {
@@ -116,115 +112,71 @@ h5,
 @media (min-width: theme(--breakpoint-md)) {
   h1,
   .h1 {
-    font-size: var(--text-5xl);
+    @apply text-5xl;
   }
   h2,
   .h2 {
-    font-size: var(--text-4xl);
+    @apply text-4xl;
   }
   h3,
   .h3 {
-    font-size: var(--text-3xl);
+    @apply text-3xl;
   }
   h4,
   .h4 {
-    font-size: var(--text-2xl);
+    @apply text-2xl;
   }
   h5,
   .h5 {
-    font-size: var(--text-xl);
+    @apply text-xl;
   }
 }
-@media (min-width: theme(--breakpoint-lg)) {
-  h1,
-  .h1 {
-    font-size: var(--text-6xl);
-  }
-  h2,
-  .h2 {
-    font-size: var(--text-5xl);
-  }
-  h3,
-  .h3 {
-    font-size: var(--text-4xl);
-  }
-  h4,
-  .h4 {
-    font-size: var(--text-3xl);
-  }
-  h5,
-  .h5 {
-    font-size: var(--text-xl);
+
+@layer components {
+  .prose-ckeditor {
+    @apply prose prose-lg prose-headings:font-heading prose-headings:text-primary prose-blockquote:border-primary-dark prose-blockquote:text-primary prose-blockquote:font-normal prose-blockquote:text-xl prose-thead:text-2xl prose-thead:my-0 prose-th:text-center prose-a:font-normal prose-li:my-0 font-body max-w-full leading-loose;
   }
 }
 
 /* Code block container */
 .ckeditor-content .code-block {
-  margin-top: theme(spacing.6);
-  margin-bottom: theme(spacing.6);
-  border-radius: theme(borderRadius.lg);
-  overflow: hidden;
-  background-color: var(--color-code-bg);
+  @apply bg-code-bg my-6 overflow-hidden rounded-lg;
 }
 
 /* Code block header */
 .ckeditor-content .code-block-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: theme(spacing.2) theme(spacing.4);
-  background-color: var(--color-code-header-bg);
-  border-bottom: 1px solid var(--color-code-border);
-  font-size: theme(fontSize.xs);
-  color: var(--color-code-text-muted);
+  @apply bg-code-header-bg border-code-border text-code-text-muted flex items-center justify-between border-b px-4 py-2 text-xs;
 }
 
 .ckeditor-content .code-block-filename {
-  font-family: theme(fontFamily.mono);
-  color: var(--color-code-text);
+  @apply text-code-text font-mono;
 }
 
 .ckeditor-content .code-block-lang {
-  text-transform: uppercase;
-  letter-spacing: theme(letterSpacing.wide);
+  @apply tracking-wide uppercase;
 }
 
 /* Code block content wrapper */
 .ckeditor-content .code-block-content {
-  position: relative;
+  @apply relative;
 }
 
 /* Copy button */
 .ckeditor-content .code-block-copy {
-  position: absolute;
-  top: theme(spacing.2);
-  right: theme(spacing.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: theme(spacing.8);
-  height: theme(spacing.8);
-  padding: 0;
-  background-color: var(--color-code-btn-bg);
-  border: 1px solid var(--color-code-border);
-  border-radius: theme(borderRadius.md);
-  color: var(--color-code-text-muted);
-  cursor: pointer;
+  @apply bg-code-btn-bg border-code-border text-code-text-muted absolute top-2 right-2 z-10 flex size-8 cursor-pointer items-center justify-center rounded-md border p-0;
   transition: all 0.15s ease;
-  z-index: 10;
 }
 
 .ckeditor-content .code-block-copy:hover {
-  background-color: var(--color-code-btn-hover);
-  color: var(--color-code-text);
+  @apply bg-code-btn-hover text-code-text;
 }
 
 .ckeditor-content .code-block-copy:active {
-  transform: scale(0.95);
+  @apply scale-95;
 }
 
 .ckeditor-content .code-block-copy .icon-check {
-  color: var(--color-code-success);
+  @apply text-code-success;
 }
 
 .ckeditor-content .code-block-copy .hidden {
@@ -233,107 +185,76 @@ h5,
 
 /* Shiki pre element */
 .ckeditor-content .code-block pre {
-  margin: 0;
-  padding: theme(spacing.4);
-  overflow-x: auto;
-  border-radius: 0;
+  @apply m-0 overflow-x-auto rounded-none p-4;
 }
 
 .ckeditor-content .code-block pre code {
-  font-size: theme(fontSize.sm);
-  line-height: theme(lineHeight.relaxed);
+  @apply text-sm leading-relaxed;
 }
 
 /* Fallback for non-wrapped pre elements */
 .ckeditor-content pre:not(.code-block pre) {
-  margin-top: theme(spacing.6);
-  margin-bottom: theme(spacing.6);
-  overflow-x: auto;
-  border-radius: theme(borderRadius.lg);
-  padding: theme(spacing.4);
+  @apply my-6 overflow-x-auto rounded-lg p-4;
 }
 
 .ckeditor-content pre:not(.code-block pre) code {
-  font-size: theme(fontSize.sm);
-  line-height: theme(lineHeight.relaxed);
+  @apply text-sm leading-relaxed;
 }
 
 /* Callouts */
 .ckeditor-content [class^="callout-"] {
-  padding: theme(spacing.4) theme(spacing.5);
-  margin: theme(spacing.6) 0;
-  border-radius: 0 theme(borderRadius.lg) theme(borderRadius.lg) 0;
-  border-left: 4px solid;
+  @apply mx-0 my-6 rounded-r-lg border-l-4 border-solid px-5 py-4;
 }
 
 .ckeditor-content .callout-info {
-  background-color: var(--color-info-light);
-  border-color: var(--color-info);
-  color: var(--color-info-contrast);
+  @apply bg-info-light border-info text-info-contrast;
 }
 
 .ckeditor-content .callout-warning {
-  background-color: var(--color-warning-light);
-  border-color: var(--color-warning);
-  color: var(--color-warning-contrast);
+  @apply bg-warning-light border-warning text-warning-contrast;
 }
 
 .ckeditor-content .callout-danger {
-  background-color: var(--color-danger-light);
-  border-color: var(--color-danger);
-  color: var(--color-danger-contrast);
+  @apply bg-danger-light border-danger text-danger-contrast;
 }
 
 .ckeditor-content .callout-success {
-  background-color: var(--color-success-light);
-  border-color: var(--color-success);
-  color: var(--color-success-contrast);
+  @apply bg-success-light border-success text-success-contrast;
 }
 
 .ckeditor-content .callout-primary {
-  background-color: var(--color-primary-light);
-  border-color: var(--color-primary);
-  color: var(--color-primary-contrast);
+  @apply bg-primary-light border-primary text-primary-contrast;
 }
 
 .ckeditor-content .callout-secondary {
-  background-color: var(--color-secondary-light);
-  border-color: var(--color-secondary);
-  color: var(--color-secondary-contrast);
+  @apply bg-secondary-light border-secondary text-secondary-contrast;
 }
 
 /* Figure images - centered by default */
 .ckeditor-content figure.image {
-  margin: theme(spacing.6) auto;
-  text-align: center;
-  display: table;
+  @apply mx-auto my-6 table text-center;
 }
 
 .ckeditor-content figure.image img {
-  max-width: 100%;
-  height: auto;
-  border-radius: theme(borderRadius.lg);
+  @apply h-auto max-w-full rounded-lg;
 }
 
 /* Figure aligned right */
 .ckeditor-content figure.image-style-block-align-right {
-  float: right;
-  margin: theme(spacing.2) 0 theme(spacing.4) theme(spacing.6);
+  @apply float-right mt-2 mr-0 mb-4 ml-6;
 }
 
 /* Figure aligned left */
 .ckeditor-content figure.image-style-block-align-left {
-  float: left;
-  margin: theme(spacing.2) theme(spacing.6) theme(spacing.4) 0;
+  @apply float-left mt-2 mr-6 mb-4 ml-0;
 }
 
 /* Figure rounded image */
 .ckeditor-content figure.image-rounded img {
-  border-radius: 50%;
+  @apply rounded-full;
 }
 
 /* Standalone images */
 .ckeditor-content img {
-  max-width: 100%;
-  height: auto;
+  @apply h-auto max-w-full;
 }
