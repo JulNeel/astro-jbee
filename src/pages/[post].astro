@@ -32,6 +32,9 @@ const { post } = Astro.props;
   <main>
     <Container class="flex flex-col items-center gap-4 py-8" variant="narrow">
       <h1>{post?.data?.title}</h1>
+      <time datetime={post.data.publishedDate.toISOString()} class="text-neutral-dark">
+        {post.data.publishedDate.toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" })}
+      </time>
       {
         post?.data?.coverImage && (
           <Image
