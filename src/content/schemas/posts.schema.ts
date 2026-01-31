@@ -12,6 +12,7 @@ export const postSchema = z
     author: z.object({ username: z.string() }).nullish(),
     tags: z.array(z.object({ name: z.string() })).nullish(),
     categories: z.array(z.object({ name: z.string() })).nullish(),
+    GenerateTableOfContent: z.boolean().nullish(),
     wpCreatedAt: z.string().nullish(),
     wpUpdatedAt: z.string().nullish(),
     createdAt: z.string(),
@@ -28,6 +29,7 @@ export const postSchema = z
     coverImage: transformImage(data.coverImage),
     tags: data.tags?.map((t) => t.name) || [],
     categories: data.categories?.map((c) => c.name) || [],
+    generateTableOfContent: data.GenerateTableOfContent ?? false,
   }));
 
 // Output schema (for Astro collection definition - validates the TRANSFORMED data)
@@ -48,6 +50,7 @@ export const postOutputSchema = z.object({
     .nullable(),
   tags: z.array(z.string()),
   categories: z.array(z.string()),
+  generateTableOfContent: z.boolean(),
 });
 
 // Output type
