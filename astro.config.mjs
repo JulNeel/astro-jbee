@@ -8,6 +8,9 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://julienbruneel.fr",
   trailingSlash: "never",
+  image: {
+    domains: ["passionate-fireworks-eca5333975.media.strapiapp.com"],
+  },
   vite: { plugins: [tailwindcss()] },
   integrations: [react(), sitemap()],
 });
