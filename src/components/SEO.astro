@@ -27,13 +27,15 @@ const {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = image ? new URL(image, Astro.site) : undefined;
+const isProduction = import.meta.env.PUBLIC_SITE_ENV === "production";
+const shouldNoindex = noindex || !isProduction;
 ---
 
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
 
-{noindex && <meta name="robots" content="noindex, nofollow" />}
+{shouldNoindex && <meta name="robots" content="noindex, nofollow" />}
 
 <!-- Open Graph -->
 <meta property="og:title" content={title} />
