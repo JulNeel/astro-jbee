@@ -17,6 +17,9 @@ export async function processHtmlContent(html: string): Promise<string> {
   // Process images - prefix Strapi URLs
   processImages(root);
 
+  // Add IDs to headings for TOC anchors
+  addHeadingIds(root);
+
   // Process code blocks with Shiki
   const codeBlocks = root.querySelectorAll("code");
 
@@ -55,6 +58,34 @@ function prefixStrapiUrl(url: string): string {
     return url;
   }
   return `${STRAPI_URL}${url}`;
+}
+
+function slugify(text: string): string {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function addHeadingIds(root: HTMLElement): void {
+  const seen = new Map<string, number>();
+
+  for (const heading of root.querySelectorAll("h2, h3, h4")) {
+    if (heading.getAttribute("id")) continue;
+
+    let id = slugify(heading.textContent.trim());
+    if (!id) continue;
+
+    const count = seen.get(id) ?? 0;
+    seen.set(id, count + 1);
+    if (count > 0) {
+      id = `${id}-${count}`;
+    }
+
+    heading.setAttribute("id", id);
+  }
 }
 
 function processImages(root: HTMLElement): void {
