@@ -8,14 +8,12 @@ import { Image } from "astro:assets";
 ---
 
 <script>
-  import("jarallax")
-    .then(({ jarallax }) => {
-      const elements = document.querySelectorAll(".jarallax");
-      if (elements.length) {
-        jarallax(elements, {});
-      }
-    })
-    .catch((err) => console.error("Erreur lors du chargement de Jarallax :", err));
+  import { jarallax } from "jarallax";
+
+  const elements = document.querySelectorAll(".jarallax");
+  if (elements.length) {
+    jarallax(elements, {});
+  }
 </script>
 <header
   role="banner"
