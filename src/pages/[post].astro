@@ -2,6 +2,7 @@
 import CKEditorContent from "@components/CKEditorContent.astro";
 import Container from "@components/Container.astro";
 import Giscus from "@components/Giscus";
+import StructuredData from "@components/StructuredData.astro";
 import Layout from "@layouts/Layout.astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
@@ -22,16 +23,38 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <Layout
   title={`${post.data.title} | JBee`}
   description={post.data.excerpt || "Article sur le développement web"}
   image={post.data.coverImage?.url}
-  type="article">
+  imageAlt={post.data.coverImage?.altText}
+  type="article"
+  publishedTime={post.data.publishedDate}
+  modifiedTime={post.data.modifiedDate}
+  author={post.data.author}
+  tags={post.data.tags}>
+  <StructuredData
+    data={{
+      type: "BlogPosting",
+      headline: post.data.title,
+      description: post.data.excerpt || "Article sur le développement web",
+      url: canonicalURL.href,
+      datePublished: post.data.publishedDate,
+      dateModified: post.data.modifiedDate,
+      author: post.data.author,
+      image: post.data.coverImage?.url,
+      tags: post.data.tags,
+    }}
+  />
   <main>
     <Container class="flex flex-col items-center gap-4 py-8" variant="narrow">
       <h1>{post?.data?.title}</h1>
+      <time datetime={post.data.publishedDate.toISOString()} class="text-neutral-dark">
+        {post.data.publishedDate.toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" })}
+      </time>
       {
         post?.data?.coverImage && (
           <Image
@@ -44,7 +67,7 @@ const { post } = Astro.props;
         )
       }
       <CKEditorContent content={post?.data?.content || ""} />
-      <Giscus client:load />
+      <Giscus client:visible />
     </Container>
   </main>
 </Layout>

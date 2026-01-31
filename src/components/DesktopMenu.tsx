@@ -46,7 +46,7 @@ const DesktopMenu = ({
           },
         )}
       >
-        <img src={logoUrl} alt={logoAlt} />
+        <img src={logoUrl} alt={logoAlt} className="h-full w-auto" />
       </a>
       <ul className="my-2 ml-auto flex items-end gap-3">
         {menuItems.map((item) => (

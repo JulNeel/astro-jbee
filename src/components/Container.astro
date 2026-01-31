@@ -10,12 +10,7 @@ interface Props {
   id?: string;
 }
 
-const {
-  variant = "padded",
-  as = "div",
-  class: className,
-  id
-} = Astro.props as Props;
+const { variant = "padded", as = "div", class: className, id } = Astro.props as Props;
 
 const Tag = as;
 

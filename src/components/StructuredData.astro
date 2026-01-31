@@ -1,0 +1,63 @@
+---
+interface WebSiteData {
+  type: "WebSite";
+  name: string;
+  url: string;
+  description: string;
+}
+
+interface BlogPostingData {
+  type: "BlogPosting";
+  headline: string;
+  description: string;
+  url: string;
+  datePublished: Date;
+  dateModified: Date;
+  author: string;
+  image?: string;
+  tags?: string[];
+}
+
+interface Props {
+  data: WebSiteData | BlogPostingData;
+}
+
+const { data } = Astro.props;
+
+function buildJsonLd(data: WebSiteData | BlogPostingData) {
+  if (data.type === "WebSite") {
+    return {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: data.name,
+      url: data.url,
+      description: data.description,
+    };
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: data.headline,
+    description: data.description,
+    url: data.url,
+    datePublished: data.datePublished.toISOString(),
+    dateModified: data.dateModified.toISOString(),
+    author: {
+      "@type": "Person",
+      name: data.author,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "JBee",
+      url: "https://julienbruneel.fr",
+    },
+    ...(data.image && { image: data.image }),
+    ...(data.tags?.length && { keywords: data.tags.join(", ") }),
+  };
+}
+
+const jsonLd = buildJsonLd(data);
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
