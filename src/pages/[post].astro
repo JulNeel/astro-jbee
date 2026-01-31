@@ -4,7 +4,7 @@ import Container from "@components/Container.astro";
 import Giscus from "@components/Giscus";
 import StructuredData from "@components/StructuredData.astro";
 import Layout from "@layouts/Layout.astro";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -24,12 +24,19 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const optimizedOgImage = post.data.coverImage
+  ? await getImage({ src: post.data.coverImage.url, width: 1200, height: 630 })
+  : undefined;
+const ogImageUrl = optimizedOgImage
+  ? new URL(optimizedOgImage.src, Astro.site).href
+  : undefined;
 ---
 
 <Layout
   title={`${post.data.title} | JBee`}
   description={post.data.excerpt || "Article sur le développement web"}
-  image={post.data.coverImage?.url}
+  image={ogImageUrl}
   imageAlt={post.data.coverImage?.altText}
   type="article"
   publishedTime={post.data.publishedDate}
@@ -45,7 +52,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       datePublished: post.data.publishedDate,
       dateModified: post.data.modifiedDate,
       author: post.data.author,
-      image: post.data.coverImage?.url,
+      image: ogImageUrl,
       tags: post.data.tags,
     }}
   />
