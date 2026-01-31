@@ -1,8 +1,8 @@
 ---
 import Container from "@components/Container.astro";
 import PostsList from "@components/PostsList.astro";
+import StructuredData from "@components/StructuredData.astro";
 import Layout from "@layouts/Layout.astro";
-//test githhub action
 ---
 
 <Layout
@@ -10,6 +10,14 @@ import Layout from "@layouts/Layout.astro";
   title="JBee - Blog développement web"
   description="Découvrez des articles, tutoriels et ressources sur le développement web. Partageons ensemble notre passion pour le code."
 >
+  <StructuredData
+    data={{
+      type: "WebSite",
+      name: "JBee",
+      url: "https://julienbruneel.fr",
+      description: "Blog dédié au développement web, partage d'expériences et de ressources pour les développeurs front.",
+    }}
+  />
   <main>
     <Container variant="constrained" class="mt-12 mb-32">
       <PostsList />
