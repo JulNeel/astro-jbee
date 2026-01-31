@@ -4,8 +4,9 @@ import { Image } from "astro:assets";
 
 interface Props {
   post: Post;
+  excerpt?: boolean;
 }
-const { post } = Astro.props;
+const { post, excerpt } = Astro.props;
 ---
 
 <article class="group flex flex-col">
@@ -27,6 +28,6 @@ const { post } = Astro.props;
     <time datetime={post.publishedDate.toISOString()} class="text-neutral-dark text-sm">
       {post.publishedDate.toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" })}
     </time>
-    <p>{post.excerpt}</p>
+    <p>{excerpt && post.excerpt}</p>
   </a>
 </article>

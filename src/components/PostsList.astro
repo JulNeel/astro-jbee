@@ -3,14 +3,12 @@ import { getCollection } from "astro:content";
 import PostsListItem from "./PostsListItem.astro";
 
 const allPosts = await getCollection("posts");
-const posts = allPosts.sort(
-  (a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime()
-);
+const posts = allPosts.sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
 ---
 
 <section aria-labelledby="posts-title">
   <h2 id="posts-title" class="sr-only">Articles récents</h2>
   <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-    {posts.map((post) => <PostsListItem post={post.data} />)}
+    {posts.map((post) => <PostsListItem post={post.data} excerpt />)}
   </div>
 </section>
