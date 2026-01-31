@@ -4,6 +4,11 @@ import Header from "@components/Header.astro";
 import HomeHeader from "@components/HomeHeader.astro";
 import SEO from "@components/SEO.astro";
 
+import oswaldLatin400 from "@fontsource/oswald/files/oswald-latin-400-normal.woff2?url";
+import oswaldLatinExt400 from "@fontsource/oswald/files/oswald-latin-ext-400-normal.woff2?url";
+import oswaldLatin700 from "@fontsource/oswald/files/oswald-latin-700-normal.woff2?url";
+import oswaldLatinExt700 from "@fontsource/oswald/files/oswald-latin-ext-700-normal.woff2?url";
+
 interface Props {
   isHomePage?: boolean;
   title?: string;
@@ -49,6 +54,10 @@ const {
     <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="preload" href={oswaldLatin400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={oswaldLatinExt400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={oswaldLatin700} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={oswaldLatinExt700} as="font" type="font/woff2" crossorigin />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <SEO title={title} description={description} image={image} imageAlt={imageAlt} type={type} noindex={noindex} publishedTime={publishedTime} modifiedTime={modifiedTime} author={author} tags={tags} />
   </head>
