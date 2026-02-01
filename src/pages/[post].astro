@@ -81,7 +81,7 @@ const hasToc = showToc && headings.length > 0;
   />
   <main>
     <Container class="flex flex-col items-center gap-12 py-8" variant="narrow">
-      <div class="flex flex-col items-center gap-6">
+      <div class="flex w-full flex-col items-center gap-6">
         <h1>{post?.data?.title}</h1>
         <time datetime={post.data.publishedDate.toISOString()} class="text-neutral-dark">
           {
