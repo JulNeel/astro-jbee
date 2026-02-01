@@ -134,7 +134,11 @@ h5,
 
 @layer components {
   .prose-ckeditor {
-    @apply prose prose-lg prose-headings:font-heading prose-headings:text-primary prose-blockquote:border-primary-dark prose-blockquote:text-primary prose-blockquote:font-normal prose-blockquote:text-xl prose-thead:text-2xl prose-thead:my-0 prose-th:text-center prose-a:font-normal prose-li:my-0 font-body max-w-full leading-loose;
+    @apply prose prose-lg max-w-full font-body leading-loose;
+    @apply prose-headings:font-heading prose-headings:text-primary;
+    @apply prose-blockquote:border-primary-dark prose-blockquote:text-primary prose-blockquote:text-xl prose-blockquote:font-normal;
+    @apply prose-thead:my-0 prose-thead:text-2xl prose-th:text-center;
+    @apply prose-a:font-normal prose-li:my-0 prose-hr:my-6;
   }
 }
 
@@ -237,6 +241,10 @@ h5,
 
 .ckeditor-content figure.image img {
   @apply h-auto max-w-full rounded-lg;
+}
+
+.ckeditor-content figure.image figcaption {
+  @apply text-neutral-dark mt-2 table-caption caption-bottom text-sm;
 }
 
 /* Figure aligned right */
