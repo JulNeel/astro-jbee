@@ -10,12 +10,11 @@ const { headings } = Astro.props;
 ---
 
 <nav aria-label="Table des matières" class="font-body text-primary w-full text-sm">
-  <details class="group border-primary bg-offwhite rounded-lg border">
-    <summary
-      class="text-primary flex cursor-pointer list-none items-center justify-between px-4 py-3 text-base font-bold">
+  <details class="group bg-offwhite rounded-lg">
+    <summary class="text-primary flex cursor-pointer list-none items-center px-4 py-3 text-base font-bold">
       Sommaire
       <svg
-        class="size-5 shrink-0 transition-transform duration-200 group-open:rotate-180"
+        class="ml-4 size-5 shrink-0 transition-transform duration-200 group-open:rotate-180"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
