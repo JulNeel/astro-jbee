@@ -266,3 +266,23 @@ h5,
 .ckeditor-content img {
   @apply h-auto max-w-full;
 }
+
+/* Lightbox clickable images */
+.ckeditor-content img.glightbox {
+  @apply cursor-pointer transition-opacity duration-200;
+}
+
+.ckeditor-content img.glightbox:hover {
+  @apply opacity-90;
+}
+
+/* GLightbox customization */
+.goverlay {
+  background: var(--color-offblack) !important;
+}
+
+.gslide-media {
+  background: var(--color-offwhite);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}

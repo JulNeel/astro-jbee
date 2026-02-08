@@ -1,6 +1,7 @@
 ---
 import CKEditorContent from "@components/CKEditorContent.astro";
 import Container from "@components/Container.astro";
+import ImageLightbox from "@components/ImageLightbox.astro";
 import PostComments from "@components/PostComments.astro";
 import RelatedPosts from "@components/RelatedPosts.astro";
 import StructuredData from "@components/StructuredData.astro";
@@ -115,5 +116,6 @@ const hasToc = showToc && headings.length > 0;
       <PostComments />
       <RelatedPosts posts={relatedPosts} />
     </Container>
+    <ImageLightbox />
   </main>
 </Layout>

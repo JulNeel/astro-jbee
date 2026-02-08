@@ -110,5 +110,15 @@ function processImages(root: HTMLElement): void {
         .join(", ");
       img.setAttribute("srcset", processedSrcset);
     }
+
+    // Add glightbox class for lightbox functionality
+    const existingClass = img.getAttribute("class") || "";
+    img.setAttribute("class", existingClass ? `${existingClass} glightbox` : "glightbox");
+
+    // Set href attribute for GLightbox to use the full-size image
+    const fullSrc = img.getAttribute("src");
+    if (fullSrc) {
+      img.setAttribute("data-glightbox", `href:${fullSrc}`);
+    }
   }
 }
