@@ -1,4 +1,5 @@
 import { parse, type HTMLElement } from "node-html-parser";
+import { downloadImage, isRemoteStrapiUrl } from "./image-downloader";
 import { highlightCode } from "./shiki";
 
 const STRAPI_URL = import.meta.env.PUBLIC_STRAPI_URL;
@@ -14,8 +15,8 @@ export async function processHtmlContent(html: string): Promise<string> {
     },
   });
 
-  // Process images - prefix Strapi URLs
-  processImages(root);
+  // Process images - download from Strapi and serve locally
+  await processImages(root);
 
   // Add IDs to headings for TOC anchors
   addHeadingIds(root);
@@ -88,27 +89,40 @@ function addHeadingIds(root: HTMLElement): void {
   }
 }
 
-function processImages(root: HTMLElement): void {
+async function processImages(root: HTMLElement): Promise<void> {
   const images = root.querySelectorAll("img");
 
   for (const img of images) {
     // Process src attribute
-    const src = img.getAttribute("src");
+    let src = img.getAttribute("src");
     if (src) {
-      img.setAttribute("src", prefixStrapiUrl(src));
+      // First prefix with Strapi URL if needed
+      src = prefixStrapiUrl(src);
+
+      // Then download if it's a remote Strapi URL
+      if (isRemoteStrapiUrl(src)) {
+        src = await downloadImage(src);
+      }
+
+      img.setAttribute("src", src);
     }
 
     // Process srcset attribute
     const srcset = img.getAttribute("srcset");
     if (srcset) {
-      const processedSrcset = srcset
-        .split(",")
-        .map((entry) => {
+      const processedEntries = await Promise.all(
+        srcset.split(",").map(async (entry) => {
           const [url, descriptor] = entry.trim().split(/\s+/);
-          return `${prefixStrapiUrl(url)} ${descriptor || ""}`.trim();
+          let processedUrl = prefixStrapiUrl(url);
+
+          if (isRemoteStrapiUrl(processedUrl)) {
+            processedUrl = await downloadImage(processedUrl);
+          }
+
+          return `${processedUrl} ${descriptor || ""}`.trim();
         })
-        .join(", ");
-      img.setAttribute("srcset", processedSrcset);
+      );
+      img.setAttribute("srcset", processedEntries.join(", "));
     }
 
     // Add glightbox class for lightbox functionality

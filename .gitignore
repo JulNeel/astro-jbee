@@ -1,6 +1,9 @@
 # build output
 dist/
 
+# downloaded content images (fetched at build time)
+public/uploads/
+
 # generated types
 .astro/
 
