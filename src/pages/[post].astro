@@ -51,10 +51,9 @@ const optimizedOgImage = post.data.coverImage
   : undefined;
 const ogImageUrl = optimizedOgImage ? new URL(optimizedOgImage.src, Astro.site).href : undefined;
 
-const showToc = post.data.generateTableOfContent;
-const processedContent = showToc ? await processHtmlContent(post.data.content) : "";
-const headings = showToc ? extractHeadings(processedContent) : [];
-const hasToc = showToc && headings.length > 0;
+const processedContent = await processHtmlContent(post.data.content);
+const headings = post.data.generateTableOfContent ? extractHeadings(processedContent) : [];
+const hasToc = post.data.generateTableOfContent && headings.length > 0;
 ---
 
 <Layout
@@ -107,13 +106,7 @@ const hasToc = showToc && headings.length > 0;
           )
         }
         {hasToc && <TableOfContents headings={headings} />}
-        {
-          hasToc ? (
-            <CKEditorContent content={processedContent} processed />
-          ) : (
-            <CKEditorContent content={post?.data?.content || ""} />
-          )
-        }
+        <CKEditorContent content={processedContent} processed />
       </div>
       <PostComments />
       <RelatedPosts posts={relatedPosts} />
