@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { extname, join } from "path";
 
 const CACHE_DIR = "public/uploads/content";
+const STRAPI_URL = import.meta.env.PUBLIC_STRAPI_URL;
 
 // Ensure cache directory exists
 function ensureCacheDir(): void {
@@ -52,6 +53,19 @@ export async function downloadImage(remoteUrl: string): Promise<string> {
 
 // Check if URL is a remote Strapi URL that should be downloaded
 export function isRemoteStrapiUrl(url: string): boolean {
-  if (!url) return false;
-  return url.startsWith("http") && url.includes("strapiapp.com");
+  if (!url || !url.startsWith("http")) return false;
+
+  // Download any image from Strapi domain
+  if (STRAPI_URL) {
+    try {
+      const strapiHost = new URL(STRAPI_URL).host;
+      const imageHost = new URL(url).host;
+      return imageHost === strapiHost || imageHost.endsWith(strapiHost);
+    } catch {
+      return false;
+    }
+  }
+
+  // Fallback: check common Strapi cloud domains
+  return url.includes("strapiapp.com") || url.includes("strapi.io");
 }
