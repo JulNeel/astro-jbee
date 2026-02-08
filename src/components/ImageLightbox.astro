@@ -1,20 +1,41 @@
 ---
 /**
  * ImageLightbox component
- * Initializes GLightbox for images in .ckeditor-content
+ * Lazy loads GLightbox on first image click
  */
 ---
 
 <script>
-  import GLightbox from "glightbox";
-  import "glightbox/dist/css/glightbox.min.css";
+  let lightboxInstance: any = null;
+
+  async function loadAndOpenLightbox(clickedElement: HTMLElement) {
+    if (!lightboxInstance) {
+      // Lazy load GLightbox and its CSS
+      const [{ default: GLightbox }] = await Promise.all([
+        import("glightbox"),
+        import("glightbox/dist/css/glightbox.min.css"),
+      ]);
+
+      lightboxInstance = GLightbox({
+        selector: ".ckeditor-content .glightbox",
+        touchNavigation: true,
+        loop: false,
+        closeOnOutsideClick: true,
+      });
+    }
+
+    // Find the index of the clicked image and open at that position
+    const images = document.querySelectorAll(".ckeditor-content .glightbox");
+    const index = Array.from(images).indexOf(clickedElement);
+    lightboxInstance.openAt(index >= 0 ? index : 0);
+  }
 
   function initLightbox() {
-    GLightbox({
-      selector: ".ckeditor-content .glightbox",
-      touchNavigation: true,
-      loop: false,
-      closeOnOutsideClick: true,
+    document.querySelectorAll(".ckeditor-content .glightbox").forEach((img) => {
+      img.addEventListener("click", (e) => {
+        e.preventDefault();
+        loadAndOpenLightbox(img as HTMLElement);
+      });
     });
   }
 
