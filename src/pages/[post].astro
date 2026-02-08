@@ -1,9 +1,14 @@
 ---
 import CKEditorContent from "@components/CKEditorContent.astro";
 import Container from "@components/Container.astro";
-import Giscus from "@components/Giscus";
+import ImageLightbox from "@components/ImageLightbox.astro";
+import PostComments from "@components/PostComments.astro";
+import RelatedPosts from "@components/RelatedPosts.astro";
 import StructuredData from "@components/StructuredData.astro";
+import TableOfContents from "@components/TableOfContents.astro";
 import Layout from "@layouts/Layout.astro";
+import { processHtmlContent } from "@utils/html-processor";
+import { extractHeadings } from "@utils/toc";
 import { Image, getImage } from "astro:assets";
 import { getCollection } from "astro:content";
 
@@ -17,20 +22,39 @@ export async function getStaticPaths() {
       },
       props: {
         post,
+        allPosts,
       },
     };
   });
 }
 
-const { post } = Astro.props;
+const { post, allPosts } = Astro.props;
+
+const currentTags = new Set(post.data.tags);
+const currentCategories = new Set(post.data.categories);
+
+const relatedPosts = allPosts
+  .filter((p) => p.data.slug !== post.data.slug)
+  .map((p) => {
+    const sharedTags = p.data.tags.filter((t) => currentTags.has(t)).length;
+    const sharedCategories = p.data.categories.filter((c) => currentCategories.has(c)).length;
+    return { post: p, score: sharedTags + sharedCategories };
+  })
+  .filter((p) => p.score > 0)
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 3)
+  .map((p) => p.post.data);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const optimizedOgImage = post.data.coverImage
   ? await getImage({ src: post.data.coverImage.url, width: 1200, height: 630 })
   : undefined;
-const ogImageUrl = optimizedOgImage
-  ? new URL(optimizedOgImage.src, Astro.site).href
-  : undefined;
+const ogImageUrl = optimizedOgImage ? new URL(optimizedOgImage.src, Astro.site).href : undefined;
+
+const showToc = post.data.generateTableOfContent;
+const processedContent = showToc ? await processHtmlContent(post.data.content) : "";
+const headings = showToc ? extractHeadings(processedContent) : [];
+const hasToc = showToc && headings.length > 0;
 ---
 
 <Layout
@@ -57,24 +81,41 @@ const ogImageUrl = optimizedOgImage
     }}
   />
   <main>
-    <Container class="flex flex-col items-center gap-4 py-8" variant="narrow">
-      <h1>{post?.data?.title}</h1>
-      <time datetime={post.data.publishedDate.toISOString()} class="text-neutral-dark">
-        {post.data.publishedDate.toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" })}
-      </time>
-      {
-        post?.data?.coverImage && (
-          <Image
-            src={post.data.coverImage.url}
-            alt={post.data.coverImage.altText}
-            width={896}
-            height={504}
-            class="h-auto w-full rounded-lg"
-          />
-        )
-      }
-      <CKEditorContent content={post?.data?.content || ""} />
-      <Giscus client:visible />
+    <Container class="flex flex-col items-center gap-12 py-8" variant="narrow">
+      <div class="flex w-full flex-col items-center gap-6">
+        <h1>{post?.data?.title}</h1>
+        <time datetime={post.data.publishedDate.toISOString()} class="text-neutral-dark">
+          {
+            post.data.publishedDate.toLocaleDateString("fr-FR", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          }
+        </time>
+        {
+          post?.data?.coverImage && (
+            <Image
+              src={post.data.coverImage.url}
+              alt={post.data.coverImage.altText}
+              width={896}
+              height={504}
+              class="h-auto w-full rounded-lg"
+            />
+          )
+        }
+        {hasToc && <TableOfContents headings={headings} />}
+        {
+          hasToc ? (
+            <CKEditorContent content={processedContent} processed />
+          ) : (
+            <CKEditorContent content={post?.data?.content || ""} />
+          )
+        }
+      </div>
+      <PostComments />
+      <RelatedPosts posts={relatedPosts} />
     </Container>
+    <ImageLightbox />
   </main>
 </Layout>

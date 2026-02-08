@@ -3,10 +3,11 @@ import { processHtmlContent } from "@utils/html-processor";
 
 interface Props {
   content: string;
+  processed?: boolean;
 }
 
-const { content } = Astro.props;
-const processedHtml = await processHtmlContent(content);
+const { content, processed = false } = Astro.props;
+const processedHtml = processed ? content : await processHtmlContent(content);
 ---
 
 <div class="prose-ckeditor ckeditor-content">

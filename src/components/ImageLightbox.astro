@@ -1,0 +1,26 @@
+---
+/**
+ * ImageLightbox component
+ * Initializes GLightbox for images in .ckeditor-content
+ */
+---
+
+<script>
+  import GLightbox from "glightbox";
+  import "glightbox/dist/css/glightbox.min.css";
+
+  function initLightbox() {
+    GLightbox({
+      selector: ".ckeditor-content .glightbox",
+      touchNavigation: true,
+      loop: false,
+      closeOnOutsideClick: true,
+    });
+  }
+
+  // Initialize on page load
+  initLightbox();
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener("astro:page-load", initLightbox);
+</script>
