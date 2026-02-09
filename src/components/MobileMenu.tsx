@@ -93,7 +93,6 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
                     {menuItem.label}
                     {isExternal && (
                       <span className="sr-only">
-                        {" "}
                         (ouvre dans un nouvel onglet)
                       </span>
                     )}

@@ -11,6 +11,31 @@ export default defineConfig({
   image: {
     domains: ["passionate-fireworks-eca5333975.media.strapiapp.com"],
   },
-  vite: { plugins: [tailwindcss()] },
+  vite: {
+    plugins: [tailwindcss()],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Séparer le runtime React des composants
+            'react-vendor': ['react', 'react-dom'],
+            // Séparer les librairies interactives
+            'interactive': ['jarallax', 'glightbox']
+          }
+        }
+      },
+      cssCodeSplit: true,
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          passes: 2
+        }
+      }
+    },
+    ssr: {
+      noExternal: ['@fontsource-variable/inter', '@fontsource/oswald']
+    }
+  },
   integrations: [react(), sitemap()],
 });

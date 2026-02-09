@@ -8,6 +8,7 @@ import oswaldLatin400 from "@fontsource/oswald/files/oswald-latin-400-normal.wof
 import oswaldLatinExt400 from "@fontsource/oswald/files/oswald-latin-ext-400-normal.woff2?url";
 import oswaldLatin700 from "@fontsource/oswald/files/oswald-latin-700-normal.woff2?url";
 import oswaldLatinExt700 from "@fontsource/oswald/files/oswald-latin-ext-700-normal.woff2?url";
+import interLatinWghtNormal from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 
 interface Props {
   isHomePage?: boolean;
@@ -46,8 +47,6 @@ const {
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -58,6 +57,7 @@ const {
     <link rel="preload" href={oswaldLatinExt400} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={oswaldLatin700} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={oswaldLatinExt700} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interLatinWghtNormal} as="font" type="font/woff2" crossorigin />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <SEO title={title} description={description} image={image} imageAlt={imageAlt} type={type} noindex={noindex} publishedTime={publishedTime} modifiedTime={modifiedTime} author={author} tags={tags} />
   </head>
