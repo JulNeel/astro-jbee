@@ -40,7 +40,8 @@ export async function downloadImage(remoteUrl: string): Promise<string> {
       return remoteUrl;
     }
 
-    const buffer = Buffer.from(await response.arrayBuffer());
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = new Uint8Array(arrayBuffer);
     writeFileSync(localPath, buffer);
 
     console.log(`[image-downloader] Downloaded: ${filename}`);
@@ -55,7 +56,12 @@ export async function downloadImage(remoteUrl: string): Promise<string> {
 export function isRemoteStrapiUrl(url: string): boolean {
   if (!url || !url.startsWith("http")) return false;
 
-  // Download any image from Strapi domain
+  // Check if it matches common Strapi cloud domains first
+  if (url.includes("strapiapp.com") || url.includes("strapi.io")) {
+    return true;
+  }
+
+  // Also download images from the configured Strapi domain
   if (STRAPI_URL) {
     try {
       const strapiHost = new URL(STRAPI_URL).host;
@@ -66,6 +72,5 @@ export function isRemoteStrapiUrl(url: string): boolean {
     }
   }
 
-  // Fallback: check common Strapi cloud domains
-  return url.includes("strapiapp.com") || url.includes("strapi.io");
+  return false;
 }
