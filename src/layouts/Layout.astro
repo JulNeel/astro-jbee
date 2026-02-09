@@ -63,7 +63,7 @@ const {
   </head>
   <body class="flex min-h-screen flex-col">
     {isHomePage ? <HomeHeader /> : <Header />}
-    <div class="flex-1">
+    <div class="flex-1" style="contain: layout;">
       <slot />
     </div>
     <Footer />
