@@ -124,6 +124,7 @@ export interface StrapiPost {
   coverImage: StrapiMedia | null;
   author: StrapiUser | null;
   content: string | null;
+  processedContent?: string; // HTML content with images downloaded and processed
   tags: StrapiTag[] | null;
   categories: StrapiCategory[] | null;
   GenerateTableOfContent: boolean | null;
