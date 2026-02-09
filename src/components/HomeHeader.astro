@@ -10,9 +10,25 @@ import { Image } from "astro:assets";
 <script>
   import { jarallax } from "jarallax";
 
-  const elements = document.querySelectorAll(".jarallax");
-  if (elements.length) {
-    jarallax(elements, {});
+  // Attendre les images avant d'initialiser (réduit CLS)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initParallax);
+  } else {
+    initParallax();
+  }
+
+  function initParallax() {
+    const elements = document.querySelectorAll(".jarallax");
+    if (elements.length) {
+      // Déférer après layout avec RAF
+      requestAnimationFrame(() => {
+        jarallax(elements, {
+          speed: 0.5,
+          // Désactiver sur mobile (performance + réduit CLS)
+          disableParallax: /iPad|iPhone|iPod|Android/.test(navigator.userAgent),
+        });
+      });
+    }
   }
 </script>
 <header
@@ -20,7 +36,7 @@ import { Image } from "astro:assets";
   data-jarallax
   data-speed="0.5"
   class="header jarallax z-50 flex w-full flex-col sm:min-h-[300px] md:min-h-[400px]">
-  <Container class="relative my-auto flex flex-1 justify-center">
+  <Container class="relative my-auto flex flex-1 justify-center" style="contain: layout; min-height: 400px;">
     <Image
       class="jarallax-img"
       src={headerImage}
@@ -32,7 +48,7 @@ import { Image } from "astro:assets";
       fetchpriority="high"
       sizes="(max-width: 600px) 480px, (max-width: 1024px) 1024px, 1600px"
     />
-    <div class="flex items-center justify-center">
+    <div class="flex items-center justify-center" style="aspect-ratio: 2/1; width: 100%; max-width: 32rem;">
       <h1 class="sr-only">JBee - Blog développement web</h1>
       <Image
         src={logo}

@@ -282,3 +282,24 @@ h5,
   border-radius: 0.5rem;
   padding: 0.5rem;
 }
+
+/* CSS Containment - Prévention CLS */
+.contain-layout {
+  contain: layout;
+}
+
+.contain-paint {
+  contain: paint;
+}
+
+.contain-size {
+  contain: size;
+}
+
+.contain-strict {
+  contain: strict;
+}
+
+.content-visibility-auto {
+  content-visibility: auto;
+}
