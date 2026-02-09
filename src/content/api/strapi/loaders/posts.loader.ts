@@ -3,6 +3,7 @@ import { postsService } from '../services/posts';
 import { postSchema } from '@content/schemas/posts.schema';
 import { downloadImage, isRemoteStrapiUrl } from '@utils/image-downloader';
 import { buildImageUrl } from '@utils/strapi';
+import { processHtmlContent } from '@utils/html-processor';
 
 export function createPostsLoader(): Loader {
   return {
@@ -29,6 +30,11 @@ export function createPostsLoader(): Loader {
                 post.coverImage.formats.small.url = await downloadImage(smallUrl);
               }
             }
+          }
+
+          // Process HTML content and download images BEFORE Astro copies public/ to dist/
+          if (post.content) {
+            post.processedContent = await processHtmlContent(post.content);
           }
 
           // Parse and transform raw Strapi data using Zod schema

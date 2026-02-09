@@ -7,7 +7,6 @@ import RelatedPosts from "@components/RelatedPosts.astro";
 import StructuredData from "@components/StructuredData.astro";
 import TableOfContents from "@components/TableOfContents.astro";
 import Layout from "@layouts/Layout.astro";
-import { processHtmlContent } from "@utils/html-processor";
 import { extractHeadings } from "@utils/toc";
 import { Image, getImage } from "astro:assets";
 import { getCollection } from "astro:content";
@@ -51,7 +50,8 @@ const optimizedOgImage = post.data.coverImage
   : undefined;
 const ogImageUrl = optimizedOgImage ? new URL(optimizedOgImage.src, Astro.site).href : undefined;
 
-const processedContent = await processHtmlContent(post.data.content);
+// Use pre-processed content from loader (images already downloaded)
+const processedContent = post.data.processedContent;
 const headings = post.data.generateTableOfContent ? extractHeadings(processedContent) : [];
 const hasToc = post.data.generateTableOfContent && headings.length > 0;
 ---
