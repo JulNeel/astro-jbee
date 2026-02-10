@@ -3,6 +3,7 @@
 @plugin "@tailwindcss/typography";
 
 @import "@fontsource-variable/inter";
+@import "@fontsource/oswald";
 
 @theme {
   --font-primary: "Inter Variable", sans-serif;
