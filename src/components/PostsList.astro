@@ -1,14 +1,25 @@
 ---
 import { getCollection } from "astro:content";
 import PostsListItem from "./PostsListItem.astro";
+import FeaturedPostItem from "./FeaturedPostItem.astro";
 
 const allPosts = await getCollection("posts");
-const posts = allPosts.sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
+const sortedPosts = allPosts.sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
+
+// Trouver l'article featured : le plus récent avec isFeatured=true, sinon le plus récent de tous
+const featuredPosts = sortedPosts.filter((post) => post.data.isFeatured);
+const featuredPost = featuredPosts.length > 0 ? featuredPosts[0] : sortedPosts[0];
+
+// Les autres articles (tous sauf le featured)
+const otherPosts = sortedPosts.filter((post) => post.id !== featuredPost?.id);
 ---
 
 <section aria-labelledby="posts-title">
   <h2 id="posts-title" class="sr-only">Articles récents</h2>
+
+  {featuredPost && <FeaturedPostItem post={featuredPost.data} />}
+
   <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-    {posts.map((post) => <PostsListItem post={post.data} excerpt />)}
+    {otherPosts.map((post) => <PostsListItem post={post.data} excerpt />)}
   </div>
 </section>

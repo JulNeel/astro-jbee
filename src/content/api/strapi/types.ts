@@ -128,6 +128,7 @@ export interface StrapiPost {
   tags: StrapiTag[] | null;
   categories: StrapiCategory[] | null;
   GenerateTableOfContent: boolean | null;
+  isFeatured: boolean | null;
   wpCreatedAt: string | null;
   wpUpdatedAt: string | null;
   createdAt: string;
