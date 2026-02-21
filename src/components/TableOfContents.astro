@@ -9,9 +9,9 @@ interface Props {
 const { headings } = Astro.props;
 ---
 
-<nav aria-label="Table des matières" class="font-body text-primary text-md -mb-8 w-full">
-  <details class="group bg-offwhite rounded-lg">
-    <summary class="text-primary flex cursor-pointer list-none items-center px-4 py-3 text-xl font-bold">
+<nav aria-label="Table des matières" class="font-body text-foreground-link text-md -mb-8 w-full">
+  <details class="group bg-background-card rounded-lg">
+    <summary class="text-foreground-link flex cursor-pointer list-none items-center px-4 py-3 text-xl font-bold">
       Dans cet article
       <svg
         class="ml-4 size-5 shrink-0 transition-transform duration-200 group-open:rotate-180"
@@ -27,7 +27,7 @@ const { headings } = Astro.props;
       {
         headings.map((heading) => (
           <li class={clsx("hover:underline", { "pl-4": heading.level === 3, "pl-8": heading.level === 4 })}>
-            <a href={`#${heading.id}`} class="transition-colors">
+            <a href={`#${heading.id}`} class="transition-colors hover:text-foreground-link-hover">
               {heading.text}
             </a>
           </li>
