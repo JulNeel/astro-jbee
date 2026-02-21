@@ -1,3 +1,4 @@
+import ThemeToggle from "@components/ThemeToggle";
 import { useEffect, useState } from "react";
 import logo from "@images/logo_jbee_blanc.svg";
 
@@ -100,10 +101,11 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
                 </li>
               );
             })}
+            <li className="mt-auto flex justify-center">
+              <ThemeToggle variant="mobile" />
+            </li>
           </ul>
         </nav>
-
-        <div className="mt-auto" />
       </div>
 
       <style>{`
