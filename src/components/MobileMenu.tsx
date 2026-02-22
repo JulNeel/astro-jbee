@@ -59,7 +59,7 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
 
       {/* Overlay mobile avec logo et menu */}
       <div
-        className={`bg-primary-dark fixed inset-0 z-40 flex flex-col items-center justify-between px-8 py-12 backdrop-blur transition-all duration-300 ${
+        className={`bg-background-mobile-menu fixed inset-0 z-40 flex flex-col items-center justify-between px-8 py-12 backdrop-blur transition-all duration-300 ${
           isMenuOpened
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0"

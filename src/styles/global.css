@@ -87,6 +87,8 @@
   --background-footer: var(--color-primary);
   --foreground-footer: var(--color-purewhite);
 
+  --background-mobile-menu: var(--color-primary-dark);
+
   --background-img: var(--color-offwhite);
 }
 
@@ -111,6 +113,8 @@
   --background-footer: var(--color-primary-contrast);
   --foreground-footer: var(--color-offwhite);
 
+  --background-mobile-menu: var(--color-primary-contrast);
+
   --background-img: var(--color-offwhite);
 }
 
@@ -133,6 +137,8 @@
 
   --color-background-footer: var(--background-footer);
   --color-foreground-footer: var(--foreground-footer);
+
+  --color-background-mobile-menu: var(--background-mobile-menu);
 
   --color-background-img: var(--background-img);
 }
