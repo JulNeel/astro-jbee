@@ -92,7 +92,7 @@
 
 /* ── Semantic tokens (dark overrides) ─────────────────────────── */
 .dark {
-  --background: var(--color-primary-contrast);
+  --background: var(--color-primary-dark);
   --foreground: var(--color-offwhite);
 
   --foreground-muted: var(--color-neutral-light);
@@ -108,7 +108,7 @@
   --background-card: var(--color-primary-dark);
   --foreground-card: var(--color-offwhite);
 
-  --background-footer: var(--color-primary-dark);
+  --background-footer: var(--color-primary-contrast);
   --foreground-footer: var(--color-offwhite);
 
   --background-img: var(--color-offwhite);
