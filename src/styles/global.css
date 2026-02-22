@@ -94,7 +94,7 @@
 
 /* ── Semantic tokens (dark overrides) ─────────────────────────── */
 .dark {
-  --background: var(--color-primary-dark);
+  --background: var(--color-primary-contrast);
   --foreground: var(--color-offwhite);
 
   --foreground-muted: var(--color-neutral-light);
@@ -219,6 +219,12 @@ h5,
     @apply prose-th:text-foreground prose-td:text-foreground;
     @apply prose-td:border-border prose-th:border-border;
   }
+}
+
+/* Inline code dark mode */
+.dark .prose-ckeditor :not(pre) > code {
+  color: var(--color-code-text);
+  background-color: var(--color-code-header-bg);
 }
 
 /* Table dark mode overrides */
