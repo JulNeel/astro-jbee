@@ -75,7 +75,7 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
 
         <nav id="main-menu" className="font-heading my-auto">
           <h2 className="sr-only">Menu principal</h2>
-          <ul className="text-offwhite flex flex-col items-center justify-center gap-4">
+          <ul className="text-offwhite flex flex-col items-center justify-center gap-6">
             {menuItems.map((menuItem) => {
               const isExternal =
                 menuItem.target === "_blank" ||
@@ -100,8 +100,8 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
                 </li>
               );
             })}
-            <li className="mt-auto flex justify-center">
-              <ThemeToggle variant="mobile" />
+            <li className="flex justify-center">
+              <ThemeToggle />
             </li>
           </ul>
         </nav>
