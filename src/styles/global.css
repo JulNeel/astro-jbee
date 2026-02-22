@@ -210,7 +210,23 @@ h5,
     @apply prose-blockquote:border-primary-dark prose-blockquote:text-foreground-heading prose-blockquote:text-xl prose-blockquote:font-normal;
     @apply prose-thead:my-0 prose-thead:text-2xl prose-th:text-center;
     @apply prose-li:my-0 prose-hr:my-6;
+    @apply prose-th:text-foreground prose-td:text-foreground;
+    @apply prose-td:border-border prose-th:border-border;
   }
+}
+
+/* Table dark mode overrides */
+.dark .prose-ckeditor thead {
+  border-bottom-color: var(--border);
+}
+
+.dark .prose-ckeditor tbody tr {
+  border-bottom-color: var(--border);
+}
+
+.dark .prose-ckeditor th,
+.dark .prose-ckeditor td {
+  border-color: var(--border);
 }
 
 /* Code block container */
