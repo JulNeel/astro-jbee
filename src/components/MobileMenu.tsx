@@ -1,3 +1,4 @@
+import ThemeToggle from "@components/ThemeToggle";
 import { useEffect, useState } from "react";
 import logo from "@images/logo_jbee_blanc.svg";
 
@@ -39,7 +40,7 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
     <>
       {/* Bouton hamburger - visible uniquement en mobile */}
       <button
-        className="shadow-primary focus:ring-primary-light fixed bottom-4 left-1/2 z-50 h-20 w-20 -translate-x-1/2 rounded-full bg-white shadow-md transition-transform focus:ring-2 focus:ring-offset-2 focus:outline-none"
+        className="shadow-primary focus:ring-primary-light fixed bottom-4 left-1/2 z-50 h-16 w-16 -translate-x-1/2 rounded-full bg-white shadow-md transition-transform focus:ring-2 focus:ring-offset-2 focus:outline-none"
         onClick={toggleMenu}
         aria-expanded={isMenuOpened}
         aria-label={isMenuOpened ? "Fermer le menu" : "Ouvrir le menu"}
@@ -47,18 +48,18 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
         type="button"
       >
         <span
-          className={`hamburger relative inline-block h-10 w-10 ${isMenuOpened ? "open" : ""}`}
+          className={`hamburger relative my-4 inline-block h-8 w-8 ${isMenuOpened ? "open" : ""}`}
           aria-hidden="true"
         >
-          <span className="connector bg-primary-dark absolute top-1/2 left-1/2 block h-1 w-10" />
-          <span className="connector bg-primary-dark absolute top-1/2 left-1/2 block h-1 w-10" />
-          <span className="connector bg-primary-dark absolute top-1/2 left-1/2 block h-1 w-10" />
+          <span className="connector bg-primary-dark absolute top-1/2 left-1/2 block h-1 w-8" />
+          <span className="connector bg-primary-dark absolute top-1/2 left-1/2 block h-1 w-8" />
+          <span className="connector bg-primary-dark absolute top-1/2 left-1/2 block h-1 w-8" />
         </span>
       </button>
 
       {/* Overlay mobile avec logo et menu */}
       <div
-        className={`bg-primary-dark fixed inset-0 z-40 flex flex-col items-center justify-between px-8 py-12 backdrop-blur transition-all duration-300 ${
+        className={`bg-background-mobile-menu fixed inset-0 z-40 flex flex-col items-center justify-between px-8 py-12 backdrop-blur transition-all duration-300 ${
           isMenuOpened
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0"
@@ -69,13 +70,12 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
           src={logo.src}
           alt="Logo JBEE"
           width={250}
-          height={80}
-          className="mt-auto object-contain"
+          className="object-contain"
         />
 
-        <nav id="main-menu" className="font-heading mt-auto mb-auto">
+        <nav id="main-menu" className="font-heading my-auto">
           <h2 className="sr-only">Menu principal</h2>
-          <ul className="text-offwhite flex flex-col items-center justify-center gap-8">
+          <ul className="text-offwhite flex flex-col items-center justify-center gap-6">
             {menuItems.map((menuItem) => {
               const isExternal =
                 menuItem.target === "_blank" ||
@@ -84,7 +84,7 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
               return (
                 <li key={menuItem.path}>
                   <a
-                    className="text-4xl font-medium transition-colors hover:text-gray-200 focus:underline focus:outline-none"
+                    className="text-3xl font-medium transition-colors hover:text-gray-200 focus:underline focus:outline-none"
                     href={menuItem.path}
                     target={menuItem.target ?? "_self"}
                     rel={isExternal ? "noopener noreferrer" : undefined}
@@ -100,10 +100,11 @@ const MobileMenu = ({ menuItems = [] }: MobileMenuProps) => {
                 </li>
               );
             })}
+            <li className="flex justify-center">
+              <ThemeToggle />
+            </li>
           </ul>
         </nav>
-
-        <div className="mt-auto" />
       </div>
 
       <style>{`

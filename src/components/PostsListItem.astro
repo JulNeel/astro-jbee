@@ -10,10 +10,10 @@ const { post, excerpt } = Astro.props;
 ---
 
 <article class="group flex flex-col">
-  <a href={`/${post.slug}`} class="flex flex-col">
+  <a href={`/${post.slug}`} class="flex flex-col gap-4">
     {
       post.coverImage && (
-        <div class="aspect-4/3 overflow-hidden">
+        <div class="bg-background-img aspect-4/3 overflow-hidden">
           <Image
             src={post.coverImage.smallUrl}
             alt={post.coverImage.altText}
@@ -24,10 +24,10 @@ const { post, excerpt } = Astro.props;
         </div>
       )
     }
-    <h3 class="h4 text-offblack group-hover:text-primary">{post.title}</h3>
-    <time datetime={post.publishedDate.toISOString()} class="text-neutral-dark text-sm">
+    <h3 class="h4 text-foreground-heading group-hover:text-foreground-heading-hover">{post.title}</h3>
+    <time datetime={post.publishedDate.toISOString()} class="text-foreground-muted text-sm">
       {post.publishedDate.toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" })}
     </time>
-    <p>{excerpt && post.excerpt}</p>
+    <p class="text-foreground">{excerpt && post.excerpt}</p>
   </a>
 </article>

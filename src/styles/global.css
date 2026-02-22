@@ -1,6 +1,7 @@
 /* stylelint-disable */
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @import "@fontsource-variable/inter";
 @import "@fontsource/oswald";
@@ -65,11 +66,88 @@
   --color-code-btn-hover: #373e47;
   --color-code-success: #3fb950;
 }
+
+/* ── Semantic tokens (light defaults) ─────────────────────────── */
+:root {
+  --background: var(--color-offwhite);
+  --foreground: var(--color-offblack);
+  --foreground-muted: var(--color-neutral-dark);
+  --foreground-heading: var(--color-primary);
+  --foreground-heading-hover: var(--color-primary-dark);
+  --foreground-link: var(--color-primary);
+  --foreground-link-hover: var(--color-primary-dark);
+  --border: var(--color-neutral-light);
+
+  --background-nav: var(--color-offwhite);
+  --foreground-nav: var(--color-primary);
+
+  --background-card: var(--color-purewhite);
+  --foreground-card: var(--color-offblack);
+
+  --background-footer: var(--color-primary);
+  --foreground-footer: var(--color-purewhite);
+
+  --background-mobile-menu: var(--color-primary-dark);
+
+  --background-img: var(--color-offwhite);
+}
+
+/* ── Semantic tokens (dark overrides) ─────────────────────────── */
+.dark {
+  --background: var(--color-primary-contrast);
+  --foreground: var(--color-offwhite);
+
+  --foreground-muted: var(--color-neutral-light);
+  --foreground-heading: var(--color-offwhite);
+  --foreground-heading-hover: var(--color-purewhite);
+  --foreground-link: var(--color-primary-light);
+  --foreground-link-hover: var(--color-purewhite);
+  --border: var(--color-primary-dark);
+
+  --background-nav: var(--color-offwhite);
+  --foreground-nav: var(--color-primary-dark);
+
+  --background-card: var(--color-primary-dark);
+  --foreground-card: var(--color-offwhite);
+
+  --background-footer: var(--color-primary-contrast);
+  --foreground-footer: var(--color-offwhite);
+
+  --background-mobile-menu: var(--color-primary-contrast);
+
+  --background-img: var(--color-offwhite);
+}
+
+/* ── Register semantic tokens as Tailwind utilities ───────────── */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-heading: var(--foreground-heading);
+  --color-foreground-heading-hover: var(--foreground-heading-hover);
+  --color-foreground-link: var(--foreground-link);
+  --color-foreground-link-hover: var(--foreground-link-hover);
+  --color-border: var(--border);
+
+  --color-background-nav: var(--background-nav);
+  --color-foreground-nav: var(--foreground-nav);
+
+  --color-background-card: var(--background-card);
+  --color-foreground-card: var(--foreground-card);
+
+  --color-background-footer: var(--background-footer);
+  --color-foreground-footer: var(--foreground-footer);
+
+  --color-background-mobile-menu: var(--background-mobile-menu);
+
+  --color-background-img: var(--background-img);
+}
+
 html {
   @apply scroll-smooth;
 }
 body {
-  @apply bg-offwhite font-sans text-base;
+  @apply bg-background text-foreground font-sans text-base;
 }
 h1,
 h2,
@@ -87,7 +165,7 @@ h6,
 }
 h1,
 .h1 {
-  @apply text-primary text-4xl;
+  @apply text-foreground-heading text-4xl;
 }
 h2,
 .h2 {
@@ -131,12 +209,36 @@ h5,
 
 @layer components {
   .prose-ckeditor {
-    @apply prose prose-lg max-w-full font-body leading-loose;
-    @apply prose-headings:font-heading prose-headings:text-primary;
-    @apply prose-blockquote:border-primary-dark prose-blockquote:text-primary prose-blockquote:text-xl prose-blockquote:font-normal;
+    @apply prose prose-lg font-body max-w-full leading-loose;
+    @apply prose-headings:font-heading prose-headings:text-foreground-heading;
+    @apply prose-p:text-foreground prose-li:text-foreground prose-strong:text-foreground;
+    @apply prose-a:text-foreground-link prose-a:font-normal;
+    @apply prose-blockquote:border-primary-dark prose-blockquote:text-foreground-heading prose-blockquote:text-xl prose-blockquote:font-normal;
     @apply prose-thead:my-0 prose-thead:text-2xl prose-th:text-center;
-    @apply prose-a:font-normal prose-li:my-0 prose-hr:my-6;
+    @apply prose-li:my-0 prose-hr:my-6;
+    @apply prose-th:text-foreground prose-td:text-foreground;
+    @apply prose-td:border-border prose-th:border-border;
   }
+}
+
+/* Inline code dark mode */
+.dark .prose-ckeditor :not(pre) > code {
+  color: var(--color-code-text);
+  background-color: var(--color-code-header-bg);
+}
+
+/* Table dark mode overrides */
+.dark .prose-ckeditor thead {
+  border-bottom-color: var(--border);
+}
+
+.dark .prose-ckeditor tbody tr {
+  border-bottom-color: var(--border);
+}
+
+.dark .prose-ckeditor th,
+.dark .prose-ckeditor td {
+  border-color: var(--border);
 }
 
 /* Code block container */
@@ -261,7 +363,7 @@ h5,
 
 /* Standalone images */
 .ckeditor-content img {
-  @apply h-auto max-w-full;
+  @apply bg-background-img h-auto max-w-full p-4;
 }
 
 /* Lightbox clickable images */
