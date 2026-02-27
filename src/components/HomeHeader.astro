@@ -1,65 +1,103 @@
 ---
-import Container from "@components/Container.astro";
 import ResponsiveMenu from "@components/ResponsiveMenu.astro";
-import logo from "@images/logo_jbee_off-white.svg";
-import headerImage from "@images/header_image.jpg";
+import leftWall from "@images/jbee_office_wall_left.svg";
+import rightWall from "@images/jbee_office_wall_right.svg";
+import workStation from "@images/jbee_office_workstation.svg";
+import logo from "@images/logo_jbee_colors.svg";
 import "@styles/global.css";
-import { Image } from "astro:assets";
 ---
 
-<script>
-  import { jarallax } from "jarallax";
-
-  // Attendre les images avant d'initialiser (réduit CLS)
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initParallax);
-  } else {
-    initParallax();
-  }
-
-  function initParallax() {
-    const elements = document.querySelectorAll(".jarallax");
-    if (elements.length) {
-      // Déférer après layout avec RAF
-      requestAnimationFrame(() => {
-        jarallax(elements, {
-          speed: 0.5,
-          // Désactiver sur mobile (performance + réduit CLS)
-          disableParallax: /iPad|iPhone|iPod|Android/.test(navigator.userAgent),
-        });
-      });
-    }
-  }
-</script>
 <header
   role="banner"
-  data-jarallax
-  data-speed="0.5"
-  class="header jarallax relative z-50 flex w-full flex-col overflow-hidden sm:min-h-[300px] md:min-h-[400px]">
-  <Container class="relative my-auto flex flex-1 justify-center" style="contain: layout; min-height: 400px;">
-    <Image
-      class="jarallax-img absolute left-0 top-0 -z-10 h-full w-full object-cover object-center"
-      src={headerImage}
+  class="parallax-header bg-background-header border-secondary relative z-10 box-border w-full overflow-hidden border-b-4">
+  <div class="relative mx-auto h-[200px] max-w-7xl overflow-hidden lg:h-[400px]">
+    <!-- 🔵 Mur (fond éloigné — vitesse 1/3) -->
+    <img
+      src={leftWall.src}
       alt=""
-      width={1600}
-      height={600}
-      format="webp"
-      loading="eager"
-      fetchpriority="high"
-      sizes="(max-width: 600px) 480px, (max-width: 1024px) 1024px, 1600px"
+      class="parallax-wall absolute top-5 left-30 hidden max-h-[60%] object-cover lg:block"
     />
-    <div class="flex items-center justify-center" style="aspect-ratio: 2/1; width: 100%; max-width: 32rem;">
-      <h1 class="sr-only">Julien Bruneel - Développeur web</h1>
-      <Image
-        src={logo}
-        class="w-full max-w-sm p-8"
-        alt="Julien Bruneel développeur web - Retour à l'accueil"
-        width={600}
-        height={300}
-      />
+    <img
+      src={rightWall.src}
+      alt=""
+      class="parallax-wall absolute right-5 bottom-0 hidden max-w-[500px] object-cover lg:block"
+    />
+
+    <!-- 🟢 Poste de travail (plan intermédiaire — vitesse 1/2) -->
+    <img
+      src={workStation.src}
+      alt=""
+      class="parallax-workstation absolute right-5 -bottom-10 hidden max-w-[500px] object-cover lg:block"
+    />
+
+    <!-- 🟡 Logo (premier plan — vitesse normale) -->
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="bg-offwhite/50 rounded p-4">
+        <img src={logo.src} class="w-48 md:w-64" alt="Julien Bruneel développeur web - Retour à l'accueil" />
+      </div>
     </div>
-  </Container>
-  <div class="mt-auto">
-    <ResponsiveMenu isHomePage />
   </div>
 </header>
+
+<div class="mt-auto">
+  <ResponsiveMenu isHomePage />
+</div>
+
+<style>
+  /* Scroll-driven animations : Chrome/Edge/Safari uniquement.
+     Sans ce @supports, animation-fill-mode: both décale les images vers le bas en Firefox
+     car animation-timeline n'est pas pris en charge et animation-duration vaut 0s par défaut. */
+  @supports (animation-timeline: scroll()) {
+    .parallax-wall {
+      animation-name: parallax-wall;
+      animation-duration: 1ms;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 0px 500px;
+    }
+
+    .parallax-workstation {
+      animation-name: parallax-workstation;
+      animation-duration: 1ms;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 0px 500px;
+    }
+  }
+
+  @keyframes parallax-wall {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(400px);
+    }
+  }
+
+  @keyframes parallax-workstation {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(200px);
+    }
+  }
+</style>
+
+<script>
+  if (!CSS.supports("animation-timeline", "scroll()")) {
+    const walls = document.querySelectorAll<HTMLElement>(".parallax-wall");
+    const workstations = document.querySelectorAll<HTMLElement>(".parallax-workstation");
+
+    function updateParallax() {
+      const progress = Math.min(window.scrollY / 500, 1);
+      for (const el of walls) el.style.transform = `translateY(${progress * 400}px)`;
+      for (const el of workstations) el.style.transform = `translateY(${progress * 200}px)`;
+    }
+
+    window.addEventListener("scroll", updateParallax, { passive: true });
+    updateParallax();
+  }
+</script>
