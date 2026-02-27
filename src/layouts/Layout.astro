@@ -7,6 +7,7 @@ import SEO from "@components/SEO.astro";
 import oswaldLatin400 from "@fontsource/oswald/files/oswald-latin-400-normal.woff2?url";
 import oswaldLatin700 from "@fontsource/oswald/files/oswald-latin-700-normal.woff2?url";
 import interLatinWghtNormal from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import workStationSvg from "@images/jbee_office_workstation.svg";
 
 interface Props {
   isHomePage?: boolean;
@@ -66,6 +67,15 @@ const {
     <link rel="preload" href={oswaldLatin400} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={oswaldLatin700} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={interLatinWghtNormal} as="font" type="font/woff2" crossorigin />
+    {isHomePage && (
+      <link
+        rel="preload"
+        href={workStationSvg.src}
+        as="image"
+        type="image/svg+xml"
+        media="(min-width: 1024px)"
+      />
+    )}
     <link rel="sitemap" href="/sitemap-index.xml" />
     <SEO title={title} description={description} image={image} imageAlt={imageAlt} type={type} noindex={noindex} publishedTime={publishedTime} modifiedTime={modifiedTime} author={author} tags={tags} />
   </head>
