@@ -70,7 +70,7 @@
 /* ── Semantic tokens (light defaults) ─────────────────────────── */
 :root {
   --background: var(--color-offwhite);
-  --foreground: var(--color-offblack);
+  --foreground: var(--color-primary-contrast);
   --foreground-muted: var(--color-neutral-dark);
   --foreground-heading: var(--color-primary);
   --foreground-heading-hover: var(--color-primary-dark);
