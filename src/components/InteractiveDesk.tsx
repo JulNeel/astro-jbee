@@ -1,6 +1,6 @@
-import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { select } from "d3-selection";
-import { zoom } from "d3-zoom";
+import { zoom, zoomIdentity } from "d3-zoom";
 import workstationSvgUrl from "@images/jbee_office_workstation_full.svg?url";
 import { TOOLTIP_CONTENT } from "./InteractiveDesk.data";
 
@@ -23,6 +23,7 @@ export default function InteractiveDesk() {
   const containerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
+  const resetZoomRef = useRef<(() => void) | null>(null);
   const [svgContent, setSvgContent] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState>({
     visible: false,
@@ -104,6 +105,10 @@ export default function InteractiveDesk() {
     containerSelection.call(zoomBehavior);
     containerSelection.on("dblclick.zoom", null);
 
+    resetZoomRef.current = () => {
+      containerSelection.transition().duration(300).call(zoomBehavior.transform, zoomIdentity);
+    };
+
     const clickElements = container.querySelectorAll<SVGElement>(
       '[id^="jbee_office_workstation_full-u-click"]',
     );
@@ -155,6 +160,7 @@ export default function InteractiveDesk() {
       containerSelection.on(".zoom", null);
       svgEl.removeEventListener("click", handleSvgClick);
       cleanups.forEach((fn) => fn());
+      resetZoomRef.current = null;
     };
   }, [svgContent]);
 
@@ -164,10 +170,18 @@ export default function InteractiveDesk() {
       className="border-primary bg-foreground relative w-full overflow-hidden rounded-2xl border-2"
     >
       <div className="pointer-events-none absolute top-3 left-1/2 z-10 flex -translate-x-1/2 flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-xl bg-black/40 px-4 py-2 text-xs text-white backdrop-blur-sm">
-        <span>🖱️ Clic + glisser pour naviguer</span>
-        <span>🔍 Molette pour zoomer</span>
-        <span>👆 Cliquer sur un objet pour en savoir plus</span>
+        <span className="hidden sm:inline">🖱️ Clic + glisser pour naviguer</span>
+        <span className="hidden sm:inline">🔍 Molette pour zoomer</span>
+        <span className="hidden sm:inline">👆 Cliquer sur un objet pour en savoir plus</span>
+        <span className="sm:hidden">👆 Toucher pour explorer</span>
+        <span className="sm:hidden">🔍 Pincer pour zoomer</span>
       </div>
+      <button
+        onClick={() => resetZoomRef.current?.()}
+        className="absolute top-3 right-3 z-10 cursor-pointer rounded-xl bg-black/40 px-4 py-2 text-xs text-white backdrop-blur-sm transition-colors hover:bg-black/60"
+      >
+        ⌖ Recentrer
+      </button>
       {svgContent ? (
         <div ref={innerRef}>
           <SvgContent html={svgContent} />
