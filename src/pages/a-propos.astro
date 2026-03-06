@@ -4,6 +4,7 @@ import Layout from "@layouts/Layout.astro";
 import { aboutService } from "@content/api/strapi/services/about";
 import { aboutSchema } from "@content/schemas/about.schema";
 import InteractiveDesk from "@components/InteractiveDesk";
+import "@fontsource-variable/caveat";
 
 const rawAbout = await aboutService.get();
 
@@ -77,8 +78,15 @@ const about = aboutSchema.parse(rawAbout);
       </div>
     </Container>
     <Container variant="narrow" class="mb-20">
-      <div class="h2 mb-8">Si vous voulez en savoir plus sur moi, je vous laisse fouiller mon bureau !</div>
+      <div class="desk-intro h2 mb-8">Si vous voulez en savoir plus sur moi, je vous laisse fouiller mon bureau !</div>
       <InteractiveDesk client:load />
     </Container>
   </main>
 </Layout>
+
+<style>
+  .desk-intro {
+    font-family: "Caveat Variable", cursive;
+    font-weight: 600;
+  }
+</style>
