@@ -81,11 +81,19 @@ export default function InteractiveDesk() {
     svgEl.setAttribute("width", "100%");
     svgEl.style.pointerEvents = "all";
 
-    // Wrap all SVG children in a <g> so D3 zoom applies transforms in SVG
-    // coordinate space — the SVG re-renders vectors at each zoom level (no pixelation)
+    // Wrap visual children in a <g> so D3 zoom applies transforms in SVG coordinate
+    // space (no pixelation). <style>, <defs> and #s-g3 stay as direct SVG children
+    // so that the CSS :has(>#s-g3) animation selectors keep working.
     const zoomGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    while (svgEl.firstChild) zoomGroup.appendChild(svgEl.firstChild);
-    svgEl.appendChild(zoomGroup);
+    const toMove = Array.from(svgEl.children).filter(
+      (el) =>
+        el.tagName !== "defs" &&
+        el.tagName !== "style" &&
+        el.id !== "jbee_office_workstation_full-s-g3",
+    );
+    toMove.forEach((el) => zoomGroup.appendChild(el));
+    const sg3 = svgEl.querySelector("#jbee_office_workstation_full-s-g3");
+    svgEl.insertBefore(zoomGroup, sg3 ?? null);
 
     const containerSelection = select(container);
     const zoomBehavior = zoom<HTMLDivElement, unknown>()
