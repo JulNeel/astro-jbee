@@ -25,7 +25,10 @@ export const TOOLTIP_CONTENT: Record<string, string> = {
   music:
     "🎵 \"I like pleasure spiked w/pain Music is my aeroplaneIt's my aeroplane Songbird sweet and sour Jane Music is my aeroplane It's my aeroplane \"",
   ci: "CI - J'offre une bouteille  de champagne 🍾 à qui devine cette réf de niche ! (on cherche une série TV des années 80... je veux également l'épisode ! ",
-  ara: "ARA - Autour des Rythmes Actuels, une belle école de musique associative dont j'ai l'honneur d'être vice-président ! => https://www.ara-asso.fr/",
+  ara: "🎸ARA - Autour des Rythmes Actuels, une belle école de musique associative dont j'ai l'honneur d'être vice-président !",
   claude:
     "🤖 Mon assistant ! Volontaire, souvent très efficace, il nécessite cependant pour l'instant une surveillance de tous les instants ! ",
+  wcag: "🫡 WCAG — Les 4 principes fondamentaux des Directives d'Accessibilité du Contenu Web",
+  frameworks: "🛠️ Mes frameworks JS de prédilection",
+  ui: "🎨 UX, UI, Design System... un univers qui me passionne et dans lequel j'essaie de me former continuellement !",
 };
