@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity } from "d3-zoom";
+import confetti from "canvas-confetti";
 import workstationSvgUrl from "@images/jbee_office_workstation_full.svg?url";
 import { TOOLTIP_CONTENT } from "./InteractiveDesk.data";
 
@@ -63,6 +64,33 @@ export default function InteractiveDesk() {
 
     setTooltipPos({ left, top, below });
   }, [tooltip]);
+
+  useEffect(() => {
+    const KONAMI = [
+      "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
+      "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight",
+      "b", "a",
+    ];
+    let buffer: string[] = [];
+
+    const handleKeydown = (e: KeyboardEvent) => {
+      buffer.push(e.key);
+      if (buffer.length > KONAMI.length) buffer.shift();
+      if (buffer.join(",") === KONAMI.join(",")) {
+        buffer = [];
+        const colors = ["#4d7c94", "#ffc100"];
+        const end = Date.now() + 5000;
+        (function frame() {
+          confetti({ particleCount: 2, angle: 60, spread: 55, origin: { x: 0 }, colors });
+          confetti({ particleCount: 2, angle: 120, spread: 55, origin: { x: 1 }, colors });
+          if (Date.now() < end) requestAnimationFrame(frame);
+        })();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeydown);
+    return () => window.removeEventListener("keydown", handleKeydown);
+  }, []);
 
   useEffect(() => {
     fetch(workstationSvgUrl)
