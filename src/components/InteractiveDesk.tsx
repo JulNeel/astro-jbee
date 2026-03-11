@@ -1,9 +1,9 @@
-import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity } from "d3-zoom";
 import confetti from "canvas-confetti";
 import workstationSvgUrl from "@images/jbee_office_workstation_full.svg?url";
-import { TOOLTIP_CONTENT } from "./InteractiveDesk.data";
+import { TOOLTIP_CONTENT, TOOLTIP_LABELS } from "./InteractiveDesk.data";
 
 type TooltipState = {
   visible: boolean;
@@ -41,8 +41,8 @@ export default function InteractiveDesk() {
   });
 
   useLayoutEffect(() => {
-    if (!tooltip.visible || !tooltipRef.current || !containerRef.current)
-      return;
+    if (!tooltipRef.current || !containerRef.current) return;
+    if (!tooltip.visible) return;
 
     const tip = tooltipRef.current.getBoundingClientRect();
     const container = containerRef.current.getBoundingClientRect();
@@ -74,6 +74,8 @@ export default function InteractiveDesk() {
     let buffer: string[] = [];
 
     const handleKeydown = (e: KeyboardEvent) => {
+      // Ignore keystrokes from interactive desk items (they handle their own keyboard events)
+      if ((e.target as Element)?.hasAttribute?.("data-interactive-desk-item")) return;
       buffer.push(e.key);
       if (buffer.length > KONAMI.length) buffer.shift();
       if (buffer.join(",") === KONAMI.join(",")) {
@@ -110,6 +112,26 @@ export default function InteractiveDesk() {
     svgEl.setAttribute("width", "100%");
     svgEl.style.pointerEvents = "all";
 
+    // SVG title for screen readers
+    const titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
+    titleEl.id = "interactive-desk-svg-title";
+    titleEl.textContent = "Bureau interactif de J.B.";
+    svgEl.insertBefore(titleEl, svgEl.firstChild);
+    svgEl.setAttribute("aria-labelledby", "interactive-desk-svg-title");
+    svgEl.setAttribute("role", "img");
+
+    // Focus styles injected into the SVG (CSS overrides presentation attributes)
+    const focusStyle = document.createElementNS("http://www.w3.org/2000/svg", "style");
+    focusStyle.textContent = `
+      [data-interactive-desk-item]:focus { outline: none; }
+      [data-interactive-desk-item]:focus-visible {
+        fill: rgba(77, 124, 148, 0.25);
+        stroke: #4d7c94;
+        stroke-width: 3;
+      }
+    `;
+    svgEl.insertBefore(focusStyle, svgEl.firstChild);
+
     // Wrap visual children in a <g> so D3 zoom applies transforms in SVG coordinate
     // space (no pixelation). <style>, <defs> and #s-g2 stay as direct SVG children
     // so that the CSS :has(>#s-g2) animation selectors keep working.
@@ -143,16 +165,46 @@ export default function InteractiveDesk() {
     const cleanups: (() => void)[] = [];
 
     clickElements.forEach((el) => {
+      const key = el.id.replace("jbee_office_workstation_full-u-click_", "");
+      const labelText = TOOLTIP_LABELS[key] ?? TOOLTIP_CONTENT[key] ?? key;
+
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "button");
+      el.setAttribute("aria-label", labelText);
+      el.setAttribute("aria-describedby", "interactive-desk-tooltip");
       el.setAttribute("pointer-events", "all");
+      el.setAttribute("data-interactive-desk-item", "");
       el.style.cursor = "pointer";
+
+      // Keyboard: Enter/Space activates, Escape closes
+      const handleKeydown = (e: KeyboardEvent) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+        }
+        if (e.key === "Escape") {
+          setTooltip((prev) => ({ ...prev, visible: false }));
+          (e.currentTarget as SVGElement).blur();
+        }
+      };
+      el.addEventListener("keydown", handleKeydown as EventListener);
+      cleanups.push(() => el.removeEventListener("keydown", handleKeydown as EventListener));
+
+      // Blur: close tooltip only when leaving the interactive group
+      const handleBlur = (e: FocusEvent) => {
+        const related = e.relatedTarget as Element | null;
+        if (!related?.hasAttribute("data-interactive-desk-item")) {
+          setTooltip((prev) => ({ ...prev, visible: false }));
+        }
+      };
+      el.addEventListener("blur", handleBlur as EventListener);
+      cleanups.push(() => el.removeEventListener("blur", handleBlur as EventListener));
 
       const handleMouseLeave = () => {
         setTooltip((prev) => ({ ...prev, visible: false }));
       };
       el.addEventListener("mouseleave", handleMouseLeave);
-      cleanups.push(() =>
-        el.removeEventListener("mouseleave", handleMouseLeave),
-      );
+      cleanups.push(() => el.removeEventListener("mouseleave", handleMouseLeave));
     });
 
     const handleSvgClick = (e: Event) => {
@@ -195,12 +247,16 @@ export default function InteractiveDesk() {
   return (
     <div
       ref={containerRef}
+      role="application"
+      aria-label="Bureau interactif — explorez les objets pour en savoir plus"
+      aria-describedby="interactive-desk-instructions"
       className="border-primary bg-foreground relative w-full overflow-hidden rounded-2xl border-2"
     >
       <div className="pointer-events-none absolute top-3 left-1/2 z-10 flex -translate-x-1/2 flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-xl bg-black/40 px-4 py-2 text-xs text-white backdrop-blur-sm">
         <span className="hidden sm:inline">🖱️ Clic + glisser pour naviguer</span>
         <span className="hidden sm:inline">🔍 Molette pour zoomer</span>
         <span className="hidden sm:inline">👆 Cliquer sur un objet pour en savoir plus</span>
+        <span className="hidden sm:inline">⌨️ Tab pour naviguer · Entrée/Espace pour activer · Échap pour fermer</span>
         <span className="sm:hidden">👆 Toucher pour explorer</span>
         <span className="sm:hidden">🔍 Pincer pour zoomer</span>
       </div>
@@ -219,24 +275,37 @@ export default function InteractiveDesk() {
           <span className="text-sm text-white/50">Chargement du bureau…</span>
         </div>
       )}
-      {tooltip.visible && (
-        <div
-          ref={tooltipRef}
-          className="pointer-events-none absolute z-20 max-w-xs rounded-lg bg-gray-900/95 px-3 py-2 text-sm text-white shadow-xl"
-          style={{
-            left: tooltipPos.left,
-            top: tooltipPos.top,
-            transform: `translateX(-50%)${tooltipPos.below ? "" : " translateY(-100%)"}`,
-          }}
-        >
-          {tooltip.text}
-          {tooltipPos.below ? (
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-gray-900/95" />
-          ) : (
-            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900/95" />
-          )}
-        </div>
-      )}
+      <div
+        id="interactive-desk-tooltip"
+        role="tooltip"
+        ref={tooltipRef}
+        className="pointer-events-none absolute z-20 max-w-xs rounded-lg bg-gray-900/95 px-3 py-2 text-sm text-white shadow-xl"
+        style={{
+          left: tooltipPos.left,
+          top: tooltipPos.top,
+          transform: `translateX(-50%)${tooltipPos.below ? "" : " translateY(-100%)"}`,
+          visibility: tooltip.visible ? "visible" : "hidden",
+        }}
+        aria-hidden={!tooltip.visible}
+      >
+        {tooltip.text}
+        {tooltipPos.below ? (
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-gray-900/95" />
+        ) : (
+          <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900/95" />
+        )}
+      </div>
+      {/* Instructions for screen readers */}
+      <div id="interactive-desk-instructions" className="sr-only">
+        Cette illustration contient 26 objets interactifs qui révèlent des informations sur J.B. :
+        ses séries, ses passions, ses outils, sa vie de musicien…
+        Naviguez entre les objets avec la touche Tab, puis appuyez sur Entrée ou Espace pour en savoir plus.
+        Le contenu s'affiche et est lu automatiquement. Appuyez sur Échap pour fermer.
+      </div>
+      {/* Live region for screen readers */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {tooltip.visible ? tooltip.text : ""}
+      </div>
     </div>
   );
 }
