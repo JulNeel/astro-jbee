@@ -1,3 +1,31 @@
+export const TOOLTIP_LABELS: Record<string, string> = {
+  dundie: "The Office",
+  luffy: "One Piece",
+  controller: "Jeux vidéo",
+  spider: "Spider-Man",
+  snk: "L'Attaque des Titans",
+  kaamelott: "Kaamelott",
+  books: "Livres",
+  pasta: "Pâtes",
+  bicycle: "Gravel",
+  hunter: "Hunter x Hunter",
+  losc: "LOSC Lille",
+  posters: "Affiches musicales",
+  run: "Running",
+  triforce: "La Triforce",
+  drumsticks: "Batterie",
+  chess: "Échecs",
+  brel: "Brel",
+  "belle-ile": "Belle Île",
+  music: "Musique",
+  ci: "Deux mystérieuses lettres inscrites sur le bureau... CI ?",
+  ara: "ARA — École de musique",
+  claude: "Claude AI",
+  wcag: "WCAG",
+  frameworks: "Frameworks JS",
+  ui: "UX / UI Design",
+};
+
 export const TOOLTIP_CONTENT: Record<string, string> = {
   dundie:
     "🏢 The Office ! La version US, ne serait-ce que pour Steve Carrell !",
