@@ -229,13 +229,15 @@ h5,
   .prose-ckeditor {
     @apply prose prose-lg font-body max-w-full leading-loose;
     @apply prose-headings:font-heading prose-headings:text-foreground-heading;
-    @apply prose-p:text-foreground prose-li:text-foreground prose-strong:text-foreground;
+    @apply prose-p:text-foreground prose-li:text-foreground;
     @apply prose-a:text-foreground-link prose-a:font-normal;
     @apply prose-blockquote:border-primary-dark prose-blockquote:text-foreground-heading prose-blockquote:text-xl prose-blockquote:font-normal;
     @apply prose-thead:my-0 prose-thead:text-2xl prose-th:text-center;
     @apply prose-li:my-0 prose-hr:my-6;
     @apply prose-th:text-foreground prose-td:text-foreground;
     @apply prose-td:border-border prose-th:border-border;
+    @apply prose-strong:text-foreground;
+    @apply prose-code:text-foreground;
   }
 }
 
