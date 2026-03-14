@@ -1,0 +1,73 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 1200 800"
+  style="display: block; width: 100%; height: 100%;"
+>
+  <rect width="1200" height="800" fill="#c8a97a" />
+  <rect x="50" y="200" width="1100" height="550" rx="12" fill="#a0784a" />
+  <rect x="50" y="730" width="1100" height="20" rx="6" fill="#7a5a30" opacity="0.5" />
+
+  <!-- Écran -->
+  <rect x="350" y="100" width="400" height="280" rx="8" fill="#1a1a2e" />
+  <rect x="360" y="110" width="380" height="260" rx="4" fill="#16213e" />
+  <rect x="370" y="120" width="360" height="240" rx="3" fill="#0a3d62" />
+  <rect x="385" y="135" width="200" height="12" rx="3" fill="#4fc3f7" opacity="0.8" />
+  <rect x="385" y="155" width="300" height="8" rx="3" fill="#81d4fa" opacity="0.4" />
+  <rect x="385" y="170" width="260" height="8" rx="3" fill="#81d4fa" opacity="0.4" />
+  <rect x="385" y="185" width="280" height="8" rx="3" fill="#81d4fa" opacity="0.4" />
+  <rect x="520" y="380" width="60" height="30" rx="4" fill="#1a1a2e" />
+  <rect x="480" y="405" width="140" height="10" rx="4" fill="#1a1a2e" />
+
+  <!-- Clavier -->
+  <rect x="360" y="450" width="380" height="120" rx="8" fill="#2d2d2d" />
+  <rect x="375" y="462" width="350" height="95" rx="5" fill="#3a3a3a" />
+  <rect x="382" y="470" width="336" height="16" rx="3" fill="#4a4a4a" />
+  <rect x="382" y="492" width="336" height="16" rx="3" fill="#4a4a4a" />
+  <rect x="382" y="514" width="336" height="16" rx="3" fill="#4a4a4a" />
+  <rect x="382" y="536" width="200" height="16" rx="3" fill="#4a4a4a" />
+
+  <!-- Souris -->
+  <ellipse cx="820" cy="500" rx="35" ry="50" fill="#2d2d2d" />
+  <line x1="820" y1="460" x2="820" y2="500" stroke="#555" stroke-width="2" />
+  <ellipse cx="820" cy="480" rx="8" ry="5" fill="#4fc3f7" opacity="0.6" />
+
+  <!-- Tasse -->
+  <rect x="900" y="370" width="80" height="90" rx="6" fill="#fff8f0" />
+  <rect x="900" y="370" width="80" height="25" rx="6" fill="#6f4e37" />
+  <ellipse cx="940" cy="370" rx="40" ry="10" fill="#8b6347" />
+  <path d="M 980 400 Q 1005 415 980 430" stroke="#c8a97a" stroke-width="5" fill="none" stroke-linecap="round" />
+  <path d="M 925 355 Q 930 340 925 325" stroke="#ccc" stroke-width="2" fill="none" opacity="0.6" stroke-linecap="round" />
+  <path d="M 940 350 Q 945 335 940 320" stroke="#ccc" stroke-width="2" fill="none" opacity="0.6" stroke-linecap="round" />
+  <path d="M 955 355 Q 960 340 955 325" stroke="#ccc" stroke-width="2" fill="none" opacity="0.6" stroke-linecap="round" />
+
+  <!-- Plante -->
+  <rect x="100" y="450" width="60" height="70" rx="5" fill="#e07b39" />
+  <ellipse cx="130" cy="450" rx="30" ry="8" fill="#c4612a" />
+  <ellipse cx="130" cy="380" rx="45" ry="70" fill="#2e7d32" />
+  <ellipse cx="105" cy="410" rx="30" ry="50" fill="#388e3c" />
+  <ellipse cx="155" cy="410" rx="30" ry="50" fill="#388e3c" />
+  <ellipse cx="130" cy="360" rx="25" ry="40" fill="#43a047" />
+
+  <!-- Carnet -->
+  <rect x="150" y="500" width="160" height="200" rx="4" fill="#f5f5dc" transform="rotate(-8, 230, 600)" />
+  <rect x="150" y="500" width="15" height="200" rx="4" fill="#d4a843" transform="rotate(-8, 230, 600)" />
+  <line x1="175" y1="530" x2="295" y2="510" stroke="#ccc" stroke-width="1.5" opacity="0.7" />
+  <line x1="175" y1="550" x2="295" y2="530" stroke="#ccc" stroke-width="1.5" opacity="0.7" />
+  <line x1="175" y1="570" x2="295" y2="550" stroke="#ccc" stroke-width="1.5" opacity="0.7" />
+  <line x1="175" y1="590" x2="295" y2="570" stroke="#ccc" stroke-width="1.5" opacity="0.7" />
+
+  <!-- Lampe -->
+  <rect x="980" y="200" width="15" height="220" rx="5" fill="#888" />
+  <rect x="975" y="410" width="70" height="10" rx="5" fill="#777" />
+  <ellipse cx="1000" cy="220" rx="55" ry="30" fill="#f0c040" opacity="0.9" />
+  <ellipse cx="1000" cy="220" rx="55" ry="30" fill="none" stroke="#c8950a" stroke-width="3" />
+  <ellipse cx="1000" cy="400" rx="120" ry="30" fill="#fffde7" opacity="0.15" />
+
+  <!-- ZONES INTERACTIVES -->
+  <rect data-id="ordinateur" x="350" y="100" width="400" height="340" fill="transparent" style="cursor: pointer;" />
+  <ellipse data-id="souris" cx="820" cy="500" rx="50" ry="65" fill="transparent" style="cursor: pointer;" />
+  <rect data-id="cafe" x="888" y="310" width="115" height="165" fill="transparent" style="cursor: pointer;" />
+  <rect data-id="plante" x="75" y="330" width="125" height="225" fill="transparent" style="cursor: pointer;" />
+  <rect data-id="carnet" x="140" y="480" width="185" height="235" fill="transparent" style="cursor: pointer;" transform="rotate(-8, 230, 600)" />
+  <rect data-id="lampe" x="940" y="190" width="125" height="245" fill="transparent" style="cursor: pointer;" />
+</svg>
