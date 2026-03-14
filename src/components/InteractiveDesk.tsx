@@ -133,9 +133,11 @@ export default function InteractiveDesk() {
     svgEl.insertBefore(focusStyle, svgEl.firstChild);
 
     // Wrap visual children in a <g> so D3 zoom applies transforms in SVG coordinate
-    // space (no pixelation). <style>, <defs> and #s-g2 stay as direct SVG children
-    // so that the CSS :has(>#s-g2) animation selectors keep working.
+    // space. <style>, <defs> and #s-g2 stay as direct SVG children so that the
+    // CSS :has(>#s-g2) animation selectors keep working.
     const zoomGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    zoomGroup.style.willChange = "transform";
+    zoomGroup.style.transformOrigin = "0 0";
     const toMove = Array.from(svgEl.children).filter(
       (el) =>
         el.tagName !== "defs" &&
@@ -147,10 +149,21 @@ export default function InteractiveDesk() {
     svgEl.insertBefore(zoomGroup, sg2 ?? null);
 
     const containerSelection = select(container);
+    let rafId: number | null = null;
+    let pendingTransform: string | null = null;
     const zoomBehavior = zoom<HTMLDivElement, unknown>()
       .scaleExtent([0.5, 8])
       .on("zoom", (event) => {
-        zoomGroup.setAttribute("transform", event.transform.toString());
+        const { x, y, k } = event.transform;
+        pendingTransform = `translate(${x}px, ${y}px) scale(${k})`;
+        if (rafId === null) {
+          rafId = requestAnimationFrame(() => {
+            if (pendingTransform !== null) {
+              zoomGroup.style.transform = pendingTransform;
+            }
+            rafId = null;
+          });
+        }
       });
     containerSelection.call(zoomBehavior);
     containerSelection.on("dblclick.zoom", null);
@@ -237,6 +250,7 @@ export default function InteractiveDesk() {
     svgEl.addEventListener("click", handleSvgClick);
 
     return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
       containerSelection.on(".zoom", null);
       svgEl.removeEventListener("click", handleSvgClick);
       cleanups.forEach((fn) => fn());
@@ -250,7 +264,7 @@ export default function InteractiveDesk() {
       role="application"
       aria-label="Bureau interactif — explorez les objets pour en savoir plus"
       aria-describedby="interactive-desk-instructions"
-      className="border-primary bg-foreground relative w-full overflow-hidden rounded-2xl border-2"
+      className="border-primary bg-foreground relative w-full overflow-hidden rounded-2xl border-2 touch-none"
     >
       <div className="pointer-events-none absolute top-3 left-1/2 z-10 flex -translate-x-1/2 flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-xl bg-black/40 px-4 py-2 text-xs text-white backdrop-blur-sm">
         <span className="hidden sm:inline">🖱️ Clic + glisser pour naviguer</span>
