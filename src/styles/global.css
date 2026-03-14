@@ -323,6 +323,12 @@ h5,
   @apply mx-0 my-6 rounded-r-lg border-l-4 border-solid px-5 py-4;
 }
 
+/* Strong and code inside callouts must inherit the fixed callout contrast color */
+.ckeditor-content [class^="callout-"] strong,
+.ckeditor-content [class^="callout-"] code {
+  color: inherit;
+}
+
 .ckeditor-content .callout-info {
   @apply bg-info-light border-info text-info-contrast;
 }
