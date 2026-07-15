@@ -3,7 +3,9 @@ import { getCollection } from "astro:content";
 import RessourcesListItem from "./RessourcesListItem.astro";
 
 const allRessources = await getCollection("ressources");
-const ressources = allRessources;
+const ressources = allRessources.toSorted(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
 ---
 
 <section aria-labelledby="ressources-title">
