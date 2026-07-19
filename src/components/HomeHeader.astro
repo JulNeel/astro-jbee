@@ -9,8 +9,11 @@ import "@styles/global.css";
 
 <header
   role="banner"
-  class="parallax-header bg-background-header border-secondary relative z-10 box-border w-full overflow-hidden border-b-4">
-  <div class="relative mx-auto h-[200px] max-w-7xl overflow-hidden lg:h-[400px]">
+  class="parallax-header bg-background-header border-secondary relative z-10 box-border w-full overflow-hidden border-b-4"
+>
+  <div
+    class="relative mx-auto h-[200px] max-w-7xl overflow-hidden lg:h-[400px]"
+  >
     <!-- 🔵 Mur (fond éloigné — vitesse 1/3) -->
     <img
       src={leftWall.src}
@@ -34,7 +37,11 @@ import "@styles/global.css";
     <!-- 🟡 Logo (premier plan — vitesse normale) -->
     <div class="absolute inset-0 flex items-center justify-center">
       <div class="bg-offwhite/50 rounded p-4">
-        <img src={logo.src} class="w-48 md:w-64" alt="Julien Bruneel développeur web - Retour à l'accueil" />
+        <img
+          src={logo.src}
+          class="w-48 md:w-64"
+          alt="Julien Bruneel développeur web - Retour à l'accueil"
+        />
       </div>
     </div>
   </div>
@@ -90,12 +97,16 @@ import "@styles/global.css";
 <script>
   if (!CSS.supports("animation-timeline", "scroll()")) {
     const walls = document.querySelectorAll<HTMLElement>(".parallax-wall");
-    const workstations = document.querySelectorAll<HTMLElement>(".parallax-workstation");
+    const workstations = document.querySelectorAll<HTMLElement>(
+      ".parallax-workstation",
+    );
 
     function updateParallax() {
       const progress = Math.min(window.scrollY / 500, 1);
-      for (const el of walls) el.style.transform = `translateY(${progress * 400}px)`;
-      for (const el of workstations) el.style.transform = `translateY(${progress * 200}px)`;
+      for (const el of walls)
+        el.style.transform = `translateY(${progress * 400}px)`;
+      for (const el of workstations)
+        el.style.transform = `translateY(${progress * 200}px)`;
     }
 
     window.addEventListener("scroll", updateParallax, { passive: true });

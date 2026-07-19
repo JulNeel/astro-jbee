@@ -12,6 +12,7 @@ export const ressourceSchema = z
     Language: z.enum(["Français", "Anglais"]).nullable(),
     tags: z.array(z.object({ name: z.string() })).default([]),
     ressource_category: z.object({ name: z.string() }).nullish(),
+    publishedAt: z.string(),
   })
   .transform((data) => ({
     title: data.Title,
@@ -22,6 +23,7 @@ export const ressourceSchema = z
     language: data.Language,
     tags: data.tags.map((t) => t.name),
     category: data.ressource_category?.name ?? null,
+    publishedAt: new Date(data.publishedAt),
   }));
 
 // Output schema (for Astro collection definition - validates the TRANSFORMED data)
@@ -40,6 +42,7 @@ export const ressourceOutputSchema = z.object({
   language: z.enum(["Français", "Anglais"]).nullable(),
   tags: z.array(z.string()),
   category: z.string().nullable(),
+  publishedAt: z.date(),
 });
 
 // Output type
