@@ -80,10 +80,16 @@ const {
     <SEO title={title} description={description} image={image} imageAlt={imageAlt} type={type} noindex={noindex} publishedTime={publishedTime} modifiedTime={modifiedTime} author={author} tags={tags} />
   </head>
   <body class="flex min-h-screen flex-col">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-secondary focus:px-4 focus:py-2 focus:font-bold focus:text-primary-contrast focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary-contrast"
+    >
+      Aller au contenu principal
+    </a>
     {isHomePage ? <HomeHeader /> : <Header />}
-    <div class="flex-1" style="contain: layout;">
+    <main id="main-content" class="flex-1" style="contain: layout;">
       <slot />
-    </div>
+    </main>
     <Footer />
   </body>
 </html>
