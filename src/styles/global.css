@@ -323,9 +323,12 @@ h5,
   @apply mx-0 my-6 rounded-r-lg border-l-4 border-solid px-5 py-4;
 }
 
-/* Strong and code inside callouts must inherit the fixed callout contrast color */
+/* Strong, code and links inside callouts must inherit the fixed callout contrast color
+   (prose-a:text-foreground-link would otherwise win, and in dark mode --foreground-link
+   equals --color-primary-light, the same value as callout-primary's background) */
 .ckeditor-content [class^="callout-"] strong,
-.ckeditor-content [class^="callout-"] code {
+.ckeditor-content [class^="callout-"] code,
+.ckeditor-content [class^="callout-"] a {
   color: inherit;
 }
 
