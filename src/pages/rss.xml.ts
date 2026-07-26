@@ -19,7 +19,7 @@ export const GET: APIRoute = async ({ site }) => {
     title: ressource.data.title,
     description: ressource.data.description,
     pubDate: ressource.data.publishedAt,
-    link: ressource.data.link ?? "/ressources",
+    link: ressource.data.link ?? `/ressources#${ressource.data.slug}`,
   }));
 
   const items = [...postItems, ...ressourceItems].sort(
