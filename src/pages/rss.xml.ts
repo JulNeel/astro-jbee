@@ -8,11 +8,11 @@ export const GET: APIRoute = async ({ site }) => {
   const items = posts
     .map((post) => {
       const image = post.data.coverImage
-        ? `<img src="${new URL(post.data.coverImage.smallUrl, site).href}" alt="${post.data.coverImage.altText.replace(/"/g, "&quot;")}" />`
+        ? `<p><img src="${new URL(post.data.coverImage.smallUrl, site).href}" alt="${post.data.coverImage.altText.replace(/"/g, "&quot;")}" /></p>`
         : "";
       return {
         title: post.data.title,
-        description: `${image}${post.data.excerpt}`,
+        description: `${image}<p>${post.data.excerpt}</p>`,
         pubDate: post.data.publishedDate,
         link: `/${post.data.slug}`,
       };
