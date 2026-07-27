@@ -4,7 +4,7 @@ import Layout from "@layouts/Layout.astro";
 import { aboutService } from "@content/api/strapi/services/about";
 import { aboutSchema } from "@content/schemas/about.schema";
 import InteractiveDesk from "@components/InteractiveDesk";
-import "@fontsource-variable/caveat";
+import "@fontsource-variable/caveat/index.css";
 
 const rawAbout = await aboutService.get();
 
@@ -61,7 +61,7 @@ const about = aboutSchema.parse(rawAbout);
                   href={about.githubProfileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="hover:bg-codee-bg inline-flex items-center gap-2 rounded-lg bg-[#333] px-4 py-2 text-white transition-colors">
+                  class="inline-flex items-center gap-2 rounded-lg bg-[#333] px-4 py-2 text-white transition-colors hover:bg-[#1a1a1a] dark:bg-white dark:text-[#333] dark:hover:bg-[#e0e0e0]">
                   <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path
                       fill-rule="evenodd"
@@ -73,6 +73,24 @@ const about = aboutSchema.parse(rawAbout);
                 </a>
               )
             }
+            <a
+              href="/rss.xml"
+              class="inline-flex items-center gap-2 rounded-lg bg-[#EE802F] px-4 py-2 text-white transition-colors hover:bg-[#d66f22]">
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                viewBox="0 0 24 24"
+                aria-hidden="true">
+                <path d="M4 11a9 9 0 0 1 9 9" />
+                <path d="M4 4a16 16 0 0 1 16 16" />
+                <circle cx="5" cy="19" r="1" />
+              </svg>
+              RSS
+            </a>
           </div>
         </div>
       </div>
