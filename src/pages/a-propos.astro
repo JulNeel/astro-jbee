@@ -4,7 +4,7 @@ import Layout from "@layouts/Layout.astro";
 import { aboutService } from "@content/api/strapi/services/about";
 import { aboutSchema } from "@content/schemas/about.schema";
 import InteractiveDesk from "@components/InteractiveDesk";
-import "@fontsource-variable/caveat";
+import "@fontsource-variable/caveat/index.css";
 
 const rawAbout = await aboutService.get();
 
