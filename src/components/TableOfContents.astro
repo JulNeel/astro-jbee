@@ -9,9 +9,10 @@ interface Props {
 const { headings } = Astro.props;
 ---
 
-<nav aria-label="Table des matières" class="font-body text-foreground-link text-md -mb-8 w-full">
+<nav aria-label="Table des matières" class="font-body text-foreground-link dark:text-foreground-card text-md -mb-8 w-full">
   <details class="group bg-background-card rounded-lg">
-    <summary class="text-foreground-link flex cursor-pointer list-none items-center px-4 py-3 text-xl font-bold">
+    <summary
+      class="text-foreground-link dark:text-foreground-card flex cursor-pointer list-none items-center px-4 py-3 text-xl font-bold">
       Dans cet article
       <svg
         class="ml-4 size-5 shrink-0 transition-transform duration-200 group-open:rotate-180"
