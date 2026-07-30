@@ -27,12 +27,14 @@ import "@styles/global.css";
     />
 
     <!-- 🟢 Poste de travail (plan intermédiaire — vitesse 1/2) -->
-    <img
-      src={workStation.src}
-      alt=""
-      fetchpriority="high"
-      class="parallax-workstation absolute right-5 -bottom-30 hidden max-w-[500px] object-cover lg:block"
-    />
+    <a href="/a-propos" aria-label="En savoir plus sur Julien Bruneel" class="hidden lg:block">
+      <img
+        src={workStation.src}
+        alt=""
+        fetchpriority="high"
+        class="parallax-workstation absolute right-5 -bottom-30 max-w-[500px] object-cover"
+      />
+    </a>
 
     <!-- 🟡 Logo (premier plan — vitesse normale) -->
     <div class="absolute inset-0 flex items-center justify-center">
