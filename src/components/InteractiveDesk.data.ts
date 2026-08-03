@@ -24,6 +24,7 @@ export const TOOLTIP_LABELS: Record<string, string> = {
   wcag: "WCAG",
   frameworks: "Frameworks JS",
   ui: "UX / UI Design",
+  konami: "Konami Code",
 };
 
 export const TOOLTIP_CONTENT: Record<string, string> = {
@@ -60,4 +61,5 @@ export const TOOLTIP_CONTENT: Record<string, string> = {
   wcag: "🫡 WCAG — Les 4 principes fondamentaux des Directives d'Accessibilité du Contenu Web",
   frameworks: "🛠️ Mes frameworks JS de prédilection",
   ui: "🎨 UX, UI, Design System... un univers qui me passionne et dans lequel j'essaie de me former continuellement !",
+  konami: "Ah ce fameux cheat code !",
 };
