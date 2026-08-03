@@ -5,6 +5,11 @@ import confetti from "canvas-confetti";
 import workstationSvgUrl from "@images/jbee_office_workstation_full.svg?url";
 import { TOOLTIP_CONTENT, TOOLTIP_LABELS } from "./InteractiveDesk.data";
 
+// The design tool's latest export duplicates the artboard name in clickable
+// element ids (e.g. "..._full-u-jbee_office_workstation_full-u-click_ara").
+const CLICK_ID_PREFIX =
+  "jbee_office_workstation_full-u-jbee_office_workstation_full-u-click_";
+
 type TooltipState = {
   visible: boolean;
   text: string;
@@ -112,12 +117,10 @@ export default function InteractiveDesk() {
     svgEl.setAttribute("width", "100%");
     svgEl.style.pointerEvents = "all";
 
-    // SVG title for screen readers
-    const titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
-    titleEl.id = "interactive-desk-svg-title";
-    titleEl.textContent = "Bureau interactif de J.B.";
-    svgEl.insertBefore(titleEl, svgEl.firstChild);
-    svgEl.setAttribute("aria-labelledby", "interactive-desk-svg-title");
+    // Accessible name for screen readers. Deliberately aria-label (not a <title>
+    // element): an SVG <title> triggers a native hover tooltip on every descendant,
+    // showing this same generic text regardless of which object is hovered.
+    svgEl.setAttribute("aria-label", "Bureau interactif de J.B.");
     svgEl.setAttribute("role", "img");
 
     // Focus styles injected into the SVG (CSS overrides presentation attributes)
@@ -125,16 +128,18 @@ export default function InteractiveDesk() {
     focusStyle.textContent = `
       [data-interactive-desk-item]:focus { outline: none; }
       [data-interactive-desk-item]:focus-visible {
-        fill: rgba(77, 124, 148, 0.25);
-        stroke: #4d7c94;
+        fill: rgba(255, 193, 0, 0.25);
+        stroke: var(--color-secondary);
         stroke-width: 3;
       }
     `;
     svgEl.insertBefore(focusStyle, svgEl.firstChild);
 
     // Wrap visual children in a <g> so D3 zoom applies transforms in SVG coordinate
-    // space. <style>, <defs> and #s-g2 stay as direct SVG children so that the
-    // CSS :has(>#s-g2) animation selectors keep working.
+    // space. <style>, <defs> and #s-g1 stay as direct SVG children so that the
+    // CSS :has(>#s-g1) animation selectors keep working. The design tool renames
+    // this sentinel group on every export (previously #s-g2), so this id must be
+    // kept in sync with whatever :has(>#...) the exported <style> block requires.
     const zoomGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     zoomGroup.style.willChange = "transform";
     zoomGroup.style.transformOrigin = "0 0";
@@ -142,11 +147,11 @@ export default function InteractiveDesk() {
       (el) =>
         el.tagName !== "defs" &&
         el.tagName !== "style" &&
-        el.id !== "jbee_office_workstation_full-s-g2",
+        el.id !== "jbee_office_workstation_full-s-g1",
     );
     toMove.forEach((el) => zoomGroup.appendChild(el));
-    const sg2 = svgEl.querySelector("#jbee_office_workstation_full-s-g2");
-    svgEl.insertBefore(zoomGroup, sg2 ?? null);
+    const sg1 = svgEl.querySelector("#jbee_office_workstation_full-s-g1");
+    svgEl.insertBefore(zoomGroup, sg1 ?? null);
 
     const containerSelection = select(container);
     let rafId: number | null = null;
@@ -173,12 +178,12 @@ export default function InteractiveDesk() {
     };
 
     const clickElements = container.querySelectorAll<SVGElement>(
-      '[id^="jbee_office_workstation_full-u-click"]',
+      `[id^="${CLICK_ID_PREFIX}"]`,
     );
     const cleanups: (() => void)[] = [];
 
     clickElements.forEach((el) => {
-      const key = el.id.replace("jbee_office_workstation_full-u-click_", "");
+      const key = el.id.replace(CLICK_ID_PREFIX, "");
       const labelText = TOOLTIP_LABELS[key] ?? TOOLTIP_CONTENT[key] ?? key;
 
       el.setAttribute("tabindex", "0");
@@ -223,11 +228,8 @@ export default function InteractiveDesk() {
     const handleSvgClick = (e: Event) => {
       let target = e.target as Element | null;
       while (target && target !== (svgEl as Element)) {
-        if (target.id?.startsWith("jbee_office_workstation_full-u-click_")) {
-          const key = target.id.replace(
-            "jbee_office_workstation_full-u-click_",
-            "",
-          );
+        if (target.id?.startsWith(CLICK_ID_PREFIX)) {
+          const key = target.id.replace(CLICK_ID_PREFIX, "");
           const text = TOOLTIP_CONTENT[key];
           if (text) {
             const rect = target.getBoundingClientRect();
