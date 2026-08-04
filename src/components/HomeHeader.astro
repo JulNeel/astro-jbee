@@ -18,7 +18,7 @@ import "@styles/global.css";
     <img
       src={leftWall.src}
       alt=""
-      class="parallax-wall absolute top-5 left-30 hidden max-h-[60%] object-cover lg:block"
+      class="parallax-wall absolute top-5 left-30 hidden max-h-[65%] object-cover lg:block"
     />
     <img
       src={rightWall.src}
@@ -27,7 +27,11 @@ import "@styles/global.css";
     />
 
     <!-- 🟢 Poste de travail (plan intermédiaire — vitesse 1/2) -->
-    <a href="/a-propos" aria-label="En savoir plus sur Julien Bruneel" class="hidden lg:block">
+    <a
+      href="/a-propos"
+      aria-label="En savoir plus sur Julien Bruneel"
+      class="hidden lg:block"
+    >
       <img
         src={workStation.src}
         alt=""
@@ -37,7 +41,9 @@ import "@styles/global.css";
     </a>
 
     <!-- 🟡 Logo (premier plan — vitesse normale) -->
-    <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+    <div
+      class="pointer-events-none absolute inset-0 flex items-center justify-center"
+    >
       <div class="bg-offwhite/50 rounded p-4">
         <img
           src={logo.src}
