@@ -163,6 +163,35 @@ export default function InteractiveDesk() {
     `;
     svgEl.insertBefore(focusStyle, svgEl.firstChild);
 
+    // The SVG runs several always-on CSS animations (smoke, spider, clock hands,
+    // logos, night overlay/stars/moons, claude icon). Repainting them every frame
+    // competes with the pan/zoom transform for the frame budget, which is most
+    // noticeable on mobile. Pausing them while a gesture is active frees that
+    // budget so panning/zooming stays smooth.
+    const pauseAnimationsStyle = document.createElementNS("http://www.w3.org/2000/svg", "style");
+    pauseAnimationsStyle.textContent = `
+      svg.is-panning #smoke-1,
+      svg.is-panning #smoke-2,
+      svg.is-panning #smoke-3,
+      svg.is-panning #spider-orbit,
+      svg.is-panning #night-overlay,
+      svg.is-panning #stellar,
+      svg.is-panning #moon_1,
+      svg.is-panning #moon_2,
+      svg.is-panning #moon_3,
+      svg.is-panning #moon_4,
+      svg.is-panning #react-logo,
+      svg.is-panning #vue-logo,
+      svg.is-panning #svelte-logo,
+      svg.is-panning #astro-logo,
+      svg.is-panning #clock_hour,
+      svg.is-panning #clock_minute,
+      svg.is-panning #claude-icon {
+        animation-play-state: paused;
+      }
+    `;
+    svgEl.insertBefore(pauseAnimationsStyle, svgEl.firstChild);
+
     // Apply the pan/zoom transform to the HTML wrapper (not an SVG-internal <g>):
     // d3-zoom computes x/y in the container's CSS pixel space, and the SVG's
     // viewBox (5000x3200) is rendered much smaller than that, so a translate
@@ -177,6 +206,9 @@ export default function InteractiveDesk() {
     let pendingTransform: string | null = null;
     const zoomBehavior = zoom<HTMLDivElement, unknown>()
       .scaleExtent([0.5, 8])
+      .on("start", () => {
+        svgEl.classList.add("is-panning");
+      })
       .on("zoom", (event) => {
         const { x, y, k } = event.transform;
         pendingTransform = `translate(${x}px, ${y}px) scale(${k})`;
@@ -188,6 +220,9 @@ export default function InteractiveDesk() {
             rafId = null;
           });
         }
+      })
+      .on("end", () => {
+        svgEl.classList.remove("is-panning");
       });
     containerSelection.call(zoomBehavior);
     containerSelection.on("dblclick.zoom", null);
