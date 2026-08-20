@@ -1,7 +1,7 @@
 export const TOOLTIP_LABELS: Record<string, string> = {
   dundie: "The Office",
   luffy: "One Piece",
-  controller: "Jeux vidéo",
+  playstation: "Console playstation",
   spider: "Spider-Man",
   snk: "L'Attaque des Titans",
   kaamelott: "Kaamelott",
@@ -10,9 +10,9 @@ export const TOOLTIP_LABELS: Record<string, string> = {
   bicycle: "Gravel",
   hunter: "Hunter x Hunter",
   losc: "LOSC Lille",
-  posters: "Affiches musicales",
+  nirvana: "Affiche musicale",
+  radiohead: "Affiche musicale",
   run: "Running",
-  triforce: "La Triforce",
   drumsticks: "Batterie",
   chess: "Échecs",
   brel: "Brel",
@@ -25,13 +25,15 @@ export const TOOLTIP_LABELS: Record<string, string> = {
   frameworks: "Frameworks JS",
   ui: "UX / UI Design",
   konami: "Konami Code",
+  water: "gourde d'eau",
+  bass: "guitare basse"
 };
 
 export const TOOLTIP_CONTENT: Record<string, string> = {
   dundie:
     "🏢 The Office ! La version US, ne serait-ce que pour Steve Carrell !",
   luffy: "🏴‍☠️ One Piece — Bientôt 20 ans que je suis l'anime !",
-  controller:
+  playstation:
     "🎮 Sans être un gamer et malgré le manque de temps, un trio me suit depuis longtemps : Fifa, Zelda et Mario Kart !",
   spider:
     "🕷️ Chaque fois que je me fais mordre par une araignée, je me dis qu'avec un peu de chance, le lendemain matin...",
@@ -40,13 +42,14 @@ export const TOOLTIP_CONTENT: Record<string, string> = {
     "👑 Kaamelott — bien placé, un \"j'ai ma chemise, mais c'est mou\" peut me faire éclater de rire !",
   books: "📚 Quelques bouquins qui m'ont marqué...",
   pasta: "🍝 S'il ne devait rester qu'un ingrédient sur la planète !",
-  bicycle: "🚴 Jamais sans mon gravel !",
+  bicycle: "🚴 Aussi attaché à mon gravel qu'Atreyu à Artax !",
   hunter: "Hunter x Hunter — une pépite !",
   losc: "⚽️ 🐶 Nous sommes les enfants de la Déesse, nous sommes les enfants de Lille...",
-  posters:
-    "🎸 Quelques artistes qui ont particulièrement contribué à mon éducation musicale!",
+  nirvana:
+    "🎸 Ma porte d'entrée vers la musique !",
+    radiohead:
+    "🎸 Que dire ? Radiohead quoi !",
   run: "Mon 1er Marathon le 25/10 à Lille... 🫣",
-  triforce: "🔺 La Triforce — Parce que Ganondorf revient toujours !",
   drumsticks: "🥁 On pourrait se croiser dans les jams lilloises...",
   chess:
     "♟️ Je joue beaucoup trop lentement, alors je perds souvent... mais j'adore ça !",
@@ -62,4 +65,6 @@ export const TOOLTIP_CONTENT: Record<string, string> = {
   frameworks: "🛠️ Mes frameworks JS de prédilection",
   ui: "🎨 UX, UI, Design System... un univers qui me passionne et dans lequel j'essaie de me former continuellement !",
   konami: "Ah ce fameux cheat code !",
+  water: "J'adore l'eau ! Dans 30 ans il n'y en aura plus !",
+  bass: "𝄢 Ceci n'est pas une guitare, c'est bien mieux !"
 };
