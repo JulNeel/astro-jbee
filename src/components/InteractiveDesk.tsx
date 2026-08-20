@@ -2,13 +2,40 @@ import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity } from "d3-zoom";
 import confetti from "canvas-confetti";
-import workstationSvgUrl from "@images/jbee_office_workstation_full.svg?url";
+import workstationSvgUrl from "@images/jbee_office_animated.svg?url";
 import { TOOLTIP_CONTENT, TOOLTIP_LABELS } from "./InteractiveDesk.data";
 
-// The design tool's latest export duplicates the artboard name in clickable
-// element ids (e.g. "..._full-u-jbee_office_workstation_full-u-click_ara").
-const CLICK_ID_PREFIX =
-  "jbee_office_workstation_full-u-jbee_office_workstation_full-u-click_";
+// Maps a clickable element's id in the SVG to its tooltip key in InteractiveDesk.data.
+const ELEMENT_ID_TO_TOOLTIP_KEY: Record<string, string> = {
+  "the-office": "dundie",
+  CI: "ci",
+  "click-luffy": "luffy",
+  "click_playstation": "playstation",
+  "click-spider": "spider",
+  "snk-anime": "snk",
+  kaamelott: "kaamelott",
+  books: "books",
+  pasta: "pasta",
+  gravel: "bicycle",
+  "click_hunter": "hunter",
+  "losc-sticker": "losc",
+  nirvana: "nirvana",
+  radiohead: "radiohead",
+  marathon: "run",
+  drum: "drumsticks",
+  "chess-dot-com": "chess",
+  "brel-by-kluk": "brel",
+  "belle-ile": "belle-ile",
+  music: "music",
+  bass: "bass",
+  ara: "ara",
+  "claude-icon": "claude",
+  wcag: "wcag",
+  "click_frameworks": "frameworks",
+  "web-design": "ui",
+  "cheat-code": "konami",
+  "water-bottle": "water",
+};
 
 type TooltipState = {
   visible: boolean;
@@ -115,6 +142,7 @@ export default function InteractiveDesk() {
     if (!svgEl) return;
 
     svgEl.setAttribute("width", "100%");
+    svgEl.setAttribute("height", "auto");
     svgEl.style.pointerEvents = "all";
 
     // Accessible name for screen readers. Deliberately aria-label (not a <title>
@@ -135,23 +163,14 @@ export default function InteractiveDesk() {
     `;
     svgEl.insertBefore(focusStyle, svgEl.firstChild);
 
-    // Wrap visual children in a <g> so D3 zoom applies transforms in SVG coordinate
-    // space. <style>, <defs> and #s-g1 stay as direct SVG children so that the
-    // CSS :has(>#s-g1) animation selectors keep working. The design tool renames
-    // this sentinel group on every export (previously #s-g2), so this id must be
-    // kept in sync with whatever :has(>#...) the exported <style> block requires.
-    const zoomGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    zoomGroup.style.willChange = "transform";
-    zoomGroup.style.transformOrigin = "0 0";
-    const toMove = Array.from(svgEl.children).filter(
-      (el) =>
-        el.tagName !== "defs" &&
-        el.tagName !== "style" &&
-        el.id !== "jbee_office_workstation_full-s-g1",
-    );
-    toMove.forEach((el) => zoomGroup.appendChild(el));
-    const sg1 = svgEl.querySelector("#jbee_office_workstation_full-s-g1");
-    svgEl.insertBefore(zoomGroup, sg1 ?? null);
+    // Apply the pan/zoom transform to the HTML wrapper (not an SVG-internal <g>):
+    // d3-zoom computes x/y in the container's CSS pixel space, and the SVG's
+    // viewBox (5000x3200) is rendered much smaller than that, so a translate
+    // applied inside the SVG's own coordinate system would move the image by only
+    // a fraction of the pointer's actual movement. Transforming the wrapper keeps
+    // both in the same coordinate space.
+    inner.style.willChange = "transform";
+    inner.style.transformOrigin = "0 0";
 
     const containerSelection = select(container);
     let rafId: number | null = null;
@@ -164,7 +183,7 @@ export default function InteractiveDesk() {
         if (rafId === null) {
           rafId = requestAnimationFrame(() => {
             if (pendingTransform !== null) {
-              zoomGroup.style.transform = pendingTransform;
+              inner.style.transform = pendingTransform;
             }
             rafId = null;
           });
@@ -177,13 +196,13 @@ export default function InteractiveDesk() {
       containerSelection.transition().duration(300).call(zoomBehavior.transform, zoomIdentity);
     };
 
-    const clickElements = container.querySelectorAll<SVGElement>(
-      `[id^="${CLICK_ID_PREFIX}"]`,
-    );
+    const clickElements = Object.keys(ELEMENT_ID_TO_TOOLTIP_KEY)
+      .map((id) => container.querySelector<SVGElement>(`#${CSS.escape(id)}`))
+      .filter((el): el is SVGElement => el !== null);
     const cleanups: (() => void)[] = [];
 
     clickElements.forEach((el) => {
-      const key = el.id.replace(CLICK_ID_PREFIX, "");
+      const key = ELEMENT_ID_TO_TOOLTIP_KEY[el.id];
       const labelText = TOOLTIP_LABELS[key] ?? TOOLTIP_CONTENT[key] ?? key;
 
       el.setAttribute("tabindex", "0");
@@ -228,8 +247,8 @@ export default function InteractiveDesk() {
     const handleSvgClick = (e: Event) => {
       let target = e.target as Element | null;
       while (target && target !== (svgEl as Element)) {
-        if (target.id?.startsWith(CLICK_ID_PREFIX)) {
-          const key = target.id.replace(CLICK_ID_PREFIX, "");
+        const key = target.id ? ELEMENT_ID_TO_TOOLTIP_KEY[target.id] : undefined;
+        if (key) {
           const text = TOOLTIP_CONTENT[key];
           if (text) {
             const rect = target.getBoundingClientRect();
@@ -313,7 +332,7 @@ export default function InteractiveDesk() {
       </div>
       {/* Instructions for screen readers */}
       <div id="interactive-desk-instructions" className="sr-only">
-        Cette illustration contient 26 objets interactifs qui révèlent des informations sur J.B. :
+        Cette illustration contient 28 objets interactifs qui révèlent des informations sur J.B. :
         ses séries, ses passions, ses outils, sa vie de musicien…
         Naviguez entre les objets avec la touche Tab, puis appuyez sur Entrée ou Espace pour en savoir plus.
         Le contenu s'affiche et est lu automatiquement. Appuyez sur Échap pour fermer.
