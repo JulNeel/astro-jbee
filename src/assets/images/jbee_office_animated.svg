@@ -27,15 +27,15 @@
    inkscape:pageopacity="0.0"
    inkscape:pagecheckerboard="0"
    inkscape:deskcolor="#d1d1d1"
-   inkscape:zoom="0.52194476"
-   inkscape:cx="2132.4096"
-   inkscape:cy="771.1544"
+   inkscape:zoom="0.96731075"
+   inkscape:cx="2663.0532"
+   inkscape:cy="1404.4091"
    inkscape:window-width="2560"
    inkscape:window-height="1382"
    inkscape:window-x="1512"
    inkscape:window-y="58"
    inkscape:window-maximized="0"
-   inkscape:current-layer="moon_4" />
+   inkscape:current-layer="g7987" />
    <defs
    id="defs1">
       <linearGradient
@@ -17449,7 +17449,7 @@
             <path
    id="path7627"
    style="fill:#f5f6cb;fill-opacity:1;fill-rule:nonzero;stroke:none"
-   d="m 448.215,1267.37 c -4.477,0 -3.86,-6.12 0.562,-6.12 4.493,0 3.852,6.12 -0.562,6.12" />
+   d="m 530.47839,1462.4275 c -4.477,0 -3.86,-6.12 0.562,-6.12 4.493,0 3.852,6.12 -0.562,6.12" />
             <path
    id="path7628"
    style="fill:#f5f6cb;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -17565,7 +17565,7 @@
             <path
    id="path7659"
    style="fill:#f5f6cb;fill-opacity:1;fill-rule:nonzero;stroke:none"
-   d="m 1399.595,1398.135 c -3.4,0 -2.94,-4.65 0.42,-4.65 3.43,0 2.94,4.65 -0.42,4.65" />
+   d="m 1125.6664,1664.4309 c -3.4,0 -2.94,-4.65 0.42,-4.65 3.43,0 2.94,4.65 -0.42,4.65" />
             <path
    id="path7660"
    style="fill:#f5f6cb;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -19141,7 +19141,8 @@
                </g>
             </g>
             <g
-   id="g7965">
+   id="g7965"
+   transform="translate(290.89013,513.93417)">
                <g
    clip-path="url(#clipPath4864-4-6)"
    id="g7964">
@@ -19346,7 +19347,8 @@
       <g
    id="moon_1"
    transform="matrix(0.36390286,0,0,0.36390286,-1684.6763,-698.11488)"
-   style="opacity:0.7">
+   style="opacity:0.6"
+   sodipodi:insensitive="true">
          <path
    id="path1448"
    d="m 1565.3349,-152.92968 c -0.2933,63.328 -51.86,114.429332 -115.188,114.139999 -63.328,-0.290667 -114.4306,-51.862665 -114.14,-115.190659 0.2894,-63.328 51.8627,-114.43067 115.1907,-114.14 63.3266,0.28933 114.4306,51.86266 114.1373,115.19066"
@@ -21159,7 +21161,8 @@
       <g
    id="moon_2"
    transform="matrix(0.36390286,0,0,0.36390286,-1558.6175,-752.41942)"
-   style="opacity:0.7">
+   style="opacity:0.6"
+   sodipodi:insensitive="true">
          <path
    id="path1890"
    d="m 1565.3349,-152.92968 c -0.2933,63.328 -51.86,114.429332 -115.188,114.139999 -63.328,-0.290667 -114.4306,-51.862665 -114.14,-115.190659 0.2894,-63.328 51.8627,-114.43067 115.1907,-114.14 63.3266,0.28933 114.4306,51.86266 114.1373,115.19066"
@@ -22884,7 +22887,8 @@
       <g
    id="moon_3"
    transform="matrix(0.36390286,0,0,0.36390286,-1372.8324,-756.5807)"
-   style="opacity:0.7">
+   style="opacity:0.6"
+   sodipodi:insensitive="true">
          <path
    id="path2110"
    d="m 1565.3349,-152.92968 c -0.2933,63.328 -51.86,114.429332 -115.188,114.139999 -63.328,-0.290667 -114.4306,-51.862665 -114.14,-115.190659 0.2894,-63.328 51.8627,-114.43067 115.1907,-114.14 63.3266,0.28933 114.4306,51.86266 114.1373,115.19066"
@@ -24529,7 +24533,8 @@
       <g
    id="moon_4"
    transform="matrix(0.36390286,0,0,0.36390286,-1244.7045,-707.03531)"
-   style="opacity:0.7">
+   style="opacity:0.6"
+   sodipodi:insensitive="true">
          <path
    id="path2312"
    d="m 1565.3349,-152.92968 c -0.2933,63.328 -51.86,114.429332 -115.188,114.139999 -63.328,-0.290667 -114.4306,-51.862665 -114.14,-115.190659 0.2894,-63.328 51.8627,-114.43067 115.1907,-114.14 63.3266,0.28933 114.4306,51.86266 114.1373,115.19066"
