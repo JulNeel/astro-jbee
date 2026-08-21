@@ -315,14 +315,8 @@ export default function InteractiveDesk() {
   }, [svgContent]);
 
   return (
-    <div
-      ref={containerRef}
-      role="application"
-      aria-label="Bureau interactif — explorez les objets pour en savoir plus"
-      aria-describedby="interactive-desk-instructions"
-      className="border-primary bg-foreground relative w-full overflow-hidden rounded-2xl border-2 touch-none"
-    >
-      <div className="pointer-events-none absolute top-3 left-1/2 z-10 flex -translate-x-1/2 flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-xl bg-black/40 px-4 py-2 text-xs text-white backdrop-blur-sm">
+    <>
+      <div className="bg-primary-dark text-offwhite dark:bg-purewhite dark:text-offblack border-primary/20 mb-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-xl border px-4 py-2 text-xs">
         <span className="hidden sm:inline">🖱️ Clic + glisser pour naviguer</span>
         <span className="hidden sm:inline">🔍 Molette pour zoomer</span>
         <span className="hidden sm:inline">👆 Cliquer sur un objet pour en savoir plus</span>
@@ -330,6 +324,13 @@ export default function InteractiveDesk() {
         <span className="sm:hidden">👆 Toucher pour explorer</span>
         <span className="sm:hidden">🔍 Pincer pour zoomer</span>
       </div>
+      <div
+        ref={containerRef}
+        role="application"
+        aria-label="Bureau interactif — explorez les objets pour en savoir plus"
+        aria-describedby="interactive-desk-instructions"
+        className="bg-foreground relative w-full overflow-hidden rounded-2xl touch-none"
+      >
       <button
         onClick={() => resetZoomRef.current?.()}
         className="absolute top-3 right-3 z-10 cursor-pointer rounded-xl bg-black/40 px-4 py-2 text-xs text-white backdrop-blur-sm transition-colors hover:bg-black/60"
@@ -376,6 +377,7 @@ export default function InteractiveDesk() {
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         {tooltip.visible ? tooltip.text : ""}
       </div>
-    </div>
+      </div>
+    </>
   );
 }
