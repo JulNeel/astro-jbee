@@ -11,15 +11,25 @@ interface QuizResult {
 export default function QuizGame() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [result, setResult] = useState<QuizResult | null>(null);
+  const [lockedIds, setLockedIds] = useState<Set<string>>(new Set());
+  const [errorIds, setErrorIds] = useState<Set<string>>(new Set());
 
   const handleChange = (id: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [id]: value }));
+    setErrorIds((prev) => {
+      if (!prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     let score = 0;
     const missed: { id: string; question: string }[] = [];
+    const newlyLocked = new Set(lockedIds);
+    const newErrorIds = new Set<string>();
     for (const q of QUIZ_QUESTIONS) {
       const given = normalizeAnswer(answers[q.id] ?? "");
       const isCorrect =
@@ -27,10 +37,14 @@ export default function QuizGame() {
         q.acceptedAnswers.some((a) => normalizeAnswer(a) === given);
       if (isCorrect) {
         score += 1;
+        newlyLocked.add(q.id);
       } else {
         missed.push({ id: q.id, question: q.question });
+        newErrorIds.add(q.id);
       }
     }
+    setLockedIds(newlyLocked);
+    setErrorIds(newErrorIds);
     setResult({ score, missed });
   };
 
@@ -49,7 +63,14 @@ export default function QuizGame() {
   };
 
   const handleRestart = () => {
-    setAnswers({});
+    setAnswers((prev) => {
+      const next: Record<string, string> = {};
+      for (const id of lockedIds) {
+        next[id] = prev[id] ?? "";
+      }
+      return next;
+    });
+    setErrorIds(new Set());
     setResult(null);
     submitButtonRef.current?.focus();
   };
@@ -57,20 +78,39 @@ export default function QuizGame() {
   return (
     <div className="mx-auto w-full max-w-3xl">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {QUIZ_QUESTIONS.map((q) => (
-          <div key={q.id} className="flex flex-col gap-1">
-            <label htmlFor={`quiz-${q.id}`} className="text-foreground text-sm font-medium">
-              {q.question}
-            </label>
-            <input
-              id={`quiz-${q.id}`}
-              type="text"
-              value={answers[q.id] ?? ""}
-              onChange={(e) => handleChange(q.id, e.target.value)}
-              className="border-border bg-background-card text-foreground-card rounded-lg border px-3 py-2 text-sm"
-            />
-          </div>
-        ))}
+        {QUIZ_QUESTIONS.map((q) => {
+          const isLocked = lockedIds.has(q.id);
+          const hasError = errorIds.has(q.id);
+          const errorId = `quiz-${q.id}-error`;
+          return (
+            <div key={q.id} className="flex flex-col gap-1">
+              <label htmlFor={`quiz-${q.id}`} className="text-foreground text-sm font-medium">
+                {q.question}
+              </label>
+              <input
+                id={`quiz-${q.id}`}
+                type="text"
+                value={answers[q.id] ?? ""}
+                onChange={(e) => handleChange(q.id, e.target.value)}
+                readOnly={isLocked}
+                aria-invalid={hasError}
+                aria-describedby={hasError ? errorId : undefined}
+                className={
+                  isLocked
+                    ? "border-border bg-primary/10 text-foreground-card rounded-lg border px-3 py-2 text-sm"
+                    : hasError
+                      ? "rounded-lg border border-red-500 bg-background-card text-foreground-card px-3 py-2 text-sm"
+                      : "border-border bg-background-card text-foreground-card rounded-lg border px-3 py-2 text-sm"
+                }
+              />
+              {hasError && (
+                <p id={errorId} className="text-sm text-red-600">
+                  Réponse incorrecte
+                </p>
+              )}
+            </div>
+          );
+        })}
         <button
           ref={submitButtonRef}
           type="submit"
