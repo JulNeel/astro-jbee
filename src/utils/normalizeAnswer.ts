@@ -5,7 +5,7 @@
 export function normalizeAnswer(value: string): string {
   return value
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "") // strip combining diacritical marks
+        .replace(/[\u0300-\u036f]/g, "") // strip combining diacritical marks
     .trim()
     .toLowerCase()
     .replace(/\s+/g, " "); // collapse repeated whitespace
