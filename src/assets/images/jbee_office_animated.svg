@@ -35144,6 +35144,30 @@
          }
       }
    </style>
+   <style
+   id="style-stellar">
+      #stellar {
+         will-change: opacity;
+         animation: stellar-fade 18s linear infinite;
+      }
+
+      @keyframes stellar-fade {
+
+         0%,
+         16.6667% {
+            opacity: 0;
+         }
+
+         50%,
+         66.6667% {
+            opacity: 1;
+         }
+
+         100% {
+            opacity: 0;
+         }
+      }
+   </style>
 
    <style
    id="style-frameworks-logos">
