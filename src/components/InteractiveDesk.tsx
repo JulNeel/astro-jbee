@@ -18,7 +18,6 @@ const ELEMENT_ID_TO_TOOLTIP_KEY: Record<string, string> = {
   "snk-anime": "snk",
   kaamelott: "kaamelott",
   "click-books": "books",
-  pasta: "pasta",
   gravel: "bicycle",
   "click_hunter": "hunter",
   "losc-sticker": "losc",
@@ -177,12 +176,11 @@ export default function InteractiveDesk() {
       svg.is-panning #smoke-2,
       svg.is-panning #smoke-3,
       svg.is-panning #spider-orbit,
-      svg.is-panning #night-overlay,
-      svg.is-panning #stellar,
-      svg.is-panning #moon_1,
-      svg.is-panning #moon_2,
-      svg.is-panning #moon_3,
-      svg.is-panning #moon_4,
+      svg.is-panning #night-overlay-light,
+      svg.is-panning #moon-1,
+      svg.is-panning #moon-2,
+      svg.is-panning #moon-3,
+      svg.is-panning #moon-4,
       svg.is-panning #react-logo,
       svg.is-panning #vue-logo,
       svg.is-panning #svelte-logo,
@@ -371,7 +369,7 @@ export default function InteractiveDesk() {
       </div>
       {/* Instructions for screen readers */}
       <div id="interactive-desk-instructions" className="sr-only">
-        Cette illustration contient 31 objets interactifs qui révèlent des informations sur J.B. :
+        Cette illustration contient 30 objets interactifs qui révèlent des informations sur J.B. :
         ses séries, ses passions, ses outils, sa vie de musicien…
         Naviguez entre les objets avec la touche Tab, puis appuyez sur Entrée ou Espace pour en savoir plus.
         Le contenu s'affiche et est lu automatiquement. Appuyez sur Échap pour fermer.

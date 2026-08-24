@@ -6,7 +6,6 @@ export const TOOLTIP_LABELS: Record<string, string> = {
   snk: "L'Attaque des Titans",
   kaamelott: "Kaamelott",
   books: "Livres",
-  pasta: "Pâtes",
   bicycle: "Gravel",
   hunter: "Hunter x Hunter",
   losc: "LOSC Lille",
