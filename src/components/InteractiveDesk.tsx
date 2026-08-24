@@ -177,6 +177,7 @@ export default function InteractiveDesk() {
       svg.is-panning #smoke-3,
       svg.is-panning #spider-orbit,
       svg.is-panning #night-overlay-light,
+      svg.is-panning #stellar,
       svg.is-panning #moon-1,
       svg.is-panning #moon-2,
       svg.is-panning #moon-3,
