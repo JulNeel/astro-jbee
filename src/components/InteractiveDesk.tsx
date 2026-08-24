@@ -9,12 +9,15 @@ import { TOOLTIP_CONTENT, TOOLTIP_LABELS } from "./InteractiveDesk.data";
 const ELEMENT_ID_TO_TOOLTIP_KEY: Record<string, string> = {
   "the-office": "dundie",
   CI: "ci",
+  "click-cci": "cci",
+  "click-tour-lille": "tour-lille",
+  sneakers: "sneakers",
   "click-luffy": "luffy",
   "click_playstation": "playstation",
   "click-spider": "spider",
   "snk-anime": "snk",
   kaamelott: "kaamelott",
-  books: "books",
+  "click-books": "books",
   pasta: "pasta",
   gravel: "bicycle",
   "click_hunter": "hunter",
@@ -368,7 +371,7 @@ export default function InteractiveDesk() {
       </div>
       {/* Instructions for screen readers */}
       <div id="interactive-desk-instructions" className="sr-only">
-        Cette illustration contient 28 objets interactifs qui révèlent des informations sur J.B. :
+        Cette illustration contient 31 objets interactifs qui révèlent des informations sur J.B. :
         ses séries, ses passions, ses outils, sa vie de musicien…
         Naviguez entre les objets avec la touche Tab, puis appuyez sur Entrée ou Espace pour en savoir plus.
         Le contenu s'affiche et est lu automatiquement. Appuyez sur Échap pour fermer.

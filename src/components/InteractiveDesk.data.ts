@@ -26,7 +26,10 @@ export const TOOLTIP_LABELS: Record<string, string> = {
   ui: "UX / UI Design",
   konami: "Konami Code",
   water: "gourde d'eau",
-  bass: "guitare basse"
+  bass: "guitare basse",
+  "tour-lille": "TODO",
+  cci: "TODO",
+  sneakers: "TODO"
 };
 
 export const TOOLTIP_CONTENT: Record<string, string> = {
@@ -41,22 +44,21 @@ export const TOOLTIP_CONTENT: Record<string, string> = {
   kaamelott:
     "👑 Kaamelott — bien placé, un \"j'ai ma chemise, mais c'est mou\" peut me faire éclater de rire !",
   books: "📚 Quelques bouquins qui m'ont marqué...",
-  pasta: "🍝 S'il ne devait rester qu'un ingrédient sur la planète !",
   bicycle: "🚴 Aussi attaché à mon gravel qu'Atreyu à Artax !",
   hunter: "Hunter x Hunter — une pépite !",
   losc: "⚽️ 🐶 Nous sommes les enfants de la Déesse, nous sommes les enfants de Lille...",
   nirvana:
     "🎸 Ma porte d'entrée vers la musique !",
     radiohead:
-    "🎸 Que dire ? Radiohead quoi !",
+    "🎸 Que dire ? Des génies !",
   run: "Mon 1er Marathon le 25/10 à Lille... 🫣",
   drumsticks: "🥁 On pourrait se croiser dans les jams lilloises...",
   chess:
     "♟️ Je joue beaucoup trop lentement, alors je perds souvent... mais j'adore ça !",
-  brel: "Brel par le street artiste Roubaisien 👩‍🎨 B.KLUCK",
+  brel: "Brel par un street artiste Roubaisien 👩‍🎨",
   "belle-ile": "Belle île la bien nommée... ♥️",
   music:
-    "🎵 \"I like pleasure spiked w/pain Music is my aeroplaneIt's my aeroplane Songbird sweet and sour Jane Music is my aeroplane It's my aeroplane \"",
+    "🎵 Music is my aeroplane,It's my aeroplane",
   ci: "CI - J'offre une bouteille de champagne 🍾 à qui devine cette réf de niche ! (on cherche une série TV des années 70-80... je veux également l'épisode ! ",
   ara: "🎸ARA - Autour des Rythmes Actuels, une belle école de musique associative dont j'ai l'honneur d'être vice-président !",
   claude:
@@ -66,5 +68,8 @@ export const TOOLTIP_CONTENT: Record<string, string> = {
   ui: "🎨 UX, UI, Design System... un univers qui me passionne et dans lequel j'essaie de me former continuellement !",
   konami: "Ah ce fameux cheat code !",
   water: "J'adore l'eau ! Dans 30 ans il n'y en aura plus !",
-  bass: "𝄢 Ceci n'est pas une guitare, c'est bien mieux !"
+  bass: "𝄢 Ceci n'est pas une guitare, c'est bien mieux !",
+  "tour-lille": "🏢 Vous connaissez surement cette fameuse tour, mais savez-vous comment elle s'appelle ? (réponse en post-it, vous n'êtes pas prêts !)",
+  cci:"Non, ce n'est pas le beffroy de la Mairie !",
+  sneakers: "❤️ Forum Low Cl ❤️"
 };
