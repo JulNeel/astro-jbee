@@ -4,6 +4,7 @@ import Layout from "@layouts/Layout.astro";
 import { aboutService } from "@content/api/strapi/services/about";
 import { aboutSchema } from "@content/schemas/about.schema";
 import InteractiveDesk from "@components/InteractiveDesk";
+import QuizGame from "@components/QuizGame";
 import "@fontsource-variable/caveat/index.css";
 
 const rawAbout = await aboutService.get();
@@ -98,6 +99,7 @@ const about = aboutSchema.parse(rawAbout);
     <Container variant="narrow" class="mb-20">
       <div class="desk-intro h2 mb-8">Si vous voulez en savoir plus sur moi, je vous laisse fouiller mon bureau !</div>
       <InteractiveDesk client:load />
+      <QuizGame client:load />
     </Container>
   </main>
 </Layout>
