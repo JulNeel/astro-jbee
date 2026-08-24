@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { QUIZ_QUESTIONS } from "../data/quiz-questions";
 import { normalizeAnswer } from "../utils/normalizeAnswer";
 
@@ -33,6 +33,21 @@ export default function QuizGame() {
     setResult({ score, missed });
   };
 
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (result) {
+      dialogRef.current?.focus();
+    }
+  }, [result]);
+
+  const handleRestart = () => {
+    setAnswers({});
+    setResult(null);
+    submitButtonRef.current?.focus();
+  };
+
   return (
     <div className="mx-auto w-full max-w-3xl">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -51,6 +66,7 @@ export default function QuizGame() {
           </div>
         ))}
         <button
+          ref={submitButtonRef}
           type="submit"
           className="bg-primary hover:bg-primary-dark self-start rounded-xl px-6 py-2 text-sm font-semibold text-white transition-colors"
         >
@@ -58,9 +74,41 @@ export default function QuizGame() {
         </button>
       </form>
       {result && (
-        <p className="mt-4 text-lg font-semibold">
-          Score : {result.score}/{QUIZ_QUESTIONS.length}
-        </p>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={handleRestart}
+        >
+          <div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="quiz-result-title"
+            tabIndex={-1}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-background-card text-foreground-card max-h-[80vh] w-full max-w-md overflow-y-auto rounded-2xl p-6 shadow-xl"
+          >
+            <h2 id="quiz-result-title" className="text-xl font-bold">
+              Score : {result.score}/{QUIZ_QUESTIONS.length}
+            </h2>
+            {result.missed.length > 0 && (
+              <>
+                <p className="mt-4 text-sm font-medium">Questions ratées :</p>
+                <ul className="mt-2 list-disc pl-5 text-sm">
+                  {result.missed.map((question) => (
+                    <li key={question}>{question}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+            <button
+              type="button"
+              onClick={handleRestart}
+              className="bg-primary hover:bg-primary-dark mt-6 rounded-xl px-6 py-2 text-sm font-semibold text-white transition-colors"
+            >
+              Recommencer
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
