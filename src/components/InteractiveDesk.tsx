@@ -12,21 +12,24 @@ const ELEMENT_ID_TO_TOOLTIP_KEY: Record<string, string> = {
   "click-cci": "cci",
   "click-tour-lille": "tour-lille",
   sneakers: "sneakers",
-  "click-luffy": "luffy",
   "click_playstation": "playstation",
   "click-spider": "spider",
   "snk-anime": "snk",
   kaamelott: "kaamelott",
-  "click-books": "books",
-  gravel: "bicycle",
-  "click_hunter": "hunter",
+  platon: "platon",
+  kant:"kant",
+  "romain-gary":"romain-gary",
+  cyrano:"cyrano",
+  camus:"camus",
+  sherlock:"sherlock",
+  bicycle: "bicycle",
   "losc-sticker": "losc",
   nirvana: "nirvana",
   radiohead: "radiohead",
   marathon: "run",
-  drum: "drumsticks",
-  "chess-dot-com": "chess",
-  "brel-by-kluk": "brel",
+  snare: "snare",
+  "chess": "chess",
+  "brel": "brel",
   "belle-ile": "belle-ile",
   music: "music",
   bass: "bass",
@@ -35,7 +38,6 @@ const ELEMENT_ID_TO_TOOLTIP_KEY: Record<string, string> = {
   wcag: "wcag",
   "click_frameworks": "frameworks",
   "web-design": "ui",
-  "cheat-code": "konami",
   "water-bottle": "water",
 };
 
@@ -177,7 +179,6 @@ export default function InteractiveDesk() {
       svg.is-panning #smoke-3,
       svg.is-panning #spider-orbit,
       svg.is-panning #night-overlay-light,
-      svg.is-panning #stellar,
       svg.is-panning #moon-1,
       svg.is-panning #moon-2,
       svg.is-panning #moon-3,
@@ -370,7 +371,7 @@ export default function InteractiveDesk() {
       </div>
       {/* Instructions for screen readers */}
       <div id="interactive-desk-instructions" className="sr-only">
-        Cette illustration contient 30 objets interactifs qui révèlent des informations sur J.B. :
+        Cette illustration contient 32 objets interactifs qui révèlent des informations sur J.B. :
         ses séries, ses passions, ses outils, sa vie de musicien…
         Naviguez entre les objets avec la touche Tab, puis appuyez sur Entrée ou Espace pour en savoir plus.
         Le contenu s'affiche et est lu automatiquement. Appuyez sur Échap pour fermer.
