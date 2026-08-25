@@ -49,12 +49,12 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     acceptedAnswers: ["J.K. Simmons", "JK Simmons", "J.K Simmons", "Simmons"],
     difficulty: "medium",
   },
-  {
-    id: "q7",
-    question: "📺 C'était une très belle chaine TV de jeu vidéo",
-    acceptedAnswers: ["Game One"],
-    difficulty: "medium",
-  },
+  // {
+  //   id: "q7",
+  //   question: "📺 C'était une très belle chaine TV de jeu vidéo",
+  //   acceptedAnswers: ["Game One"],
+  //   difficulty: "medium",
+  // },
   {
     id: "q8",
     question: "🤔 C'était le premier d'entre eux en 2010, depuis tout le monde l'a oublié",
@@ -83,13 +83,13 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     id: "q12",
     question: "🌶️ L'album dans lequel on peut trouver ces paroles de refrain",
     acceptedAnswers: ["One Hot Minute"],
-    difficulty: "difficult",
+    difficulty: "medium",
   },
   {
     id: "q13",
     question: "🇧🇪 Le plus connu des philosophes belges",
     acceptedAnswers: ["JCVD", "Jean-Claude Van Damme", "Jean Claude Van Damme"],
-    difficulty: "medium",
+    difficulty: "easy",
   },
   {
     id: "q14",
@@ -97,24 +97,24 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     acceptedAnswers: ["Sarah Bernhardt", "Sarah Bernhard"],
     difficulty: "difficult",
   },
-  {
-    id: "q15",
-    question: "😎 Son nom de scène vient du fait qu'il saute partout",
-    acceptedAnswers: ["Flea"],
-    difficulty: "medium",
-  },
+  // {
+  //   id: "q15",
+  //   question: "😎 Son nom de scène vient du fait qu'il saute partout",
+  //   acceptedAnswers: ["Flea"],
+  //   difficulty: "medium",
+  // },
   {
     id: "q16",
     question: "👨‍🎨 Quel est ce street artiste ?",
     acceptedAnswers: ["KLUK", "Benjamin Kluk", "Kluk"],
     difficulty: "GOD LEVEL",
   },
-  {
-    id: "q17",
-    question: "🎬 Le réalisateur de spiderman le plus prédestiné",
-    acceptedAnswers: ["Marc Webb"],
-    difficulty: "medium",
-  },
+  // {
+  //   id: "q17",
+  //   question: "🎬 Le réalisateur de spiderman le plus prédestiné",
+  //   acceptedAnswers: ["Marc Webb"],
+  //   difficulty: "medium",
+  // },
   {
     id: "q18",
     question: "👮🏻‍♂️ L'inspiration Antique de du Lieutenant Columbo",
@@ -139,12 +139,12 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     acceptedAnswers: ["Burak Yılmaz", "Burak Yilmaz", "Yılmaz", "Yilmaz"],
     difficulty: "GOD LEVEL",
   },
-  {
-    id: "q22",
-    question: "🏃🏻 Physiologiquement il est en footing",
-    acceptedAnswers: ["Jimmy Gressier", "Gressier"],
-    difficulty: "difficult",
-  },
+  // {
+  //   id: "q22",
+  //   question: "🏃🏻 Physiologiquement il est en footing",
+  //   acceptedAnswers: ["Jimmy Gressier", "Gressier"],
+  //   difficulty: "difficult",
+  // },
   {
     id: "q23",
     question: "🏴󠁧󠁢󠁷󠁬󠁳󠁿 C'est ainsi que le Gallois veut être considéré",
@@ -157,10 +157,10 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     acceptedAnswers: ["roque", "le roque", "petit roque", "grand roque"],
     difficulty: "medium",
   },
-  {
-    id: "q25",
-    question: "❓ C'est inscrit sur le meuble",
-    acceptedAnswers: ["CI"],
-    difficulty: "difficult",
-  },
+  // {
+  //   id: "q25",
+  //   question: "❓ C'est inscrit sur le meuble",
+  //   acceptedAnswers: ["CI"],
+  //   difficulty: "difficult",
+  // },
 ];

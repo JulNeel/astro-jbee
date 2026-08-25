@@ -12,7 +12,7 @@ const DIFFICULTY_SECTIONS: { difficulty: QuizDifficulty; label: string }[] = [
   { difficulty: "easy", label: "Echauffement..." },
   { difficulty: "medium", label: "Un peu sérieux..." },
   { difficulty: "difficult", label: "Là on discute !" },
-  { difficulty: "GOD LEVEL", label: "GOAT RESTRICTED AREA" },
+  { difficulty: "GOD LEVEL", label: "🚨 GOAT RESTRICTED AREA 🚨" },
 ];
 
 const DIFFICULTY_BACKGROUND: Record<QuizDifficulty, string> = {
@@ -98,7 +98,7 @@ export default function QuizGame() {
   return (
     <details className="group bg-background-card mx-auto mt-16 w-full max-w-3xl rounded-2xl p-6 shadow-lg sm:p-8">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
-        <h2 className="font-caveat text-4xl font-bold">Un petit Quizz ?</h2>
+        <h2 className="font-caveat text-4xl font-bold">Un petit Quizz pour la route ?</h2>
         <span className="inline-block text-2xl transition-transform duration-200 group-open:rotate-180">▼</span>
       </summary>
       <p className="font-caveat text-primary mt-4 mb-5 text-2xl font-bold">
