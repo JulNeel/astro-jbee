@@ -5,10 +5,12 @@
 
 @import "@fontsource-variable/inter";
 @import "@fontsource/oswald";
+@import "@fontsource-variable/caveat";
 
 @theme {
   --font-primary: "Inter Variable", sans-serif;
   --font-secondary: "Oswald", sans-serif;
+  --font-caveat: "Caveat Variable", cursive;
 
   --font-heading: var(--font-secondary);
   --font-body: var(--font-primary);
