@@ -1,12 +1,32 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { QUIZ_QUESTIONS } from "../data/quiz-questions";
+import { QUIZ_QUESTIONS, type QuizDifficulty } from "../data/quiz-questions";
 import { normalizeAnswer } from "../utils/normalizeAnswer";
 
 interface QuizResult {
   score: number;
   missed: { id: string; question: string }[];
 }
+
+const DIFFICULTY_SECTIONS: { difficulty: QuizDifficulty; label: string }[] = [
+  { difficulty: "easy", label: "Echauffement..." },
+  { difficulty: "medium", label: "Un peu sérieux..." },
+  { difficulty: "difficult", label: "Là on discute !" },
+  { difficulty: "GOD LEVEL", label: "GOAT RESTRICTED AREA" },
+];
+
+const DIFFICULTY_BACKGROUND: Record<QuizDifficulty, string> = {
+  easy: "bg-success/20",
+  medium: "bg-info/20",
+  difficult: "bg-warning/20",
+  "GOD LEVEL": "bg-danger/20",
+};
+const DIFFICULTY_FOREGROUND: Record<QuizDifficulty, string> = {
+  easy: "text-success-contrast",
+  medium: "text-info-contrat",
+  difficult: "text-warning-contrat",
+  "GOD LEVEL": "text-danger-contrat",
+};
 
 export default function QuizGame() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -76,39 +96,58 @@ export default function QuizGame() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-3xl">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {QUIZ_QUESTIONS.map((q) => {
-          const isLocked = lockedIds.has(q.id);
-          const hasError = errorIds.has(q.id);
-          const errorId = `quiz-${q.id}-error`;
+    <details className="group bg-background-card mx-auto mt-16 w-full max-w-3xl rounded-2xl p-6 shadow-lg sm:p-8">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+        <h2 className="font-caveat text-4xl font-bold">Un petit Quizz ?</h2>
+        <span className="inline-block text-2xl transition-transform duration-200 group-open:rotate-180">▼</span>
+      </summary>
+      <p className="font-caveat text-primary mt-4 mb-5 text-2xl font-bold">
+        La réponse à chacune des question a un rapport de près ou de loin avec un object cliquable de l'image...
+      </p>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+        {DIFFICULTY_SECTIONS.map(({ difficulty, label }) => {
+          const questions = QUIZ_QUESTIONS.filter((q) => q.difficulty === difficulty);
+          if (questions.length === 0) return null;
           return (
-            <div key={q.id} className="flex flex-col gap-1">
-              <label htmlFor={`quiz-${q.id}`} className="text-foreground text-sm font-medium">
-                {q.question}
-              </label>
-              <input
-                id={`quiz-${q.id}`}
-                type="text"
-                value={answers[q.id] ?? ""}
-                onChange={(e) => handleChange(q.id, e.target.value)}
-                readOnly={isLocked}
-                aria-invalid={hasError}
-                aria-describedby={hasError ? errorId : undefined}
-                className={
-                  isLocked
-                    ? "border-border bg-primary/10 text-foreground-card rounded-lg border px-3 py-2 text-sm"
-                    : hasError
-                      ? "rounded-lg border border-red-500 bg-background-card text-foreground-card px-3 py-2 text-sm"
-                      : "border-border bg-background-card text-foreground-card rounded-lg border px-3 py-2 text-sm"
-                }
-              />
-              {hasError && (
-                <p id={errorId} className="text-sm text-red-600">
-                  Réponse incorrecte
-                </p>
-              )}
-            </div>
+            <fieldset key={difficulty} className="flex flex-col gap-4">
+              <legend className="h3 mb-2 text-3xl font-bold font-caveat">{label}</legend>
+              {questions.map((q) => {
+                const isLocked = lockedIds.has(q.id);
+                const hasError = errorIds.has(q.id);
+                const errorId = `quiz-${q.id}-error`;
+                return (
+                  <div
+                    key={q.id}
+                    className={`flex flex-col gap-1 rounded-lg p-3 ${DIFFICULTY_BACKGROUND[q.difficulty]}`}
+                  >
+                    <label htmlFor={`quiz-${q.id}`} className={`${DIFFICULTY_FOREGROUND[q.difficulty]} text-xl font-bold font-caveat`}>
+                      {q.question}
+                    </label>
+                    <input
+                      id={`quiz-${q.id}`}
+                      type="text"
+                      value={answers[q.id] ?? ""}
+                      onChange={(e) => handleChange(q.id, e.target.value)}
+                      readOnly={isLocked}
+                      aria-invalid={hasError}
+                      aria-describedby={hasError ? errorId : undefined}
+                      className={
+                        isLocked
+                          ? "border-border bg-primary/10 text-foreground-card rounded-lg border px-3 py-2 text-sm"
+                          : hasError
+                            ? "rounded-lg border border-red-500 bg-background-card text-foreground-card px-3 py-2 text-sm"
+                            : "border-border bg-background-card text-foreground-card rounded-lg border px-3 py-2 text-sm"
+                      }
+                    />
+                    {hasError && (
+                      <p id={errorId} className="text-sm text-red-600">
+                        Réponse incorrecte
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </fieldset>
           );
         })}
         <button
@@ -171,6 +210,6 @@ export default function QuizGame() {
           </div>,
           document.body,
         )}
-    </div>
+    </details>
   );
 }
