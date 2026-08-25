@@ -167,61 +167,63 @@ html {
 body {
   @apply bg-background text-foreground font-sans text-base;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
-  @apply font-heading leading-tight font-bold;
-}
-h1,
-.h1 {
-  @apply text-foreground-heading text-4xl;
-}
-h2,
-.h2 {
-  @apply text-3xl;
-}
-h3,
-.h3 {
-  @apply text-2xl;
-}
-h4,
-.h4 {
-  @apply text-xl;
-}
-h5,
-.h5 {
-  font-size: var(--text-l);
-}
-
-@media (min-width: theme(--breakpoint-md)) {
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6 {
+    @apply font-heading leading-tight font-bold;
+  }
   h1,
   .h1 {
-    @apply text-5xl;
+    @apply text-foreground-heading text-4xl;
   }
   h2,
   .h2 {
-    @apply text-4xl;
+    @apply text-foreground-heading text-3xl;
   }
   h3,
   .h3 {
-    @apply text-3xl;
+    @apply text-foreground-heading text-2xl;
   }
   h4,
   .h4 {
-    @apply text-2xl;
+    @apply text-foreground-heading text-xl;
   }
   h5,
   .h5 {
-    @apply text-xl;
+    font-size: var(--text-l);
+  }
+
+  @media (min-width: theme(--breakpoint-md)) {
+    h1,
+    .h1 {
+      @apply text-5xl;
+    }
+    h2,
+    .h2 {
+      @apply text-4xl;
+    }
+    h3,
+    .h3 {
+      @apply text-3xl;
+    }
+    h4,
+    .h4 {
+      @apply text-2xl;
+    }
+    h5,
+    .h5 {
+      @apply text-xl;
+    }
   }
 }
 
