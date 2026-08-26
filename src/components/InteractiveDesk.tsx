@@ -61,7 +61,9 @@ export default function InteractiveDesk() {
   const innerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const resetZoomRef = useRef<(() => void) | null>(null);
+  const svgElRef = useRef<SVGSVGElement | null>(null);
   const [svgContent, setSvgContent] = useState<string | null>(null);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const [tooltip, setTooltip] = useState<TooltipState>({
     visible: false,
     text: "",
@@ -144,6 +146,7 @@ export default function InteractiveDesk() {
 
     const svgEl = container.querySelector<SVGSVGElement>("svg");
     if (!svgEl) return;
+    svgElRef.current = svgEl;
 
     svgEl.setAttribute("width", "100%");
     svgEl.setAttribute("height", "auto");
@@ -191,6 +194,24 @@ export default function InteractiveDesk() {
       svg.is-panning #clock_minute,
       svg.is-panning #claude-icon {
         animation-play-state: paused;
+      }
+      svg.reduced-motion #smoke-1,
+      svg.reduced-motion #smoke-2,
+      svg.reduced-motion #smoke-3,
+      svg.reduced-motion #spider-orbit,
+      svg.reduced-motion #night-overlay-light,
+      svg.reduced-motion #moon-1,
+      svg.reduced-motion #moon-2,
+      svg.reduced-motion #moon-3,
+      svg.reduced-motion #moon-4,
+      svg.reduced-motion #react-logo,
+      svg.reduced-motion #vue-logo,
+      svg.reduced-motion #svelte-logo,
+      svg.reduced-motion #astro-logo,
+      svg.reduced-motion #clock_hour,
+      svg.reduced-motion #clock_minute,
+      svg.reduced-motion #claude-icon {
+        animation: none !important;
       }
     `;
     svgEl.insertBefore(pauseAnimationsStyle, svgEl.firstChild);
@@ -317,6 +338,10 @@ export default function InteractiveDesk() {
     };
   }, [svgContent]);
 
+  useEffect(() => {
+    svgElRef.current?.classList.toggle("reduced-motion", reducedMotion);
+  }, [reducedMotion, svgContent]);
+
   return (
     <>
       <div className="bg-primary-dark text-offwhite dark:bg-purewhite dark:text-offblack border-primary/20 mb-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-xl border px-4 py-2 text-xs">
@@ -326,6 +351,24 @@ export default function InteractiveDesk() {
         <span className="hidden sm:inline">⌨️ Tab pour naviguer · Entrée/Espace pour activer · Échap pour fermer</span>
         <span className="sm:hidden">👆 Toucher pour explorer</span>
         <span className="sm:hidden">🔍 Pincer pour zoomer</span>
+        <label className="ml-auto flex cursor-pointer items-center gap-2">
+          <span>🚀 Animations</span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={!reducedMotion}
+            onClick={() => setReducedMotion((prev) => !prev)}
+            className={`relative h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors ${
+              reducedMotion ? "bg-offwhite/30 dark:bg-offblack/30" : "bg-secondary"
+            }`}
+          >
+            <span
+              className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+                reducedMotion ? "translate-x-0" : "translate-x-5"
+              }`}
+            />
+          </button>
+        </label>
       </div>
       <div
         ref={containerRef}
