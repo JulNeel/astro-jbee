@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { QUIZ_QUESTIONS, type QuizDifficulty } from "../data/quiz-questions";
-import { normalizeAnswer } from "../utils/normalizeAnswer";
+import { isFuzzyAnswerMatch, normalizeAnswer } from "../utils/normalizeAnswer";
 
 interface QuizResult {
   score: number;
@@ -16,16 +16,22 @@ const DIFFICULTY_SECTIONS: { difficulty: QuizDifficulty; label: string }[] = [
 ];
 
 const DIFFICULTY_BACKGROUND: Record<QuizDifficulty, string> = {
-  easy: "bg-success/20",
-  medium: "bg-info/20",
-  difficult: "bg-warning/20",
-  "GOD LEVEL": "bg-danger/20",
+  easy: "bg-success/10",
+  medium: "bg-info/10",
+  difficult: "bg-warning/10",
+  "GOD LEVEL": "bg-danger/10",
+};
+const DIFFICULTY_BACKGROUND_LOCKED: Record<QuizDifficulty, string> = {
+  easy: "bg-success/50",
+  medium: "bg-info/50",
+  difficult: "bg-warning/50",
+  "GOD LEVEL": "bg-danger/50",
 };
 const DIFFICULTY_FOREGROUND: Record<QuizDifficulty, string> = {
   easy: "text-success-contrast",
-  medium: "text-info-contrat",
-  difficult: "text-warning-contrat",
-  "GOD LEVEL": "text-danger-contrat",
+  medium: "text-info-contrast",
+  difficult: "text-warning-contrast",
+  "GOD LEVEL": "text-danger-contrast",
 };
 
 export default function QuizGame() {
@@ -54,7 +60,9 @@ export default function QuizGame() {
       const given = normalizeAnswer(answers[q.id] ?? "");
       const isCorrect =
         given.length > 0 &&
-        q.acceptedAnswers.some((a) => normalizeAnswer(a) === given);
+        q.acceptedAnswers.some((a) =>
+          isFuzzyAnswerMatch(given, normalizeAnswer(a)),
+        );
       if (isCorrect) {
         score += 1;
         newlyLocked.add(q.id);
@@ -96,21 +104,32 @@ export default function QuizGame() {
   };
 
   return (
-    <details className="group bg-background-card mx-auto mt-16 w-full max-w-3xl rounded-2xl p-6 shadow-lg sm:p-8">
+    <details className="group bg-neutral-light mx-auto mt-16 w-full max-w-3xl rounded-2xl p-6 shadow-lg sm:p-8">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
-        <h2 className="font-caveat text-4xl font-bold">Un petit Quizz pour la route ?</h2>
-        <span className="inline-block text-2xl transition-transform duration-200 group-open:rotate-180">▼</span>
+        <h2 className="font-caveat text-primary-contrast text-4xl font-bold">
+          Vous aimez les énigmes ?
+        </h2>
+        <span className="inline-block text-2xl transition-transform duration-200 group-open:rotate-180">
+          ▼
+        </span>
       </summary>
-      <p className="font-caveat text-primary mt-4 mb-5 text-2xl font-bold">
-        La réponse à chacune des question a un rapport de près ou de loin avec un object cliquable de l'image...
+      <p className="font-caveat text-primary-contrast mt-4 mb-5 text-2xl font-bold">
+        20 petites égnigmes dont chaque réponse a un rapport de près ou de loin
+        avec un object cliquable de l'image...
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         {DIFFICULTY_SECTIONS.map(({ difficulty, label }) => {
-          const questions = QUIZ_QUESTIONS.filter((q) => q.difficulty === difficulty);
+          const questions = QUIZ_QUESTIONS.filter(
+            (q) => q.difficulty === difficulty,
+          );
           if (questions.length === 0) return null;
           return (
             <fieldset key={difficulty} className="flex flex-col gap-4">
-              <legend className="h3 mb-2 text-3xl font-bold font-caveat">{label}</legend>
+              <legend
+                className={`${DIFFICULTY_FOREGROUND[difficulty]} font-caveat mb-2 text-3xl font-bold`}
+              >
+                {label}
+              </legend>
               {questions.map((q) => {
                 const isLocked = lockedIds.has(q.id);
                 const hasError = errorIds.has(q.id);
@@ -118,9 +137,12 @@ export default function QuizGame() {
                 return (
                   <div
                     key={q.id}
-                    className={`flex flex-col gap-1 rounded-lg p-3 ${DIFFICULTY_BACKGROUND[q.difficulty]}`}
+                    className={`flex flex-col gap-1 rounded-lg p-3 ${isLocked ? DIFFICULTY_BACKGROUND_LOCKED[q.difficulty] : DIFFICULTY_BACKGROUND[q.difficulty]}`}
                   >
-                    <label htmlFor={`quiz-${q.id}`} className={`${DIFFICULTY_FOREGROUND[q.difficulty]} text-xl font-bold font-caveat`}>
+                    <label
+                      htmlFor={`quiz-${q.id}`}
+                      className={`${DIFFICULTY_FOREGROUND[q.difficulty]} font-caveat text-xl font-bold`}
+                    >
                       {q.question}
                     </label>
                     <input
@@ -133,16 +155,22 @@ export default function QuizGame() {
                       aria-describedby={hasError ? errorId : undefined}
                       className={
                         isLocked
-                          ? "border-border bg-primary/10 text-foreground-card rounded-lg border px-3 py-2 text-sm"
+                          ? "border-border bg-primary/10 text-offblack rounded-lg border px-3 py-2 text-sm"
                           : hasError
-                            ? "rounded-lg border border-red-500 bg-background-card text-foreground-card px-3 py-2 text-sm"
-                            : "border-border bg-background-card text-foreground-card rounded-lg border px-3 py-2 text-sm"
+                            ? "bg-offwhite text-offblack rounded-lg border border-red-500 px-3 py-2 text-sm"
+                            : "border-border bg-offwhite text-offblack rounded-lg border px-3 py-2 text-sm"
                       }
                     />
                     {hasError && (
                       <p id={errorId} className="text-sm text-red-600">
                         Réponse incorrecte
                       </p>
+                    )}
+                    {isLocked && (
+                      <div className="text-offblack mt-1 text-sm">
+                        <p className="font-semibold">{q.answer}</p>
+                        <p className="opacity-80">{q.funFact}</p>
+                      </div>
                     )}
                   </div>
                 );
@@ -161,7 +189,7 @@ export default function QuizGame() {
       {result &&
         createPortal(
           <div
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"
+            className="fixed inset-0 z-100 flex items-center justify-center bg-black/50 p-4"
             onClick={handleClose}
           >
             <div
@@ -182,7 +210,7 @@ export default function QuizGame() {
                 type="button"
                 onClick={handleClose}
                 aria-label="Fermer"
-                className="text-foreground-card/60 hover:text-foreground-card absolute right-4 top-4 text-xl leading-none"
+                className="text-foreground-card/60 hover:text-foreground-card absolute top-4 right-4 text-xl leading-none"
               >
                 ×
               </button>
