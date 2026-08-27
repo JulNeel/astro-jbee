@@ -12,31 +12,31 @@ const ELEMENT_ID_TO_TOOLTIP_KEY: Record<string, string> = {
   "click-cci": "cci",
   "click-tour-lille": "tour-lille",
   sneakers: "sneakers",
-  "click_playstation": "playstation",
+  click_playstation: "playstation",
   "click-spider": "spider",
   "snk-anime": "snk",
   kaamelott: "kaamelott",
   platon: "platon",
-  kant:"kant",
-  "romain-gary":"romain-gary",
-  cyrano:"cyrano",
-  camus:"camus",
-  sherlock:"sherlock",
+  kant: "kant",
+  "romain-gary": "romain-gary",
+  cyrano: "cyrano",
+  camus: "camus",
+  sherlock: "sherlock",
   bicycle: "bicycle",
   "losc-sticker": "losc",
   nirvana: "nirvana",
   radiohead: "radiohead",
   marathon: "run",
   snare: "snare",
-  "chess": "chess",
-  "brel": "brel",
+  chess: "chess",
+  brel: "brel",
   "belle-ile": "belle-ile",
   music: "music",
   bass: "bass",
   ara: "ara",
   "claude-icon": "claude",
   wcag: "wcag",
-  "click_frameworks": "frameworks",
+  click_frameworks: "frameworks",
   "web-design": "ui",
   "water-bottle": "water",
 };
@@ -64,6 +64,7 @@ export default function InteractiveDesk() {
   const svgElRef = useRef<SVGSVGElement | null>(null);
   const [svgContent, setSvgContent] = useState<string | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [showPerfHint, setShowPerfHint] = useState(false);
   const [tooltip, setTooltip] = useState<TooltipState>({
     visible: false,
     text: "",
@@ -105,15 +106,23 @@ export default function InteractiveDesk() {
 
   useEffect(() => {
     const KONAMI = [
-      "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
-      "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight",
-      "b", "a",
+      "ArrowUp",
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowLeft",
+      "ArrowRight",
+      "b",
+      "a",
     ];
     let buffer: string[] = [];
 
     const handleKeydown = (e: KeyboardEvent) => {
       // Ignore keystrokes from interactive desk items (they handle their own keyboard events)
-      if ((e.target as Element)?.hasAttribute?.("data-interactive-desk-item")) return;
+      if ((e.target as Element)?.hasAttribute?.("data-interactive-desk-item"))
+        return;
       buffer.push(e.key);
       if (buffer.length > KONAMI.length) buffer.shift();
       if (buffer.join(",") === KONAMI.join(",")) {
@@ -121,8 +130,20 @@ export default function InteractiveDesk() {
         const colors = ["#4d7c94", "#ffc100"];
         const end = Date.now() + 5000;
         (function frame() {
-          confetti({ particleCount: 2, angle: 60, spread: 55, origin: { x: 0 }, colors });
-          confetti({ particleCount: 2, angle: 120, spread: 55, origin: { x: 1 }, colors });
+          confetti({
+            particleCount: 2,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors,
+          });
+          confetti({
+            particleCount: 2,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors,
+          });
           if (Date.now() < end) requestAnimationFrame(frame);
         })();
       }
@@ -159,7 +180,10 @@ export default function InteractiveDesk() {
     svgEl.setAttribute("role", "img");
 
     // Focus styles injected into the SVG (CSS overrides presentation attributes)
-    const focusStyle = document.createElementNS("http://www.w3.org/2000/svg", "style");
+    const focusStyle = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "style",
+    );
     focusStyle.textContent = `
       [data-interactive-desk-item]:focus { outline: none; }
       [data-interactive-desk-item]:focus-visible {
@@ -175,7 +199,10 @@ export default function InteractiveDesk() {
     // competes with the pan/zoom transform for the frame budget, which is most
     // noticeable on mobile. Pausing them while a gesture is active frees that
     // budget so panning/zooming stays smooth.
-    const pauseAnimationsStyle = document.createElementNS("http://www.w3.org/2000/svg", "style");
+    const pauseAnimationsStyle = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "style",
+    );
     pauseAnimationsStyle.textContent = `
       svg.is-panning #smoke-1,
       svg.is-panning #smoke-2,
@@ -252,7 +279,10 @@ export default function InteractiveDesk() {
     containerSelection.on("dblclick.zoom", null);
 
     resetZoomRef.current = () => {
-      containerSelection.transition().duration(300).call(zoomBehavior.transform, zoomIdentity);
+      containerSelection
+        .transition()
+        .duration(300)
+        .call(zoomBehavior.transform, zoomIdentity);
     };
 
     const clickElements = Object.keys(ELEMENT_ID_TO_TOOLTIP_KEY)
@@ -284,7 +314,9 @@ export default function InteractiveDesk() {
         }
       };
       el.addEventListener("keydown", handleKeydown as EventListener);
-      cleanups.push(() => el.removeEventListener("keydown", handleKeydown as EventListener));
+      cleanups.push(() =>
+        el.removeEventListener("keydown", handleKeydown as EventListener),
+      );
 
       // Blur: close tooltip only when leaving the interactive group
       const handleBlur = (e: FocusEvent) => {
@@ -294,19 +326,25 @@ export default function InteractiveDesk() {
         }
       };
       el.addEventListener("blur", handleBlur as EventListener);
-      cleanups.push(() => el.removeEventListener("blur", handleBlur as EventListener));
+      cleanups.push(() =>
+        el.removeEventListener("blur", handleBlur as EventListener),
+      );
 
       const handleMouseLeave = () => {
         setTooltip((prev) => ({ ...prev, visible: false }));
       };
       el.addEventListener("mouseleave", handleMouseLeave);
-      cleanups.push(() => el.removeEventListener("mouseleave", handleMouseLeave));
+      cleanups.push(() =>
+        el.removeEventListener("mouseleave", handleMouseLeave),
+      );
     });
 
     const handleSvgClick = (e: Event) => {
       let target = e.target as Element | null;
       while (target && target !== (svgEl as Element)) {
-        const key = target.id ? ELEMENT_ID_TO_TOOLTIP_KEY[target.id] : undefined;
+        const key = target.id
+          ? ELEMENT_ID_TO_TOOLTIP_KEY[target.id]
+          : undefined;
         if (key) {
           const text = TOOLTIP_CONTENT[key];
           if (text) {
@@ -342,24 +380,69 @@ export default function InteractiveDesk() {
     svgElRef.current?.classList.toggle("reduced-motion", reducedMotion);
   }, [reducedMotion, svgContent]);
 
+  // The "disable animations" hint is only useful when it's likely to apply:
+  // touch devices (weaker GPUs, more animation-related jank) show it right
+  // away; everything else only sees it if we actually measure a low frame
+  // rate, rather than guessing from screen size alone.
+  useEffect(() => {
+    if (window.matchMedia("(pointer: coarse)").matches) {
+      setShowPerfHint(true);
+      return;
+    }
+
+    const SAMPLE_DURATION_MS = 2000;
+    const FPS_THRESHOLD = 50;
+    const start = performance.now();
+    let frameCount = 0;
+    let rafId: number;
+
+    const sample = () => {
+      frameCount++;
+      const elapsed = performance.now() - start;
+      if (elapsed < SAMPLE_DURATION_MS) {
+        rafId = requestAnimationFrame(sample);
+        return;
+      }
+      const fps = frameCount / (elapsed / 1000);
+      if (fps < FPS_THRESHOLD) {
+        setShowPerfHint(true);
+      }
+    };
+    rafId = requestAnimationFrame(sample);
+
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
   return (
     <>
-      <div className="bg-primary-dark text-offwhite dark:bg-purewhite dark:text-offblack border-primary/20 mb-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-xl border px-4 py-2 text-xs">
-        <span className="hidden sm:inline">🖱️ Clic + glisser pour naviguer</span>
+      <div className="bg-primary-dark text-offwhite dark:bg-offwhite dark:text-offblack border-primary/20 mb-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-xl border px-4 py-2 text-xs">
+        <span className="hidden sm:inline">
+          🖱️ Clic + glisser pour naviguer
+        </span>
         <span className="hidden sm:inline">🔍 Molette pour zoomer</span>
-        <span className="hidden sm:inline">👆 Cliquer sur un objet pour en savoir plus</span>
-        <span className="hidden sm:inline">⌨️ Tab pour naviguer · Entrée/Espace pour activer · Échap pour fermer</span>
+        <span className="hidden sm:inline">
+          👆 Cliquer sur un objet pour en savoir plus
+        </span>
+        <span className="hidden sm:inline">
+          ⌨️ Tab pour naviguer · Entrée/Espace pour activer · Échap pour fermer
+        </span>
         <span className="sm:hidden">👆 Toucher pour explorer</span>
         <span className="sm:hidden">🔍 Pincer pour zoomer</span>
-        <label className="ml-auto flex cursor-pointer items-center gap-2">
-          <span>🚀 Animations</span>
+      </div>
+      {showPerfHint && (
+        <label className="bg-primary-dark text-offwhite dark:bg-offwhite dark:text-offblack border-primary/20 mb-3 flex cursor-pointer items-center justify-center gap-2 rounded-xl border px-4 py-2 text-xs">
+          <span>
+            🚀 En cas de souci d'affichage de l'image, désactivez les animations
+          </span>
           <button
             type="button"
             role="switch"
             aria-checked={!reducedMotion}
             onClick={() => setReducedMotion((prev) => !prev)}
             className={`relative h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors ${
-              reducedMotion ? "bg-offwhite/30 dark:bg-offblack/30" : "bg-secondary"
+              reducedMotion
+                ? "bg-offwhite/30 dark:bg-offblack/30"
+                : "bg-secondary"
             }`}
           >
             <span
@@ -369,60 +452,61 @@ export default function InteractiveDesk() {
             />
           </button>
         </label>
-      </div>
+      )}
       <div
         ref={containerRef}
         role="application"
         aria-label="Bureau interactif — explorez les objets pour en savoir plus"
         aria-describedby="interactive-desk-instructions"
-        className="bg-foreground relative w-full overflow-hidden rounded-2xl touch-none"
+        className="bg-foreground relative w-full touch-none overflow-hidden rounded-2xl"
       >
-      <button
-        onClick={() => resetZoomRef.current?.()}
-        className="absolute top-3 right-3 z-10 cursor-pointer rounded-xl bg-black/40 px-4 py-2 text-xs text-white backdrop-blur-sm transition-colors hover:bg-black/60"
-      >
-        ⌖ Recentrer
-      </button>
-      {svgContent ? (
-        <div ref={innerRef}>
-          <SvgContent html={svgContent} />
-        </div>
-      ) : (
-        <div className="flex aspect-video w-full animate-pulse items-center justify-center bg-black/10">
-          <span className="text-sm text-white/50">Chargement du bureau…</span>
-        </div>
-      )}
-      <div
-        id="interactive-desk-tooltip"
-        role="tooltip"
-        ref={tooltipRef}
-        className="pointer-events-none absolute z-20 max-w-xs rounded-lg bg-gray-900/95 px-3 py-2 text-sm text-white shadow-xl"
-        style={{
-          left: tooltipPos.left,
-          top: tooltipPos.top,
-          transform: `translateX(-50%)${tooltipPos.below ? "" : " translateY(-100%)"}`,
-          visibility: tooltip.visible ? "visible" : "hidden",
-        }}
-        aria-hidden={!tooltip.visible}
-      >
-        {tooltip.text}
-        {tooltipPos.below ? (
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-gray-900/95" />
+        <button
+          onClick={() => resetZoomRef.current?.()}
+          className="absolute top-3 right-3 z-10 cursor-pointer rounded-xl bg-black/40 px-4 py-2 text-xs text-white backdrop-blur-sm transition-colors hover:bg-black/60"
+        >
+          ⌖ Recentrer
+        </button>
+        {svgContent ? (
+          <div ref={innerRef}>
+            <SvgContent html={svgContent} />
+          </div>
         ) : (
-          <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900/95" />
+          <div className="flex aspect-video w-full animate-pulse items-center justify-center bg-black/10">
+            <span className="text-sm text-white/50">Chargement du bureau…</span>
+          </div>
         )}
-      </div>
-      {/* Instructions for screen readers */}
-      <div id="interactive-desk-instructions" className="sr-only">
-        Cette illustration contient 32 objets interactifs qui révèlent des informations sur J.B. :
-        ses séries, ses passions, ses outils, sa vie de musicien…
-        Naviguez entre les objets avec la touche Tab, puis appuyez sur Entrée ou Espace pour en savoir plus.
-        Le contenu s'affiche et est lu automatiquement. Appuyez sur Échap pour fermer.
-      </div>
-      {/* Live region for screen readers */}
-      <div aria-live="polite" aria-atomic="true" className="sr-only">
-        {tooltip.visible ? tooltip.text : ""}
-      </div>
+        <div
+          id="interactive-desk-tooltip"
+          role="tooltip"
+          ref={tooltipRef}
+          className="pointer-events-none absolute z-20 max-w-xs rounded-lg bg-gray-900/95 px-3 py-2 text-sm text-white shadow-xl"
+          style={{
+            left: tooltipPos.left,
+            top: tooltipPos.top,
+            transform: `translateX(-50%)${tooltipPos.below ? "" : " translateY(-100%)"}`,
+            visibility: tooltip.visible ? "visible" : "hidden",
+          }}
+          aria-hidden={!tooltip.visible}
+        >
+          {tooltip.text}
+          {tooltipPos.below ? (
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-gray-900/95" />
+          ) : (
+            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900/95" />
+          )}
+        </div>
+        {/* Instructions for screen readers */}
+        <div id="interactive-desk-instructions" className="sr-only">
+          Cette illustration contient 32 objets interactifs qui révèlent des
+          informations sur J.B. : ses séries, ses passions, ses outils, sa vie
+          de musicien… Naviguez entre les objets avec la touche Tab, puis
+          appuyez sur Entrée ou Espace pour en savoir plus. Le contenu s'affiche
+          et est lu automatiquement. Appuyez sur Échap pour fermer.
+        </div>
+        {/* Live region for screen readers */}
+        <div aria-live="polite" aria-atomic="true" className="sr-only">
+          {tooltip.visible ? tooltip.text : ""}
+        </div>
       </div>
     </>
   );

@@ -39,6 +39,7 @@ export default function QuizGame() {
   const [result, setResult] = useState<QuizResult | null>(null);
   const [lockedIds, setLockedIds] = useState<Set<string>>(new Set());
   const [errorIds, setErrorIds] = useState<Set<string>>(new Set());
+  const [revealedIds, setRevealedIds] = useState<Set<string>>(new Set());
 
   const handleChange = (id: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [id]: value }));
@@ -99,6 +100,18 @@ export default function QuizGame() {
       return next;
     });
     setErrorIds(new Set());
+    setRevealedIds(new Set());
+    setResult(null);
+    submitButtonRef.current?.focus();
+  };
+
+  const handleShowAnswers = () => {
+    if (!result) return;
+    setRevealedIds((prev) => {
+      const next = new Set(prev);
+      for (const m of result.missed) next.add(m.id);
+      return next;
+    });
     setResult(null);
     submitButtonRef.current?.focus();
   };
@@ -106,14 +119,14 @@ export default function QuizGame() {
   return (
     <details className="group bg-neutral-light mx-auto mt-16 w-full max-w-3xl rounded-2xl p-6 shadow-lg sm:p-8">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
-        <h2 className="font-caveat text-primary-contrast text-4xl font-bold">
+        <h2 className="font-caveat text-neutral-contrast text-4xl font-bold">
           Vous aimez les énigmes ?
         </h2>
-        <span className="inline-block text-2xl transition-transform duration-200 group-open:rotate-180">
+        <span className="text-neutral-contrast inline-block text-2xl transition-transform duration-200 group-open:rotate-180">
           ▼
         </span>
       </summary>
-      <p className="font-caveat text-primary-contrast mt-4 mb-5 text-2xl font-bold">
+      <p className="font-caveat text-neutral-contrast mt-4 mb-5 text-2xl font-bold">
         20 petites énigmes dont chaque réponse a un rapport de près ou de loin
         avec un objet cliquable de l'image...
       </p>
@@ -132,12 +145,14 @@ export default function QuizGame() {
               </legend>
               {questions.map((q) => {
                 const isLocked = lockedIds.has(q.id);
-                const hasError = errorIds.has(q.id);
+                const isRevealed = revealedIds.has(q.id);
+                const showAnswer = isLocked || isRevealed;
+                const hasError = errorIds.has(q.id) && !isRevealed;
                 const errorId = `quiz-${q.id}-error`;
                 return (
                   <div
                     key={q.id}
-                    className={`flex flex-col gap-1 rounded-lg p-3 ${isLocked ? DIFFICULTY_BACKGROUND_LOCKED[q.difficulty] : DIFFICULTY_BACKGROUND[q.difficulty]}`}
+                    className={`flex flex-col gap-1 rounded-lg p-3 ${showAnswer ? DIFFICULTY_BACKGROUND_LOCKED[q.difficulty] : DIFFICULTY_BACKGROUND[q.difficulty]}`}
                   >
                     <label
                       htmlFor={`quiz-${q.id}`}
@@ -150,11 +165,11 @@ export default function QuizGame() {
                       type="text"
                       value={answers[q.id] ?? ""}
                       onChange={(e) => handleChange(q.id, e.target.value)}
-                      readOnly={isLocked}
+                      readOnly={showAnswer}
                       aria-invalid={hasError}
                       aria-describedby={hasError ? errorId : undefined}
                       className={
-                        isLocked
+                        showAnswer
                           ? "border-border bg-primary/10 text-offblack rounded-lg border px-3 py-2 text-sm"
                           : hasError
                             ? "bg-offwhite text-offblack rounded-lg border border-red-500 px-3 py-2 text-sm"
@@ -166,7 +181,7 @@ export default function QuizGame() {
                         Réponse incorrecte
                       </p>
                     )}
-                    {isLocked && (
+                    {showAnswer && (
                       <div className="text-offblack mt-1 text-sm">
                         <p className="font-semibold">{q.answer}</p>
                         <p className="opacity-80">{q.funFact}</p>
@@ -181,7 +196,7 @@ export default function QuizGame() {
         <button
           ref={submitButtonRef}
           type="submit"
-          className="bg-primary hover:bg-primary-dark self-start rounded-xl px-6 py-2 text-sm font-semibold text-white transition-colors"
+          className="bg-success-dark hover:bg-success-contrast self-start rounded-xl px-6 py-2 text-sm font-semibold text-white transition-colors"
         >
           Valider mes réponses
         </button>
@@ -227,13 +242,24 @@ export default function QuizGame() {
                   </ul>
                 </>
               )}
-              <button
-                type="button"
-                onClick={handleRestart}
-                className="bg-primary hover:bg-primary-dark mt-6 rounded-xl px-6 py-2 text-sm font-semibold text-white transition-colors"
-              >
-                Recommencer
-              </button>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {result.missed.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleShowAnswers}
+                    className="bg-secondary hover:bg-secondary-dark text-secondary-contrast rounded-xl px-6 py-2 text-sm font-semibold transition-colors"
+                  >
+                    Voir les réponses
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={handleRestart}
+                  className="bg-primary hover:bg-primary-dark rounded-xl px-6 py-2 text-sm font-semibold text-white transition-colors"
+                >
+                  Poursuivre
+                </button>
+              </div>
             </div>
           </div>,
           document.body,
