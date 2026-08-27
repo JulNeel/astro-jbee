@@ -114,8 +114,8 @@ export default function QuizGame() {
         </span>
       </summary>
       <p className="font-caveat text-primary-contrast mt-4 mb-5 text-2xl font-bold">
-        20 petites égnigmes dont chaque réponse a un rapport de près ou de loin
-        avec un object cliquable de l'image...
+        20 petites énigmes dont chaque réponse a un rapport de près ou de loin
+        avec un objet cliquable de l'image...
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         {DIFFICULTY_SECTIONS.map(({ difficulty, label }) => {
