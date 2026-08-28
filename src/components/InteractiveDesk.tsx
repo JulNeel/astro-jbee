@@ -66,6 +66,7 @@ export default function InteractiveDesk() {
   const [svgContent, setSvgContent] = useState<string | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [showPerfHint, setShowPerfHint] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [tooltip, setTooltip] = useState<TooltipState>({
     visible: false,
     text: "",
@@ -414,6 +415,53 @@ export default function InteractiveDesk() {
     return () => cancelAnimationFrame(rafId);
   }, []);
 
+  // Safari still needs the webkit-prefixed fullscreen API.
+  useEffect(() => {
+    const getFullscreenElement = () =>
+      document.fullscreenElement ??
+      (document as unknown as { webkitFullscreenElement?: Element })
+        .webkitFullscreenElement;
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(getFullscreenElement() === containerRef.current);
+      // The container's dimensions just changed drastically; any existing
+      // pan/zoom offset no longer makes sense.
+      resetZoomRef.current?.();
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener(
+        "webkitfullscreenchange",
+        handleFullscreenChange,
+      );
+    };
+  }, []);
+
+  const handleToggleFullscreen = () => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const doc = document as unknown as {
+      fullscreenElement?: Element;
+      webkitFullscreenElement?: Element;
+      exitFullscreen?: () => Promise<void>;
+      webkitExitFullscreen?: () => Promise<void>;
+    };
+    const el = container as unknown as {
+      requestFullscreen?: () => Promise<void>;
+      webkitRequestFullscreen?: () => Promise<void>;
+    };
+
+    if (doc.fullscreenElement ?? doc.webkitFullscreenElement) {
+      (doc.exitFullscreen ?? doc.webkitExitFullscreen)?.call(document);
+    } else {
+      (el.requestFullscreen ?? el.webkitRequestFullscreen)?.call(container);
+    }
+  };
+
   return (
     <>
       <div className="bg-primary-dark text-offwhite dark:bg-offwhite dark:text-offblack border-primary/20 mb-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-xl border px-4 py-2 text-xs">
@@ -459,14 +507,22 @@ export default function InteractiveDesk() {
         role="application"
         aria-label="Bureau interactif — explorez les objets pour en savoir plus"
         aria-describedby="interactive-desk-instructions"
-        className="bg-foreground relative w-full touch-none overflow-hidden rounded-2xl"
+        className={`bg-foreground relative w-full touch-none overflow-hidden ${isFullscreen ? "h-screen" : "rounded-2xl"}`}
       >
-        <button
-          onClick={() => resetZoomRef.current?.()}
-          className="absolute top-3 right-3 z-10 cursor-pointer rounded-xl bg-black/40 px-4 py-2 text-xs text-white backdrop-blur-sm transition-colors hover:bg-black/60"
-        >
-          ⌖ Recentrer
-        </button>
+        <div className="absolute top-3 right-3 z-10 flex gap-2">
+          <button
+            onClick={() => resetZoomRef.current?.()}
+            className="cursor-pointer rounded-xl bg-black/40 px-4 py-2 text-xs text-white backdrop-blur-sm transition-colors hover:bg-black/60"
+          >
+            ⌖ Recentrer
+          </button>
+          <button
+            onClick={handleToggleFullscreen}
+            className="cursor-pointer rounded-xl bg-black/40 px-4 py-2 text-xs text-white backdrop-blur-sm transition-colors hover:bg-black/60"
+          >
+            {isFullscreen ? "⤡ Quitter le plein écran" : "⛶ Plein écran"}
+          </button>
+        </div>
         {svgContent ? (
           <div ref={innerRef}>
             <SvgContent html={svgContent} />
