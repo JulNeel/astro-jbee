@@ -81,7 +81,7 @@
   --border: var(--color-neutral-light);
 
   --background-card: var(--color-purewhite);
-  --foreground-card: var(--color-offblack);
+  --foreground-card: var(--color-primary-dark);
 
   --background-footer: var(--color-primary);
   --foreground-footer: var(--color-purewhite);
