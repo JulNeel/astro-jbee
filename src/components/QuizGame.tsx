@@ -30,10 +30,14 @@ const MAX_SCORE = QUIZ_QUESTIONS.reduce(
 
 function getScoreComment(score: number, maxScore: number): string {
   const ratio = score / maxScore;
-  if (ratio === 1) return "Sans faute ! Le Père Fouras n'a plus rien à vous apprendre. 🏆";
-  if (ratio >= 0.75) return "Très solide ! Vous auriez toute votre place dans la salle du trésor.";
-  if (ratio >= 0.5) return "Pas mal du tout ! Encore un effort pour décrocher les clés.";
-  if (ratio >= 0.25) return "Il y a de l'idée, mais Fouras garde ses clés pour l'instant.";
+  if (ratio === 1)
+    return "Sans faute ! Le Père Fouras n'a plus rien à vous apprendre. 🏆";
+  if (ratio >= 0.75)
+    return "Très solide ! Vous auriez toute votre place dans la salle du trésor.";
+  if (ratio >= 0.5)
+    return "Pas mal du tout ! Encore un effort pour décrocher les clés.";
+  if (ratio >= 0.25)
+    return "Il y a de l'idée, mais Fouras garde ses clés pour l'instant.";
   return "Aïe aïe aïe... il va falloir retourner explorer l'image !";
 }
 
@@ -109,7 +113,11 @@ export default function QuizGame() {
     <details className="group bg-background-card mx-auto mt-16 w-full max-w-3xl rounded-2xl p-2 shadow-lg sm:p-2">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
         <div className="flex items-center gap-3">
-          <img src={pereFourasUrl} alt="" className="h-24 w-auto shrink-0" />
+          <img
+            src={pereFourasUrl}
+            alt=""
+            className="ml-4 h-24 w-auto shrink-0"
+          />
           <h2 className="font-caveat text-foreground-card text-4xl font-bold">
             Et si vous aimez les énigmes...
           </h2>
