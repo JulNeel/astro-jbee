@@ -16,7 +16,7 @@ export const TOOLTIP_LABELS: Record<string, string> = {
   radiohead: "Affiche musicale",
   run: "Dossard de marathon",
   snare: "Batterie",
-  chess: "Partie d'échec sur un téléphone portable",
+  chess: "Partie d'échecs sur un téléphone portable",
   brel: "Portrait de Brel en dessin",
   "belle-ile": "Carte postale de Belle Île",
   music: "Casque audio",
@@ -60,7 +60,7 @@ export const TOOLTIP_CONTENT: Record<string, string> = {
   snare: "🥁 On pourrait se croiser dans les jams lilloises...",
   chess:
     "♟️ Je joue beaucoup trop lentement, alors je perds souvent... mais j'adore ça !",
-  brel: "Brel par un street artiste Roubaisien 👩‍🎨",
+  brel: "👩‍🎨 Brel par le street artiste Roubaisien Benjamin Kluk ",
   "belle-ile": "Belle Île la bien nommée... ♥️",
   music:
     "🎵 Music is my aeroplane, It's my aeroplane",

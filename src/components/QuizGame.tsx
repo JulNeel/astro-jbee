@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import pereFourasUrl from "@images/pere_fouras.png?url";
 import { QUIZ_QUESTIONS, type QuizDifficulty } from "../data/quiz-questions";
 import { isFuzzyAnswerMatch, normalizeAnswer } from "../utils/normalizeAnswer";
 
@@ -15,24 +16,26 @@ const DIFFICULTY_SECTIONS: { difficulty: QuizDifficulty; label: string }[] = [
   { difficulty: "GOD LEVEL", label: "🚨 GOAT RESTRICTED AREA 🚨" },
 ];
 
-const DIFFICULTY_BACKGROUND: Record<QuizDifficulty, string> = {
-  easy: "bg-success/10",
-  medium: "bg-info/10",
-  difficult: "bg-warning/10",
-  "GOD LEVEL": "bg-danger/10",
+const POINTS_BY_DIFFICULTY: Record<QuizDifficulty, number> = {
+  easy: 2,
+  medium: 4,
+  difficult: 5,
+  "GOD LEVEL": 6,
 };
-const DIFFICULTY_BACKGROUND_LOCKED: Record<QuizDifficulty, string> = {
-  easy: "bg-success/50",
-  medium: "bg-info/50",
-  difficult: "bg-warning/50",
-  "GOD LEVEL": "bg-danger/50",
-};
-const DIFFICULTY_FOREGROUND: Record<QuizDifficulty, string> = {
-  easy: "text-success-contrast",
-  medium: "text-info-contrast",
-  difficult: "text-warning-contrast",
-  "GOD LEVEL": "text-danger-contrast",
-};
+
+const MAX_SCORE = QUIZ_QUESTIONS.reduce(
+  (total, q) => total + POINTS_BY_DIFFICULTY[q.difficulty],
+  0,
+);
+
+function getScoreComment(score: number, maxScore: number): string {
+  const ratio = score / maxScore;
+  if (ratio === 1) return "Sans faute ! Le Père Fouras n'a plus rien à vous apprendre. 🏆";
+  if (ratio >= 0.75) return "Très solide ! Vous auriez toute votre place dans la salle du trésor.";
+  if (ratio >= 0.5) return "Pas mal du tout ! Encore un effort pour décrocher les clés.";
+  if (ratio >= 0.25) return "Il y a de l'idée, mais Fouras garde ses clés pour l'instant.";
+  return "Aïe aïe aïe... il va falloir retourner explorer l'image !";
+}
 
 export default function QuizGame() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -65,7 +68,7 @@ export default function QuizGame() {
           isFuzzyAnswerMatch(given, normalizeAnswer(a)),
         );
       if (isCorrect) {
-        score += 1;
+        score += POINTS_BY_DIFFICULTY[q.difficulty];
         newlyLocked.add(q.id);
       } else {
         missed.push({ id: q.id, question: q.question });
@@ -91,20 +94,6 @@ export default function QuizGame() {
     submitButtonRef.current?.focus();
   };
 
-  const handleRestart = () => {
-    setAnswers((prev) => {
-      const next: Record<string, string> = {};
-      for (const id of lockedIds) {
-        next[id] = prev[id] ?? "";
-      }
-      return next;
-    });
-    setErrorIds(new Set());
-    setRevealedIds(new Set());
-    setResult(null);
-    submitButtonRef.current?.focus();
-  };
-
   const handleShowAnswers = () => {
     if (!result) return;
     setRevealedIds((prev) => {
@@ -117,18 +106,22 @@ export default function QuizGame() {
   };
 
   return (
-    <details className="group bg-neutral-light mx-auto mt-16 w-full max-w-3xl rounded-2xl p-6 shadow-lg sm:p-8">
+    <details className="group bg-background-card mx-auto mt-16 w-full max-w-3xl rounded-2xl p-2 shadow-lg sm:p-2">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
-        <h2 className="font-caveat text-neutral-contrast text-4xl font-bold">
-          Vous aimez les énigmes ?
-        </h2>
-        <span className="text-neutral-contrast inline-block text-2xl transition-transform duration-200 group-open:rotate-180">
+        <div className="flex items-center gap-3">
+          <img src={pereFourasUrl} alt="" className="h-24 w-auto shrink-0" />
+          <h2 className="font-caveat text-foreground-card text-4xl font-bold">
+            Et si vous aimez les énigmes...
+          </h2>
+        </div>
+
+        <span className="text-foreground-card inline-block text-2xl transition-transform duration-200 group-open:rotate-180">
           ▼
         </span>
       </summary>
-      <p className="font-caveat text-neutral-contrast mt-4 mb-5 text-2xl font-bold">
-        20 petites énigmes dont chaque réponse a un rapport de près ou de loin
-        avec un objet cliquable de l'image...
+      <p className="font-caveat text-foreground-card mt-4 mb-5 text-2xl font-bold">
+        10 petites énigmes dont chaque réponse a un rapport de près ou de loin
+        avec l'un des objets cliquables...
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         {DIFFICULTY_SECTIONS.map(({ difficulty, label }) => {
@@ -138,25 +131,32 @@ export default function QuizGame() {
           if (questions.length === 0) return null;
           return (
             <fieldset key={difficulty} className="flex flex-col gap-4">
-              <legend
-                className={`${DIFFICULTY_FOREGROUND[difficulty]} font-caveat mb-2 text-3xl font-bold`}
-              >
+              <legend className="text-foreground-card font-caveat mb-2 text-3xl font-bold">
                 {label}
               </legend>
               {questions.map((q) => {
                 const isLocked = lockedIds.has(q.id);
                 const isRevealed = revealedIds.has(q.id);
                 const showAnswer = isLocked || isRevealed;
-                const hasError = errorIds.has(q.id) && !isRevealed;
+                const hasError = errorIds.has(q.id);
+                const isMissing =
+                  hasError && (answers[q.id] ?? "").trim() === "";
+                const isWrong = hasError && !isMissing;
                 const errorId = `quiz-${q.id}-error`;
                 return (
                   <div
                     key={q.id}
-                    className={`flex flex-col gap-1 rounded-lg p-3 ${showAnswer ? DIFFICULTY_BACKGROUND_LOCKED[q.difficulty] : DIFFICULTY_BACKGROUND[q.difficulty]}`}
+                    className={`flex flex-col gap-1 rounded-lg p-3 ${
+                      isLocked
+                        ? "bg-success/40"
+                        : isWrong
+                          ? "bg-danger/40"
+                          : "bg-neutral-light"
+                    }`}
                   >
                     <label
                       htmlFor={`quiz-${q.id}`}
-                      className={`${DIFFICULTY_FOREGROUND[q.difficulty]} font-caveat text-xl font-bold`}
+                      className="text-primary-dark font-caveat text-xl font-bold"
                     >
                       {q.question}
                     </label>
@@ -169,16 +169,21 @@ export default function QuizGame() {
                       aria-invalid={hasError}
                       aria-describedby={hasError ? errorId : undefined}
                       className={
-                        showAnswer
-                          ? "border-border bg-primary/10 text-offblack rounded-lg border px-3 py-2 text-sm"
-                          : hasError
-                            ? "bg-offwhite text-offblack rounded-lg border border-red-500 px-3 py-2 text-sm"
+                        isWrong
+                          ? "bg-offwhite text-offblack rounded-lg border border-red-500 px-3 py-2 text-sm"
+                          : showAnswer
+                            ? "border-border bg-primary/10 text-offblack rounded-lg border px-3 py-2 text-sm"
                             : "border-border bg-offwhite text-offblack rounded-lg border px-3 py-2 text-sm"
                       }
                     />
-                    {hasError && (
+                    {isWrong && (
                       <p id={errorId} className="text-sm text-red-600">
                         Réponse incorrecte
+                      </p>
+                    )}
+                    {isMissing && (
+                      <p id={errorId} className="text-offblack/60 text-sm">
+                        Pas de réponse
                       </p>
                     )}
                     {showAnswer && (
@@ -196,9 +201,9 @@ export default function QuizGame() {
         <button
           ref={submitButtonRef}
           type="submit"
-          className="bg-success-dark hover:bg-success-contrast self-start rounded-xl px-6 py-2 text-sm font-semibold text-white transition-colors"
+          className="bg-primary hover:bg-primary-dark sticky bottom-4 z-10 w-full rounded-xl px-6 py-4 text-sm font-semibold text-white shadow-lg transition-colors"
         >
-          Valider mes réponses
+          Vérifier mes réponses
         </button>
       </form>
       {result &&
@@ -230,18 +235,11 @@ export default function QuizGame() {
                 ×
               </button>
               <h2 id="quiz-result-title" className="text-xl font-bold">
-                Score : {result.score}/{QUIZ_QUESTIONS.length}
+                Score : {result.score}/{MAX_SCORE}
               </h2>
-              {result.missed.length > 0 && (
-                <>
-                  <p className="mt-4 text-sm font-medium">Questions ratées :</p>
-                  <ul className="mt-2 list-disc pl-5 text-sm">
-                    {result.missed.map((m) => (
-                      <li key={m.id}>{m.question}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
+              <p className="mt-4 text-sm">
+                {getScoreComment(result.score, MAX_SCORE)}
+              </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 {result.missed.length > 0 && (
                   <button
@@ -254,7 +252,7 @@ export default function QuizGame() {
                 )}
                 <button
                   type="button"
-                  onClick={handleRestart}
+                  onClick={handleClose}
                   className="bg-primary hover:bg-primary-dark rounded-xl px-6 py-2 text-sm font-semibold text-white transition-colors"
                 >
                   Poursuivre

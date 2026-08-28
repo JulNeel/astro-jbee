@@ -1,6 +1,7 @@
 import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity } from "d3-zoom";
+import "d3-transition";
 import confetti from "canvas-confetti";
 import workstationSvgUrl from "@images/jbee_office_animated.svg?url";
 import { TOOLTIP_CONTENT, TOOLTIP_LABELS } from "./InteractiveDesk.data";
