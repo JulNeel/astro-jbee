@@ -44,7 +44,7 @@ const ThemeToggle = ({ vertical = false }: ThemeToggleProps) => {
 
   return (
     <div
-      className={`flex items-center gap-1 border-border bg-background-nav rounded-lg border p-0.5 shadow-sm ${vertical ? "flex-col" : ""}`}
+      className={`border-border bg-background-card flex items-center gap-1 rounded-lg border p-0.5 shadow-sm ${vertical ? "flex-col" : ""}`}
     >
       {buttons.map(({ mode, Icon, label }) => (
         <button
@@ -54,7 +54,7 @@ const ThemeToggle = ({ vertical = false }: ThemeToggleProps) => {
           title={label}
           aria-label={label}
           aria-pressed={theme === mode}
-          className={`flex items-center justify-center rounded-md p-1.5 transition-colors duration-200 ${theme === mode ? "bg-primary text-purewhite" : "text-foreground-nav hover:bg-primary-light hover:text-background"}`}
+          className={`flex items-center justify-center rounded-md p-1.5 transition-colors duration-200 ${theme === mode ? "bg-primary text-purewhite" : "text-foreground-card hover:bg-primary-light hover:text-background"}`}
         >
           <Icon size={18} strokeWidth={1.75} />
         </button>
