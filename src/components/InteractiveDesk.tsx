@@ -67,6 +67,8 @@ export default function InteractiveDesk() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [showPerfHint, setShowPerfHint] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const isFullscreenRef = useRef(isFullscreen);
+  isFullscreenRef.current = isFullscreen;
   const [tooltip, setTooltip] = useState<TooltipState>({
     visible: false,
     text: "",
@@ -259,6 +261,24 @@ export default function InteractiveDesk() {
     let pendingTransform: string | null = null;
     const zoomBehavior = zoom<HTMLDivElement, unknown>()
       .scaleExtent([1, 16])
+      // On touch, only engage pan/zoom for two-finger gestures (like Google
+      // Maps embeds) so a one-finger swipe still scrolls the page normally
+      // instead of dragging the desk. Mouse/wheel/trackpad behavior is
+      // untouched — this mirrors d3-zoom's own default filter for those.
+      .filter((event: Event) => {
+        if (event.type.startsWith("touch")) {
+          // Fullscreen has no competing page scroll to protect, so a
+          // single finger is fine there — only require two fingers when
+          // embedded in the page.
+          const minTouches = isFullscreenRef.current ? 1 : 2;
+          return (event as TouchEvent).touches.length >= minTouches;
+        }
+        const mouseEvent = event as MouseEvent;
+        return (
+          (!mouseEvent.ctrlKey || event.type === "wheel") &&
+          !mouseEvent.button
+        );
+      })
       .on("start", () => {
         svgEl.classList.add("is-panning");
       })
@@ -516,7 +536,9 @@ export default function InteractiveDesk() {
           ⌨️ Tab pour naviguer · Entrée/Espace pour activer · Échap pour fermer
         </span>
         <span className="sm:hidden">👆 Toucher pour explorer</span>
-        <span className="sm:hidden">🔍 Pincer pour zoomer</span>
+        <span className="sm:hidden">
+          ✌️ Deux doigts pour déplacer/zoomer
+        </span>
       </div>
       {showPerfHint && (
         <label className="bg-primary-dark text-offwhite dark:bg-offwhite dark:text-offblack border-primary/20 mb-3 flex cursor-pointer items-center justify-center gap-2 rounded-xl border px-4 py-2 text-xs">
@@ -547,7 +569,11 @@ export default function InteractiveDesk() {
         role="application"
         aria-label="Bureau interactif — explorez les objets pour en savoir plus"
         aria-describedby="interactive-desk-instructions"
-        className={`bg-foreground relative w-full touch-none overflow-hidden ${isFullscreen ? "fixed inset-0 z-100 h-screen w-screen" : "rounded-2xl"}`}
+        className={`bg-foreground relative w-full overflow-hidden ${
+          isFullscreen
+            ? "fixed inset-0 z-100 h-screen w-screen touch-none"
+            : "touch-pan-y rounded-2xl"
+        }`}
       >
         <div className="absolute top-3 right-3 z-10 flex gap-2">
           <button
