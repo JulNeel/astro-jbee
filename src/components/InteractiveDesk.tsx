@@ -258,7 +258,7 @@ export default function InteractiveDesk() {
     let rafId: number | null = null;
     let pendingTransform: string | null = null;
     const zoomBehavior = zoom<HTMLDivElement, unknown>()
-      .scaleExtent([0.5, 8])
+      .scaleExtent([1, 16])
       .on("start", () => {
         svgEl.classList.add("is-panning");
       })
