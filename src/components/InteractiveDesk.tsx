@@ -455,12 +455,52 @@ export default function InteractiveDesk() {
       webkitRequestFullscreen?: () => Promise<void>;
     };
 
+    // iOS Safari has no Fullscreen API for arbitrary elements (only
+    // <video> gets a native fullscreen) — simulate it with a fixed-position
+    // overlay instead, toggled entirely through React state.
+    if (!(el.requestFullscreen ?? el.webkitRequestFullscreen)) {
+      setIsFullscreen((prev) => !prev);
+      resetZoomRef.current?.();
+      return;
+    }
+
     if (doc.fullscreenElement ?? doc.webkitFullscreenElement) {
       (doc.exitFullscreen ?? doc.webkitExitFullscreen)?.call(document);
     } else {
       (el.requestFullscreen ?? el.webkitRequestFullscreen)?.call(container);
     }
   };
+
+  // Escape closes the simulated (non-native) fullscreen overlay; native
+  // fullscreen already handles Escape itself via the browser.
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const doc = document as unknown as {
+      fullscreenElement?: Element;
+      webkitFullscreenElement?: Element;
+    };
+    if (doc.fullscreenElement ?? doc.webkitFullscreenElement) return;
+
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsFullscreen(false);
+        resetZoomRef.current?.();
+      }
+    };
+    window.addEventListener("keydown", handleKeydown);
+    return () => window.removeEventListener("keydown", handleKeydown);
+  }, [isFullscreen]);
+
+  // Simulated fullscreen is a fixed overlay, not a real browser fullscreen —
+  // lock page scroll behind it so the desk is the only thing that moves.
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isFullscreen]);
 
   return (
     <>
@@ -507,7 +547,7 @@ export default function InteractiveDesk() {
         role="application"
         aria-label="Bureau interactif — explorez les objets pour en savoir plus"
         aria-describedby="interactive-desk-instructions"
-        className={`bg-foreground relative w-full touch-none overflow-hidden ${isFullscreen ? "h-screen" : "rounded-2xl"}`}
+        className={`bg-foreground relative w-full touch-none overflow-hidden ${isFullscreen ? "fixed inset-0 z-100 h-screen w-screen" : "rounded-2xl"}`}
       >
         <div className="absolute top-3 right-3 z-10 flex gap-2">
           <button
