@@ -475,10 +475,17 @@ export default function InteractiveDesk() {
       webkitRequestFullscreen?: () => Promise<void>;
     };
 
-    // iOS Safari has no Fullscreen API for arbitrary elements (only
-    // <video> gets a native fullscreen) — simulate it with a fixed-position
-    // overlay instead, toggled entirely through React state.
-    if (!(el.requestFullscreen ?? el.webkitRequestFullscreen)) {
+    // Fullscreen for arbitrary (non-<video>) elements is unreliable
+    // specifically on iOS/iPadOS — the method can exist on older WebKit
+    // without actually doing anything when called, so presence-checking it
+    // isn't enough. Android (Chrome/Firefox) supports it fine, so this is
+    // scoped to Apple touch devices rather than touch devices in general.
+    // iPadOS 13+ reports as "MacIntel" like desktop Safari, hence the
+    // maxTouchPoints check to still catch it.
+    const isAppleTouchDevice =
+      /iP(hone|od|ad)/.test(navigator.platform) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if (isAppleTouchDevice) {
       setIsFullscreen((prev) => !prev);
       resetZoomRef.current?.();
       return;
